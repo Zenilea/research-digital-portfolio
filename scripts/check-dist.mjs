@@ -8,6 +8,7 @@
 //     (source titles, the literature review, the reference list)
 //   - the phrase "no research exists"
 //   - an email address or phone number on a page, or a mailto: or tel: link
+//     (except my own address, set as "email" in src/data/site.json)
 //   - an image without alt text
 //   - a link that skips the base path or points at a page or section that is not there
 //   - a new-tab link without rel="noopener"
@@ -15,7 +16,7 @@
 //   - a page without a title, description, canonical link or share image
 //   - an idea diagram without the "not results" label
 import { readFile, readdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'parse5';
@@ -24,11 +25,17 @@ import { SITE, BASE } from '../site.config.mjs';
 
 export { SITE, BASE };
 
+// The one email address I chose to put on the site (site.json, "email").
+// Any other address still fails the check.
+const site = JSON.parse(readFileSync(new URL('../src/data/site.json', import.meta.url), 'utf8'));
+export const MY_EMAIL = String(site.email ?? '').toLowerCase();
+const isMine = (address) => MY_EMAIL !== '' && address.toLowerCase() === MY_EMAIL;
+
 // Any word built on "steril" (sterilize, sterilise, sterile, sterilant, unsterile,
 // misspellings too). "Sterility" is allowed: the site says the study is not about it.
 const BANNED = /steril(?!ity\b)/i;
 const NO_RESEARCH = /no research exists/i;
-const EMAIL = /[\w.+-]+@[\w-]+\.[a-z]{2,}/i;
+const EMAIL = /[\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,}/gi;
 const PHONE = /(?<![\d./-])\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}(?![\d./-])/;
 // Signs that a value failed to render. The plain word "undefined" in a sentence is fine.
 const PLACEHOLDER = /: undefined\b|\bundefined (of|undefined)\b|\[object Object\]|lorem ipsum/i;
@@ -122,7 +129,9 @@ export function checkHtml(html, { file, exists = () => true, hasId = () => true 
     }
 
     const href = attr(node, 'href') ?? '';
-    if (/^mailto:/i.test(href)) fail(`email address in a link: ${href}`);
+    if (/^mailto:/i.test(href) && !isMine(decodeURIComponent(href.slice(7).split('?')[0]))) {
+      fail(`email address in a link: ${href}`);
+    }
     if (/^(tel|sms):/i.test(href)) fail(`phone number in a link: ${href}`);
 
     for (const name of ['href', 'src']) {
@@ -159,8 +168,8 @@ export function checkHtml(html, { file, exists = () => true, hasId = () => true 
   // Words on the page.
   const words = text.join(' ').replace(/\s+/g, ' ');
   if (NO_RESEARCH.test(words)) fail('the phrase "no research exists" is on the page');
-  const email = words.match(EMAIL);
-  if (email) fail(`email address on the page: ${email[0]}`);
+  const email = [...words.matchAll(EMAIL)].map((m) => m[0]).find((address) => !isMine(address));
+  if (email) fail(`email address on the page: ${email}`);
   const placeholder = words.match(PLACEHOLDER) ?? words.match(PLACEHOLDER_EXACT);
   if (placeholder) fail(`placeholder text on the page: "${placeholder[0]}"`);
   if (hasIdeaDiagram && !IDEA_LABEL.test(words)) {

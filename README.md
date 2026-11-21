@@ -98,7 +98,8 @@ reduced motion). Those need Playwright: `npm i -D playwright` and `npx playwrigh
   literature review and the reference list. My treatment is **disinfection**. The word
   "sterility" is allowed, because the site says the study is not about it.
 - the phrase "no research exists"
-- an email address or phone number, in the text or in a link
+- an email address or phone number, in the text or in a link. The one exception is my own
+  address, set as `email` in `src/data/site.json`. It shows on About and in the footer.
 - an image without alt text, a link that goes nowhere, or two parts of a page with the same id
 - an idea diagram without the label "Illustration of the idea, not results."
 

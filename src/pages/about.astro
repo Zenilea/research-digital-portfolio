@@ -9,7 +9,7 @@ import home from '../data/home.json';
 import portrait from '../assets/portrait.jpg';
 import { url } from '../lib/url';
 
-const { interests, project } = about;
+const { interests, project, contact } = about;
 const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
@@ -101,6 +101,18 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         </p>
       </div>
     </div>
+  </section>
+
+  <section class="contact wrap" id="contact" aria-labelledby="contact-title">
+    <p class="label">{contact.label}</p>
+    <h2 class="h2" id="contact-title">{contact.heading}</h2>
+    <p class="contact__line">
+      <span class="contact__kind">{contact.emailLabel}</span>
+      <a class="contact__email" href={`mailto:${site.email}`}>
+        {site.email}
+        <Arrow />
+      </a>
+    </p>
   </section>
 
   <NextCards cards={about.next} />
@@ -317,6 +329,45 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
     .proj__card {
       grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
     }
+  }
+
+  /* ---------------- contact ---------------- */
+  .contact {
+    display: grid;
+    gap: 1.25rem;
+    padding-bottom: var(--section);
+  }
+
+  .contact__line {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .contact__kind {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .contact__email {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    justify-self: start;
+    max-width: 100%;
+    font-size: clamp(1.35rem, 4.6vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    overflow-wrap: anywhere;
+    text-decoration-color: var(--accent-hi);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+  }
+
+  .contact__email:hover {
+    color: var(--accent-hi);
   }
 
   :global(html.motion) [data-rise] {

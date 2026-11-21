@@ -2,7 +2,7 @@
 // Each test plants one mistake in a small page and expects the check to catch it.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { checkHtml, BASE, SITE } from '../scripts/check-dist.mjs';
+import { checkHtml, BASE, SITE, MY_EMAIL } from '../scripts/check-dist.mjs';
 
 const page = (body, head = '') => `<!doctype html>
 <html lang="en">
@@ -104,6 +104,13 @@ test('every spelling of the banned word family is caught, but "sterility" is not
 test('a mail or phone link is caught even when the address is not in the text', () => {
   assert.ok(has(run(page('<a href="mailto:someone@example.com">Write to me</a>')), 'email'));
   assert.ok(has(run(page('<a href="tel:+15551234567">Call me</a>')), 'phone'));
+});
+
+test('my own email from site.json is allowed in text and in a mail link, but no other address is', () => {
+  assert.ok(MY_EMAIL.includes('@'), 'site.json has an email');
+  assert.deepEqual(run(page(`<p>Email me at <a href="mailto:${MY_EMAIL}">${MY_EMAIL}</a></p>`)), []);
+  assert.ok(has(run(page(`<p>${MY_EMAIL} or someone@example.com</p>`)), 'someone@example.com'));
+  assert.ok(has(run(page('<a href="mailto:someone@example.com">Write to me</a>')), 'email'));
 });
 
 test('ordinary words and table cells are not mistaken for placeholders or phone numbers', () => {

@@ -23,6 +23,11 @@
     "primary": { "label": "How the idea took shape", "path": "/ideation/" },
     "secondary": { "label": "The project", "path": "/" }
   },
+  "contact": {
+    "label": "Contact",
+    "heading": "Get in touch.",
+    "emailLabel": "Email"
+  },
   "factsLabel": "The basics",
   "facts": [
     { "label": "School", "value": "Innovation Academy" },

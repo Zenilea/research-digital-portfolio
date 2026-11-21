@@ -482,3 +482,16 @@ test('About: the project card links to Ideation and Home', { skip }, async () =>
   assert.deepEqual(hrefs, [`${BASE}/ideation/`, `${BASE}/`]);
   await close();
 });
+
+test('About: my email is shown as a working mail link, and fits on a small phone', { skip }, async () => {
+  const site = JSON.parse(await readFile(path.join(root, 'src/data/site.json'), 'utf8'));
+  for (const width of [320, 1440]) {
+    const { page, close } = await open('/about/', { width });
+    const link = page.locator('.contact__email');
+    assert.equal(await link.getAttribute('href'), `mailto:${site.email}`);
+    assert.match(await link.innerText(), new RegExp(site.email.replace(/[.+]/g, '\\$&')));
+    const box = await link.boundingBox();
+    assert.ok(box.x >= 0 && box.x + box.width <= width, `the address fits the screen at ${width}px`);
+    await close();
+  }
+});
