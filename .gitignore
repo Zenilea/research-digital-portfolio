@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+
+# Never commit the sources workbook or original photos.
+# The site only needs src/data/sources.json and the processed portrait.
+*.xlsx
+*.xls
+private/

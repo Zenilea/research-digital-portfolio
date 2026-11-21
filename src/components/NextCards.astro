@@ -1,0 +1,77 @@
+---
+import { url } from '../lib/url';
+import Arrow from './Arrow.astro';
+
+interface Card {
+  kicker: string;
+  label: string;
+  path: string;
+  note?: string;
+}
+interface Props {
+  cards: Card[];
+}
+const { cards } = Astro.props;
+---
+
+<section class="next-cards wrap" aria-label="Where to go next">
+  {
+    cards.map((card, i) => (
+      <a class="next-card" href={url(card.path)} data-reveal style={`--i:${i}`}>
+        <span class="label">{card.kicker}</span>
+        <span class="next-card__title">
+          {card.label} <Arrow />
+        </span>
+        {card.note && <span class="next-card__note">{card.note}</span>}
+      </a>
+    ))
+  }
+</section>
+
+<style>
+  .next-cards {
+    display: grid;
+    gap: 1rem;
+    padding-bottom: var(--section);
+  }
+
+  @media (min-width: 48em) {
+    .next-cards {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+
+  .next-card {
+    display: grid;
+    align-content: space-between;
+    gap: 2.5rem;
+    min-height: clamp(11rem, 20vw, 17rem);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-raise);
+    text-decoration: none;
+    transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  }
+
+  .next-card:hover {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 9%, var(--bg-raise));
+  }
+
+  .next-card__title {
+    font-size: clamp(1.9rem, 4.2vw, 3.6rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .next-card__title :global(.arrow) {
+    width: 0.7em;
+    height: 0.7em;
+  }
+
+  .next-card__note {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+</style>

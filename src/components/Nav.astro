@@ -1,0 +1,236 @@
+---
+import site from '../data/site.json';
+import { url } from '../lib/url';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+---
+
+<header class="nav" data-nav>
+  <div class="nav__bar wrap">
+    <a class="nav__name" href={url('/')}>
+      <span class="nav__mark" aria-hidden="true"></span>
+      {site.name}
+      <span class="nav__course">· {site.course}</span>
+    </a>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-nav-toggle>
+      <span class="nav__toggle-open">Menu</span>
+      <span class="nav__toggle-close">Close</span>
+    </button>
+
+    <nav aria-label="Main" class="nav__nav">
+      <ul class="nav__links" id="nav-links">
+        {
+          site.nav.map((item) => (
+            <li>
+              <a href={url(item.path)} aria-current={item.path === path ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid var(--line);
+    view-transition-name: site-nav;
+  }
+
+  .nav__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1.5rem;
+    min-height: var(--nav-h);
+  }
+
+  .nav__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* Three printed layers with one green line on top: the seal. */
+  .nav__mark {
+    width: 1.1rem;
+    height: 0.95rem;
+    flex: none;
+    background:
+      linear-gradient(var(--accent-hi), var(--accent-hi)) 0 0 / 100% 2px no-repeat,
+      linear-gradient(var(--ink), var(--ink)) 0 5px / 100% 2px no-repeat,
+      linear-gradient(var(--ink), var(--ink)) 0 9px / 100% 2px no-repeat,
+      linear-gradient(var(--ink), var(--ink)) 0 13px / 100% 2px no-repeat;
+    opacity: 0.95;
+  }
+
+  .nav__course {
+    color: var(--ink-3);
+    font-weight: 400;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.4vw, 2.25rem);
+  }
+
+  .nav__links a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .nav__links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.55rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s var(--ease);
+  }
+
+  .nav__links a:hover,
+  .nav__links a[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  .nav__links a:hover::after,
+  .nav__links a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .nav__links a[aria-current='page']::after {
+    background: var(--accent-hi);
+    height: 2px;
+  }
+
+  .nav__toggle {
+    display: none;
+  }
+
+  /* Small screens.
+     Without JavaScript the links sit in a second row, always visible.
+     With JavaScript they fold into a Menu button. */
+  @media (max-width: 47.99em) {
+    .nav__course {
+      display: none;
+    }
+
+    .nav__nav {
+      flex-basis: 100%;
+    }
+
+    .nav__links {
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding-bottom: 0.35rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav__links a {
+      font-size: 0.86rem;
+    }
+
+    :global(html.js) .nav__toggle {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding: 0 0.25rem;
+      border: 0;
+      background: none;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    .nav__toggle-close,
+    .nav__toggle[aria-expanded='true'] .nav__toggle-open {
+      display: none;
+    }
+
+    .nav__toggle[aria-expanded='true'] .nav__toggle-close {
+      display: inline;
+    }
+
+    :global(html.js) .nav__nav {
+      display: none;
+    }
+
+    :global(html.js) .nav.is-open .nav__nav {
+      display: block;
+      padding-bottom: 1.25rem;
+    }
+
+    :global(html.js) .nav__links {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      overflow: visible;
+    }
+
+    :global(html.js) .nav__links a {
+      width: 100%;
+      min-height: 3.25rem;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      border-top: 1px solid var(--line);
+    }
+
+    :global(html.js) .nav__links a::after {
+      display: none;
+    }
+
+    :global(html.js) .nav__links a[aria-current='page'] {
+      color: var(--accent-hi);
+    }
+  }
+</style>
+
+<style is:global>
+  /* Thin reading-progress bar across the very top. */
+  .progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 2px;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent-hi);
+    transform: scaleX(var(--scroll, 0));
+    transform-origin: left;
+  }
+</style>
