@@ -21,7 +21,7 @@ const extras = JSON.parse(await readFile(path.join(root, 'src/data/source-extras
 const { mergeSources } = await import('../src/lib/merge-sources.js');
 const published = mergeSources(sources.sources, extras).published;
 
-const PAGES = ['/', '/how-it-works/', '/research/', '/process/', '/about/'];
+const PAGES = ['/', '/ideation/', '/about/'];
 const WIDTHS = [375, 768, 1440];
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -42,6 +42,11 @@ try {
   // handled below
 }
 const skip = !chromium ? 'Playwright is not installed' : !existsSync(dist) ? 'run "npm run build" first' : false;
+
+// How it works, Research and Process are hidden for now (their files start with "_").
+// Their tests come back on their own as soon as a page is built again.
+const pageSkip = (pagePath) =>
+  skip || (existsSync(path.join(dist, pagePath, 'index.html')) ? false : `${pagePath} is hidden for now`);
 
 let server;
 let browser;
@@ -166,7 +171,7 @@ test('Home: the story pins and steps forward on scroll, and can be skipped', { s
   await close();
 });
 
-test('Research: the filter chips show one category at a time', { skip }, async () => {
+test('Research: the filter chips show one category at a time', { skip: pageSkip('/research/') }, async () => {
   const { page, close } = await open('/research/');
   const rows = page.locator('[data-filter-group] [data-cat]');
   assert.equal(await rows.count(), published.length);
@@ -180,13 +185,13 @@ test('Research: the filter chips show one category at a time', { skip }, async (
   await close();
 });
 
-test('Research: a link to one source opens that row', { skip }, async () => {
+test('Research: a link to one source opens that row', { skip: pageSkip('/research/') }, async () => {
   const { page, close } = await open('/research/#src-rankin-2014');
   assert.equal(await page.locator('#src-rankin-2014').evaluate((el) => el.open), true);
   await close();
 });
 
-test('Research: every row opens with the keyboard', { skip }, async () => {
+test('Research: every row opens with the keyboard', { skip: pageSkip('/research/') }, async () => {
   const { page, close } = await open('/research/');
   const summary = page.locator('details.src summary').first();
   await summary.focus();
@@ -195,7 +200,7 @@ test('Research: every row opens with the keyboard', { skip }, async () => {
   await close();
 });
 
-test('Process: the sub-nav marks the section being read', { skip }, async () => {
+test('Process: the sub-nav marks the section being read', { skip: pageSkip('/process/') }, async () => {
   const { page, close } = await open('/process/');
   await page.evaluate(() => {
     const top = document.getElementById('plan').getBoundingClientRect().top + window.scrollY;
@@ -206,7 +211,7 @@ test('Process: the sub-nav marks the section being read', { skip }, async () => 
   await close();
 });
 
-test('Process: says there are no results yet', { skip }, async () => {
+test('Process: says there are no results yet', { skip: pageSkip('/process/') }, async () => {
   const { page, close } = await open('/process/');
   assert.ok(await page.getByText("Nothing to show yet. The experiment hasn't run.").isVisible());
   assert.ok(await page.getByText('Example numbers, not data').isVisible());
@@ -218,7 +223,6 @@ test('About: the portrait loads and has alt text', { skip }, async () => {
   const image = page.locator('.me__photo img');
   assert.ok((await image.getAttribute('alt')).length > 10);
   assert.ok(await image.evaluate((el) => el.complete && el.naturalWidth > 0));
-  assert.equal(await page.evaluate(() => document.documentElement.classList.contains('theme-cream')), true);
   await close();
 });
 
@@ -320,7 +324,7 @@ test('Home: turning a phone sideways never leaves the story pinned and cut off',
   await close();
 });
 
-test('Research: titles in the reference list are set in a real italic', { skip }, async () => {
+test('Research: titles in the reference list are set in a real italic', { skip: pageSkip('/research/') }, async () => {
   const { page, close } = await open('/research/');
   await page.locator('#references').scrollIntoViewIfNeeded();
   await page.evaluate(() => document.fonts.ready);
@@ -337,7 +341,7 @@ test('Research: titles in the reference list are set in a real italic', { skip }
   await close();
 });
 
-test('Research: a link to a source works even when a filter is hiding it', { skip }, async () => {
+test('Research: a link to a source works even when a filter is hiding it', { skip: pageSkip('/research/') }, async () => {
   const { page, close } = await open('/research/');
   const target = published.find((source) => source.category !== 'ethics');
   await page.locator('[data-filter="ethics"]').click();
@@ -356,21 +360,125 @@ test('If the script file fails to load, the phone menu and the pages still work'
   const ctx = await browser.newContext({ viewport: { width: 375, height: 800 } });
   const page = await ctx.newPage();
   await page.route('**/_astro/*.js', (route) => route.abort());
-  await page.goto(`${origin}${BASE}/research/`, { waitUntil: 'load' });
+  await page.goto(`${origin}${BASE}/ideation/`, { waitUntil: 'load' });
   await page.waitForTimeout(300);
   assert.ok(await page.locator('.nav__links a').first().isVisible(), 'nav links are shown without the script');
   assert.ok(!(await page.locator('[data-nav-toggle]').isVisible()), 'the dead Menu button is hidden');
-  assert.ok(!(await page.locator('[data-filter]').first().isVisible()), 'filter chips that cannot work are hidden');
   assert.equal(await hiddenReveals(page), 0);
   await ctx.close();
 });
 
-test('How it works: the two "measure" headings have their own ids', { skip }, async () => {
+test('Research: without the script file, filter chips that cannot work are hidden', { skip: pageSkip('/research/') }, async () => {
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 800 } });
+  const page = await ctx.newPage();
+  await page.route('**/_astro/*.js', (route) => route.abort());
+  await page.goto(`${origin}${BASE}/research/`, { waitUntil: 'load' });
+  await page.waitForTimeout(300);
+  assert.ok(!(await page.locator('[data-filter]').first().isVisible()));
+  await ctx.close();
+});
+
+test('How it works: the two "measure" headings have their own ids', { skip: pageSkip('/how-it-works/') }, async () => {
   const { page, close } = await open('/how-it-works/');
   const repeated = await page.evaluate(() => {
     const seen = new Set();
     return [...document.querySelectorAll('[id]')].map((el) => el.id).filter((id) => seen.size === seen.add(id).size);
   });
   assert.deepEqual(repeated, []);
+  await close();
+});
+
+// ---- Ideation, About and the black theme ------------------------------------
+
+test('Every page is on a true black background', { skip }, async () => {
+  for (const pagePath of PAGES) {
+    const { page, close } = await open(pagePath);
+    const colors = await page.evaluate(() => [getComputedStyle(document.documentElement).backgroundColor, getComputedStyle(document.body).backgroundColor]);
+    assert.deepEqual(colors, ['rgb(0, 0, 0)', 'rgb(0, 0, 0)'], `${pagePath} background`);
+    await close();
+  }
+});
+
+test('The menu lists only the pages that are built', { skip }, async () => {
+  const { page, close } = await open('/');
+  const links = await page.locator('.nav__links a').evaluateAll((els) => els.map((a) => a.textContent.trim()));
+  assert.deepEqual(links, ['Home', 'Ideation', 'About me']);
+  await close();
+});
+
+test('Ideation: the chapter list marks the chapter being read', { skip }, async () => {
+  const { page, close } = await open('/ideation/');
+  await page.evaluate(() => {
+    const top = document.getElementById('problem').getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: top + 100, behavior: 'instant' });
+  });
+  await page.waitForFunction(() => document.querySelector('.rail a[href="#problem"]').getAttribute('aria-current') === 'true');
+  assert.equal(await page.locator('.rail a[aria-current]').count(), 1);
+  await close();
+});
+
+test('Ideation: every chapter link leads to a chapter on the page', { skip }, async () => {
+  const { page, close } = await open('/ideation/');
+  const missing = await page.evaluate(() =>
+    [...document.querySelectorAll('.rail a')].map((a) => a.hash.slice(1)).filter((id) => !document.getElementById(id)),
+  );
+  assert.deepEqual(missing, []);
+  assert.equal(await page.locator('.rail a').count(), 6);
+  await close();
+});
+
+test('Ideation: the idea drawings are labelled as ideas, not results', { skip }, async () => {
+  for (const width of [375, 1440]) {
+    const { page, close } = await open('/ideation/', { width });
+    assert.equal(await page.locator('svg.cs').count(), 2);
+    const label = page.locator('.dg .not-results');
+    await label.scrollIntoViewIfNeeded();
+    assert.equal(await label.innerText(), 'Illustration of the idea, not results.');
+    assert.ok(await label.isVisible());
+    await close();
+  }
+});
+
+test('Ideation: the idea map shows all six early ideas, and none overlap on a wide screen', { skip }, async () => {
+  const { page, close } = await open('/ideation/', { width: 1024 });
+  const boxes = await page.locator('.map__nodes li, .map__center').evaluateAll((els) =>
+    els.map((el) => {
+      const b = el.getBoundingClientRect();
+      return { l: b.left, r: b.right, t: b.top, b: b.bottom };
+    }),
+  );
+  assert.equal(boxes.length, 7);
+  const hit = (a, b) => a.l < b.r && b.l < a.r && a.t < b.b && b.t < a.b;
+  for (let i = 0; i < boxes.length; i += 1) {
+    for (let j = i + 1; j < boxes.length; j += 1) assert.ok(!hit(boxes[i], boxes[j]), `boxes ${i} and ${j} overlap`);
+  }
+  const map = await page.locator('.map__box').evaluate((el) => el.getBoundingClientRect());
+  for (const b of boxes) assert.ok(b.t >= map.top && b.b <= map.bottom && b.l >= map.left && b.r <= map.right, 'a box sticks out of the map');
+  await close();
+});
+
+test('Ideation: the heat scale labels never overlap', { skip }, async () => {
+  for (const width of [375, 640, 768, 1024, 1440]) {
+    const { page, close } = await open('/ideation/', { width });
+    const boxes = await page.locator('.scale__mark').evaluateAll((els) =>
+      els.map((el) => {
+        const b = el.getBoundingClientRect();
+        return { l: b.left, r: b.right, t: b.top, b: b.bottom };
+      }),
+    );
+    const hit = (a, b) => a.l < b.r && b.l < a.r && a.t < b.b && b.t < a.b;
+    for (let i = 0; i < boxes.length; i += 1) {
+      for (let j = i + 1; j < boxes.length; j += 1) assert.ok(!hit(boxes[i], boxes[j]), `labels ${i} and ${j} overlap at ${width}px`);
+    }
+    const card = await page.locator('.scale').evaluate((el) => el.getBoundingClientRect());
+    for (const b of boxes) assert.ok(b.l >= card.left && b.r <= card.right, `a label sticks out of the card at ${width}px`);
+    await close();
+  }
+});
+
+test('About: the project card links to Ideation and Home', { skip }, async () => {
+  const { page, close } = await open('/about/');
+  const hrefs = await page.locator('.proj__actions a').evaluateAll((els) => els.map((a) => a.getAttribute('href')));
+  assert.deepEqual(hrefs, [`${BASE}/ideation/`, `${BASE}/`]);
   await close();
 });

@@ -2,8 +2,8 @@
   "hero": {
     "kicker": "AP Research project",
     "titleLines": ["Does the seal", "survive the cleaning?"],
-    "primary": { "label": "See how it works", "path": "/how-it-works/" },
-    "secondary": { "label": "Read the research", "path": "/research/" }
+    "primary": { "label": "How the idea took shape", "path": "/ideation/" },
+    "secondary": { "label": "About me", "path": "/about/" }
   },
 
   "story": {
@@ -106,7 +106,7 @@
   },
 
   "next": [
-    { "kicker": "Next", "label": "How it works", "path": "/how-it-works/" },
+    { "kicker": "Next", "label": "Ideation", "path": "/ideation/" },
     { "kicker": "Also", "label": "About me", "path": "/about/" }
   ]
 }

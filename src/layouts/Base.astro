@@ -17,19 +17,18 @@ interface Props {
   description?: string;
   /** Path of this page, like "/research/". */
   path: string;
-  theme?: 'dark' | 'cream';
   /** Load the serif used for the hero title (Home only). */
   serif?: boolean;
 }
 
-const { title, description = site.description, path, theme = 'dark', serif = false } = Astro.props;
+const { title, description = site.description, path, serif = false } = Astro.props;
 
 const pageTitle = title
   ? `${title} · ${site.name} · ${site.course}`
   : `${site.title} · ${site.name} · ${site.course}`;
 const canonical = absoluteUrl(path, Astro.site);
 const ogImage = absoluteUrl('/og.png', Astro.site);
-const themeColor = theme === 'cream' ? '#f3f2ec' : '#0b0a09';
+const themeColor = '#000000';
 
 // Fonts are self-hosted. Only the Latin file is preloaded; the extended
 // file (for names like Vaňková) loads only on pages that need it.
@@ -52,7 +51,7 @@ ${
 ---
 
 <!doctype html>
-<html lang="en" class={theme === 'cream' ? 'theme-cream' : undefined}>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

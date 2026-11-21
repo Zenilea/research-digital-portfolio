@@ -7,9 +7,12 @@
   "heroTitleFont": "sans",
   "nav": [
     { "label": "Home", "path": "/" },
+    { "label": "Ideation", "path": "/ideation/" },
+    { "label": "About me", "path": "/about/" }
+  ],
+  "navHidden": [
     { "label": "How it works", "path": "/how-it-works/" },
     { "label": "Research", "path": "/research/" },
-    { "label": "Process", "path": "/process/" },
-    { "label": "About", "path": "/about/" }
+    { "label": "Process", "path": "/process/" }
   ]
 }
