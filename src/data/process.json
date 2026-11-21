@@ -97,7 +97,7 @@
     "cards": [
       { "kind": "Known", "text": "Steam autoclaving, the standard hospital method, damages PLA.", "cite": "Chen et al., 2020; Rynio et al., 2022" },
       { "kind": "Known", "text": "Chemical disinfection is the more realistic option for printed PLA.", "cite": "Fleischer et al., 2020; Rankin et al., 2014; Vaňková et al., 2020" },
-      { "kind": "Known", "text": "Even when the plastic survives, the disinfectant may not leave it. In one study, a third of the treatments increased sample weight by up to 8.3%.", "cite": "Fleischer et al., 2020" },
+      { "kind": "Known", "text": "Even when the plastic survives, the disinfectant may not leave it. In one study, a third of the treatments raised the median sample weight, by up to 8.3%.", "cite": "Fleischer et al., 2020" },
       { "kind": "Not known yet", "text": "Sealing appears to reduce absorption, but its durability is uncertain. None of the studies I reviewed tested a sealed PLA part through repeated disinfection.", "cite": "" }
     ],
     "link": { "label": "Read the full research page", "path": "/research/" }

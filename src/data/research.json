@@ -33,7 +33,7 @@
         "items": [
           { "source": "chen-2020", "cite": "Chen et al. (2020)", "text": "found that autoclaving reduced a PLA retractor's failure load from 95 N to 15.7 N." },
           { "source": "rynio-2022", "cite": "Rynio et al. (2022)", "text": "found that steam at 121 °C badly deformed PLA templates, even though it eliminated every microorganism tested." },
-          { "source": "fleischer-2020", "cite": "Fleischer et al. (2020)", "text": "found that a third of their chemical treatments increased sample weight by up to 8.3%, while the samples with the best surface quality gained nothing." },
+          { "source": "fleischer-2020", "cite": "Fleischer et al. (2020)", "text": "found that a third of their chemical treatments raised the median sample weight by up to 8.3%, while the samples with the best surface quality gained nothing." },
           { "source": "vankova-2020", "cite": "Vaňková et al. (2020)", "text": "showed that 70% isopropyl alcohol removed applied bacteria from PLA without major surface changes. So alcohol looks gentler than heat." }
         ]
       },
