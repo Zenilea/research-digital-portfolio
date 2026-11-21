@@ -10,8 +10,9 @@
     "preview": "astro preview",
     "sources": "node scripts/build-sources.mjs",
     "check": "node scripts/check-dist.mjs",
-    "test": "node --test tests/",
-    "verify": "npm run build && npm run check && npm run test"
+    "test": "node --test tests/sources.test.mjs",
+    "verify": "npm run build && npm run check && npm run test && npm run test:e2e",
+    "test:e2e": "node --test tests/e2e.test.mjs"
   },
   "engines": {
     "node": ">=22"

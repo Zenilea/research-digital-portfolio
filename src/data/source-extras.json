@@ -1,0 +1,576 @@
+{
+  "checkedOn": "2026-11-21",
+  "about": "Hand-checked details for the source library. sources.json is the raw text of the workbook and is overwritten by `npm run sources`. This file is never overwritten. `overrides` fixes a workbook row (matched by id). `added` holds sources that are in the literature review or research plan but not in the workbook. `exclude` and `unconfirmed` keep a row off the site. In APA entries, *stars* mark italics.",
+
+  "exclude": {
+    "chiscop-2025": "Heat treatment (annealing) is not part of the final plan.",
+    "dautzenberg-2021": "Steam treatment is not part of the final plan.",
+    "koci-2019": "Annealing is not part of the final plan.",
+    "hermann-2019": "Annealing is not part of the final plan."
+  },
+
+  "unconfirmed": {
+    "atul-gawande-2013": "The New Yorker page could not be opened to confirm the citation.",
+    "european-patent-office-2014": "The video page could not be opened to confirm the title and date.",
+    "shrime-2015": "The Lancet Global Health page could not be opened to confirm the numbers.",
+    "patil-2024": "The AIP Advances page could not be opened to confirm the citation.",
+    "jove-science-education-database-2024": "The JoVE page loaded empty, so the title and date are not confirmed.",
+    "longhitano-2020": "Volume, issue, pages and year could not be confirmed."
+  },
+
+  "overrides": {
+    "kirkup-1993": {
+      "year": 1993,
+      "authors": "Kirkup",
+      "title": "From flint to stainless steel: Observations on surgical instrument composition",
+      "summary": [
+        "Traces what surgical tools have been made of, from the Stone Age (flint) to the modern age (disposable plastics).",
+        "Argues the first instruments were substitutes for hands and teeth, made to pull out thorns and arrowheads.",
+        "Tools were mostly made from animal, plant, and mineral materials before metal became the standard.",
+        "The material used for tools has always followed whatever technology existed at the time.",
+        "Lists killing germs with heat as one of the big changes in what tools could be made of."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2497995/",
+      "apa": "Kirkup, J. (1993). From flint to stainless steel: Observations on surgical instrument composition. *Annals of the Royal College of Surgeons of England, 75*(5), 365–374."
+    },
+    "best-2004": {
+      "year": 2004,
+      "authors": "Best & Neuhauser",
+      "title": "Ignaz Semmelweis and the birth of infection control",
+      "summary": [
+        "The history of the Vienna doctor who figured out that doctors' unwashed hands were killing new mothers.",
+        "Describes how Semmelweis showed that handwashing prevents infection.",
+        "His book explained the finding, but it was poorly written and dismissed by other doctors.",
+        "He died in a public asylum."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1743827/",
+      "apa": "Best, M., & Neuhauser, D. (2004). Ignaz Semmelweis and the birth of infection control. *Quality and Safety in Health Care, 13*(3), 233–234. https://doi.org/10.1136/qhc.13.3.233"
+    },
+    "institute-of-making-2017": {
+      "year": 2017,
+      "authors": "Institute of Making",
+      "title": "Marvellous medical materials: Stainless steel - part one",
+      "summary": [
+        "Explains why killing germs with heat forced a complete redesign of surgical tools.",
+        "The heat was destructive to the wood, ivory, and tortoiseshell that tools used to have.",
+        "All-metal instruments became the norm as a result.",
+        "Heat also sped up rusting, so tools were plated with nickel and chrome to counteract it.",
+        "Stainless steel gradually took over between 1913 and 1925."
+      ],
+      "link": "https://www.instituteofmaking.org.uk/blog/marvellous-medical-material-stainless-steel-part-one",
+      "apa": "Institute of Making. (2017, November 8). *Marvellous medical materials: Stainless steel - part one*. https://www.instituteofmaking.org.uk/blog/marvellous-medical-material-stainless-steel-part-one"
+    },
+    "knoss-2016": {
+      "year": 2016,
+      "authors": "Knoss",
+      "title": "Origins: 3D printing",
+      "summary": [
+        "Tells the story of the night in 1983 when Hull printed the first object ever made with 3D printing.",
+        "The first object was a small plastic cup. His wife's reaction was disbelief.",
+        "He built the idea on nights and weekends in a borrowed lab, after more than a year of work.",
+        "He saw it as a prototyping tool, not medical technology."
+      ],
+      "link": "https://www.colorado.edu/coloradan/2016/06/01/origins-3d-printing",
+      "apa": "Knoss, T. (2016, June 1). Origins: 3D printing. *Coloradan*. https://www.colorado.edu/coloradan/2016/06/01/origins-3d-printing"
+    },
+    "farmer-2008": {
+      "year": 2008,
+      "authors": "Farmer & Kim",
+      "title": "Surgery and global health: A view from beyond the OR",
+      "summary": [
+        "Calls surgery in Africa the \"neglected stepchild\" of global public health.",
+        "Africa has fewer physicians per person than any other continent, and surgeons are even rarer.",
+        "Surgical services are almost all in cities, while most people live in rural areas.",
+        "In poor countries, surgery is mostly available to people who can pay out of pocket.",
+        "There is no Global Fund for surgery, unlike for AIDS, TB, and malaria."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2267857/",
+      "apa": "Farmer, P. E., & Kim, J. Y. (2008). Surgery and global health: A view from beyond the OR. *World Journal of Surgery, 32*(4), 533–536. https://doi.org/10.1007/s00268-008-9525-9"
+    },
+    "ventola-2014": {
+      "year": 2014,
+      "authors": "Ventola",
+      "title": "Medical applications for 3D printing: Current and projected uses",
+      "summary": [
+        "A snapshot of what medical 3D printing looked like in 2014, before its popularity rose.",
+        "Sorts uses into 3 groups: making tissues and organs; making prosthetics, implants, and models; and drug research.",
+        "Explains the main printing methods used in medicine.",
+        "Shows how recently printed surgical tools became a serious idea."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4189697/",
+      "apa": "Ventola, C. L. (2014). Medical applications for 3D printing: Current and projected uses. *P & T: A Peer-Reviewed Journal for Formulary Management, 39*(10), 704–711."
+    },
+    "di-prima-2016": {
+      "year": 2016,
+      "authors": "Di Prima et al.",
+      "title": "Additively manufactured medical products – the FDA perspective",
+      "summary": [
+        "Written by FDA staff about how the FDA decides whether a printed medical product is safe to sell.",
+        "Documents the point where printed devices stopped being experimental.",
+        "Says a 3D-printed drug is already on the market.",
+        "Says the FDA's job is to allow new technology without letting unsafe products through."
+      ],
+      "link": "https://doi.org/10.1186/s41205-016-0005-9",
+      "apa": "Di Prima, M., Coburn, J., Hwang, D., Kelly, J., Khairuzzaman, A., & Ricles, L. (2016). Additively manufactured medical products – the FDA perspective. *3D Printing in Medicine, 2*, Article 1. https://doi.org/10.1186/s41205-016-0005-9"
+    },
+    "novak-2020": {
+      "year": 2020,
+      "authors": "Novak & Loy",
+      "title": "A critical review of initial 3D printed products responding to COVID-19 health and supply chain challenges",
+      "summary": [
+        "Documents what happened when hospitals ran out of supplies and people started printing replacements.",
+        "Collected data on 91 printing projects that started before April 1, 2020.",
+        "60% of the projects were protective equipment, and 62% of those were face shields.",
+        "The melted-filament method, common on hobby printers, was the most used technology.",
+        "Most projects shared designs through websites instead of official channels."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7292530/",
+      "apa": "Novak, J. I., & Loy, J. (2020). A critical review of initial 3D printed products responding to COVID-19 health and supply chain challenges. *Emerald Open Research, 2*, Article 24. https://doi.org/10.35241/emeraldopenres.13697.1"
+    },
+
+    "rankin-2014": {
+      "year": 2014,
+      "authors": "Rankin et al.",
+      "title": "Three-dimensional printing surgical instruments: Are we there yet?",
+      "summary": [
+        "Replicated an Army-Navy retractor in PLA on an FDM (fused deposition modeling) printer. Each print took about 90 minutes.",
+        "The printed retractors withstood 13.6 kg of force before breaking.",
+        "The force was the same before and after a glutaraldehyde soak, although only one retractor was tested after the soak.",
+        "Freshly extruded PLA straight from the printer gave no PCR product when tested for traces of bacteria. The finished printed instrument did contain bacterial gene products.",
+        "Each retractor weighed 16 g and used $0.46 of PLA."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4460996/",
+      "apa": "Rankin, T. M., Giovinco, N. A., Cucher, D. J., Watts, G., Hurwitz, B., & Armstrong, D. G. (2014). Three-dimensional printing surgical instruments: Are we there yet? *Journal of Surgical Research, 189*(2), 193–197. https://doi.org/10.1016/j.jss.2014.02.020"
+    },
+    "destefano-2020": {
+      "year": 2020,
+      "authors": "DeStefano et al.",
+      "title": "Applications of PLA in modern medicine",
+      "summary": [
+        "Looks at PLA in tissue engineering, cardiovascular implants, dentistry, drug delivery, and orthopedics.",
+        "PLA is renewable, biodegradable, and easy to synthesize, and its properties can be changed using crystallinity and additives.",
+        "How fast PLA breaks down depends on things like its geometry, molecular weight, and crystallinity.",
+        "In lab testing, PLA blood vessel grafts slowly lost a small amount of mass but kept some structural integrity."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7474829/",
+      "apa": "DeStefano, V., Khan, S., & Tabada, A. (2020). Applications of PLA in modern medicine. *Engineered Regeneration, 1*, 76–87. https://doi.org/10.1016/j.engreg.2020.08.002"
+    },
+    "chen-2019": {
+      "year": 2019,
+      "authors": "Chen et al.",
+      "title": "3D printed PLA Army-Navy retractors when used as linear retractors yield clinically acceptable tolerances",
+      "summary": [
+        "Printed the same retractor model over and over while changing printer settings, then pulled on each one until it broke.",
+        "Surgeons described about 35 N as strong or clinically excessive pulling. The best printed model took more than 15 times that.",
+        "The best settings were 30% infill, 3 outer walls, a triangle pattern inside, and reinforced joints.",
+        "Spools from the same brand still made retractors with noticeably different strength.",
+        "The strongest version cost $1.25."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6873412/",
+      "apa": "Chen, J. V., Dang, A. B. C., Lee, C. S., & Dang, A. B. C. (2019). 3D printed PLA Army-Navy retractors when used as linear retractors yield clinically acceptable tolerances. *3D Printing in Medicine, 5*(1), Article 16. https://doi.org/10.1186/s41205-019-0053-z"
+    },
+    "chen-2020": {
+      "year": 2020,
+      "authors": "Chen et al.",
+      "title": "Identifying a commercially-available 3D printing process that minimizes model distortion after annealing and autoclaving and the effect of steam sterilization on mechanical strength",
+      "summary": [
+        "Printed test cubes in 7 different plastics and 4 inner patterns, and measured each one before and after heating and autoclaving.",
+        "\"Annealing\" means heating a printed part to make it stronger. They used a 100 °C water bath for 30 minutes.",
+        "Steam autoclaving at 134 °C ruined the strength. Untreated PLA retractors failed at 95 N, and autoclaved ones at 15.7 N.",
+        "Annealing first raised strength to 127.3 N, but autoclaving after that dropped it to 19.8 N.",
+        "Only the strength-optimized retractor design held up after both annealing and autoclaving. It failed at 164.8 N."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7161250/",
+      "apa": "Chen, J. V., Tanaka, K. S., Dang, A. B. C., & Dang, A. (2020). Identifying a commercially-available 3D printing process that minimizes model distortion after annealing and autoclaving and the effect of steam sterilization on mechanical strength. *3D Printing in Medicine, 6*(1), Article 9. https://doi.org/10.1186/s41205-020-00062-9"
+    },
+    "garnica-bohorquez-2023": {
+      "year": 2023,
+      "authors": "Garnica-Bohórquez et al.",
+      "title": "Effect of sterilization on the dimensional and mechanical behavior of polylactic acid pieces produced by fused deposition modeling",
+      "summary": [
+        "Put printed PLA through two low-cost hospital treatments in a row: formaldehyde steam, then regular steam.",
+        "Used the actual procedure from a public hospital in Bucaramanga, Colombia, instead of an idealized lab procedure.",
+        "Tested plain printed PLA test pieces, not finished instruments.",
+        "Checked whether the pieces changed shape and whether they got weaker.",
+        "Aimed at low-cost tools like surgical guides and anatomical models."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10422276/",
+      "apa": "Garnica-Bohórquez, I., Güiza-Argüello, V. R., & López-Gualdrón, C. I. (2023). Effect of sterilization on the dimensional and mechanical behavior of polylactic acid pieces produced by fused deposition modeling. *Polymers, 15*(15), Article 3317. https://doi.org/10.3390/polym15153317"
+    },
+    "kiel-2022": {
+      "year": 2022,
+      "authors": "Kiel et al.",
+      "title": "Bacterial biofilm formation on nano-copper added PLA suited for 3D printed face masks",
+      "summary": [
+        "Compared a filament sold as germ-killing (it contains copper) against regular PLA.",
+        "Grew 3 common hospital bacteria on both and counted what survived.",
+        "Bacteria stuck to and grew on every material tested, including the \"germ-killing\" filament.",
+        "The copper strongly slowed only 1 of the 3 bacteria.",
+        "Suggests that filaments sold as antibacterial may not protect against much."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8875673/",
+      "apa": "Kiel, A., Kaltschmidt, B. P., Asghari, E., Hütten, A., Kaltschmidt, B., & Kaltschmidt, C. (2022). Bacterial biofilm formation on nano-copper added PLA suited for 3D printed face masks. *Microorganisms, 10*(2), Article 439. https://doi.org/10.3390/microorganisms10020439"
+    },
+    "rynio-2022": {
+      "year": 2022,
+      "authors": "Rynio et al.",
+      "title": "Effects of sterilization methods on different 3D printable materials for templates of physician-modified aortic stent grafts used in vascular surgery: A preliminary study",
+      "summary": [
+        "Printed the same surgical template in 6 plastics, PLA included.",
+        "Deliberately contaminated them with bacteria, then tried several ways of killing the germs.",
+        "Every method eliminated the microorganisms. The type of plastic didn't matter for that.",
+        "The shape was the problem: steam at 121 °C badly deformed PLA, along with PETG and PP.",
+        "Shows that the type of plastic decides whether a tool survives the heat."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8998920/",
+      "apa": "Rynio, P., Galant, K., Wójcik, Ł., Grygorcewicz, B., Kazimierczak, A., Falkowski, A., Gutowski, P., Dołęgowska, B., & Kawa, M. (2022). Effects of sterilization methods on different 3D printable materials for templates of physician-modified aortic stent grafts used in vascular surgery: A preliminary study. *International Journal of Molecular Sciences, 23*(7), Article 3539. https://doi.org/10.3390/ijms23073539"
+    },
+    "fleischer-2020": {
+      "year": 2020,
+      "authors": "Fleischer et al.",
+      "title": "The effect of chemical cleaning on mechanical properties of three-dimensional printed polylactic acid",
+      "summary": [
+        "Tested whether repeated chemical cleaning weakens 3D-printed PLA, aimed at hospitals in low- and middle-income countries.",
+        "Printed pulling-test samples at 6 different printer settings, then soaked them in Cidex OPA or a chlorine solution.",
+        "Used 2 exposure patterns: 7 days straight, or 25 short cycles.",
+        "Weighed every sample before and after, then pulled them apart. A third of the treatments gained weight, up to 8.3%, but the samples with the smoothest surfaces did not change.",
+        "Strength moved in both directions: a median increase of 12.5%, and a largest decrease of 8.8%.",
+        "Warns that surface pores must be kept small so soaked-in disinfectant does not transfer to people."
+      ],
+      "link": "https://research.tudelft.nl/en/publications/the-effect-of-chemical-cleaning-on-mechanical-properties-of-three/",
+      "apa": "Fleischer, J. C., Diehl, J. C., Wauben, L. S. G. L., & Dankelman, J. (2020). The effect of chemical cleaning on mechanical properties of three-dimensional printed polylactic acid. *Journal of Medical Devices, 14*(1), Article 011109. https://doi.org/10.1115/1.4046120"
+    },
+    "vankova-2020": {
+      "year": 2020,
+      "authors": "Vaňková et al.",
+      "title": "Polylactic acid as a suitable material for 3D printing of protective masks in times of COVID-19 pandemic",
+      "summary": [
+        "Checked whether 3D-printed PLA can be cleaned and reused, and whether the plastic survives the cleaning.",
+        "Contaminated 1 cm squares of printed PLA with E. coli, a skin bacterium, and a yeast, then soaked them for 15 minutes in 96% ethanol, 70% isopropanol, or a bleach-type disinfectant.",
+        "All 3 disinfectants removed the bacteria and the yeast.",
+        "Five 15-minute rounds of isopropanol narrowed the gaps between printed lines from about 6 micrometers to 3.3–4, without major surface changes.",
+        "Also tested masks that volunteers actually wore for 4 hours.",
+        "Microscope images showed the pores were closed deeper inside the part, and no test particles passed through."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7603793/",
+      "apa": "Vaňková, E., Kašparová, P., Khun, J., Machková, A., Julák, J., Sláma, M., Hodek, J., Ulrychová, L., Weber, J., Obrová, K., Kosulin, K., Lion, T., & Scholtz, V. (2020). Polylactic acid as a suitable material for 3D printing of protective masks in times of COVID-19 pandemic. *PeerJ, 8*, Article e10259. https://doi.org/10.7717/peerj.10259"
+    },
+    "labakoum-2024": {
+      "year": 2024,
+      "authors": "Labakoum et al.",
+      "title": "Effects of autoclaving and disinfection on 3D surgical guides using LCD technology for dental implant",
+      "summary": [
+        "Compared 3 ways of treating 3D-printed dental surgical guides: autoclave at 121 °C, autoclave at 134 °C, and 20 minutes in 70% isopropyl alcohol.",
+        "Made 100 samples in total, with an untreated control group for comparison.",
+        "Used a 3-point bending test following ASTM D790, the standard for bending strength of plastic bars.",
+        "Both autoclave temperatures changed the shape and the mechanical behavior of the guides.",
+        "The alcohol group came out closest to the untreated control, so the authors recommended alcohol over heat.",
+        "Important limit: these were resin parts printed on an LCD printer, not PLA on a filament printer."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11040828/",
+      "apa": "Labakoum, B., Farhan, A., Ben Taleb, L., Mouhsen, A., & Lyazidi, A. (2024). Effects of autoclaving and disinfection on 3D surgical guides using LCD technology for dental implant. *3D Printing in Medicine, 10*, Article 14. https://doi.org/10.1186/s41205-024-00214-1"
+    },
+    "kaptan-2025": {
+      "year": 2025,
+      "authors": "Kaptan",
+      "title": "Investigation of the effect of exposure to liquid chemicals on the strength performance of 3D-printed parts from different filament types",
+      "summary": [
+        "Soaked test bars of 8 different filament plastics in seven chemical agents, with isopropyl alcohol at both 75% and 99%, then pulled and struck them to see what strength was left.",
+        "Followed ASTM D638 for pulling and ASTM D256 for impact, with 3 samples per combination.",
+        "Samples were fully submerged for 1 hour, 24 hours, or 7 days, which is harsher than wiping a tool and letting it dry."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12196949/",
+      "apa": "Kaptan, A. (2025). Investigation of the effect of exposure to liquid chemicals on the strength performance of 3D-printed parts from different filament types. *Polymers, 17*(12), Article 1637. https://doi.org/10.3390/polym17121637"
+    },
+    "mai-2020": {
+      "year": 2020,
+      "authors": "Mai et al.",
+      "title": "Antibacterial drug-release polydimethylsiloxane coating for 3D-printing dental polymer: Surface alterations and antimicrobial effects",
+      "summary": [
+        "Explains why 3D-printed plastic holds onto bacteria: tiny pores form when air gets trapped between layers or when layers do not fuse completely.",
+        "Coated half of 60 printed disks with a silicone-based layer carrying an antiseptic, and left the other half bare.",
+        "The coating reduced surface irregularity and made the surface more water repelling.",
+        "Bacteria counts were significantly lower on the coated disks.",
+        "The study did not test the mechanical properties of the coating itself.",
+        "Limits: dental resin printing rather than PLA, and the coating released an antiseptic drug rather than acting as a plain sealant."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7600417/",
+      "apa": "Mai, H.-N., Hyun, D. C., Park, J. H., Kim, D.-Y., Lee, S. M., & Lee, D.-H. (2020). Antibacterial drug-release polydimethylsiloxane coating for 3D-printing dental polymer: Surface alterations and antimicrobial effects. *Pharmaceuticals, 13*(10), Article 304. https://doi.org/10.3390/ph13100304"
+    },
+
+    "tymrak-2014": {
+      "year": 2014,
+      "authors": "Tymrak et al.",
+      "title": "Mechanical properties of components fabricated with open-source 3-D printers under realistic environmental conditions",
+      "summary": [
+        "Measured the strength of parts from hobby printers in ordinary conditions, to show what a realistic scenario looks like.",
+        "Showed that hobby printers can produce results that can be reported and analyzed properly."
+      ],
+      "link": "https://digitalcommons.mtu.edu/materials_fp/49/",
+      "apa": "Tymrak, B. M., Kreiger, M., & Pearce, J. M. (2014). Mechanical properties of components fabricated with open-source 3-D printers under realistic environmental conditions. *Materials & Design, 58*, 242–246. https://doi.org/10.1016/j.matdes.2014.02.038"
+    },
+    "herigstad-2001": {
+      "year": 2001,
+      "authors": "Herigstad et al.",
+      "title": "How to optimize the drop plate method for enumerating bacteria",
+      "tag": "Limitations only",
+      "note": "This study does not count bacteria. The source is here to explain that limit.",
+      "summary": [
+        "A reference paper for counting live bacteria by dropping small measured volumes onto agar plates.",
+        "Drop plating takes less time and effort than spreading the same sample across a plate, and the colonies can be counted faster.",
+        "There is no single standard way to do the method.",
+        "Works out how starting volume, dilution, and drop size affect the error in the count."
+      ],
+      "link": "https://pubmed.ncbi.nlm.nih.gov/11165341/",
+      "apa": "Herigstad, B., Hamilton, M., & Heersink, J. (2001). How to optimize the drop plate method for enumerating bacteria. *Journal of Microbiological Methods, 44*(2), 121–129. https://doi.org/10.1016/S0167-7012(00)00241-4"
+    },
+    "cdc-2024": {
+      "year": 2008,
+      "authors": "Rutala et al. (CDC)",
+      "title": "Guideline for disinfection and sterilization in healthcare facilities, 2008",
+      "summary": [
+        "A guideline published by the CDC that sets out what level of cleaning a medical device needs in healthcare facilities.",
+        "Tools that enter normally germ-free body tissue need the highest level of treatment.",
+        "Steam is the preferred method for that highest level.",
+        "Cleaning comes first, because germ-killing steps fail if organic material is still on the surface of a tool."
+      ],
+      "link": "https://www.cdc.gov/infection-control/hcp/disinfection-and-sterilization/index.html",
+      "apa": "Rutala, W. A., Weber, D. J., & Healthcare Infection Control Practices Advisory Committee. (2008). *Guideline for disinfection and sterilization in healthcare facilities, 2008*. Centers for Disease Control and Prevention. https://www.cdc.gov/infection-control/hcp/disinfection-and-sterilization/index.html"
+    },
+    "cnc-kitchen-2018": {
+      "year": 2018,
+      "authors": "CNC Kitchen",
+      "title": "TESTING 3D printed INFILL PATTERNS for their STRENGTH",
+      "summary": [
+        "A YouTuber crushed small printed cubes to compare infill patterns on a modified tensile machine.",
+        "Every cube used identical walls, so the only thing that changed was the infill pattern.",
+        "He weighed a test batch first and adjusted the infill percentages so all samples used the same amount of plastic.",
+        "Cubes were weaker when crushed from the side than in the direction they were printed.",
+        "Some patterns went past the machine's limit, so they could not be measured accurately."
+      ],
+      "link": "https://www.youtube.com/watch?v=upELI0HmzHc",
+      "apa": "CNC Kitchen. (2018, July 27). *TESTING 3D printed INFILL PATTERNS for their STRENGTH* [Video]. YouTube. https://www.youtube.com/watch?v=upELI0HmzHc"
+    },
+    "bio-rad-laboratories-2012": {
+      "year": 2012,
+      "authors": "Bio-Rad Laboratories",
+      "title": "Serial dilution and plate counts",
+      "tag": "Limitations only",
+      "note": "This study does not count bacteria. The source is here to explain that limit.",
+      "summary": [
+        "Shows how to dilute a bacterial culture step by step across a row of tubes.",
+        "Mixes each tube by vortexing and pipetting up and down between steps.",
+        "Spreads each dilution across the whole surface of an agar plate.",
+        "The plates are then stacked upside down and incubated before counting."
+      ],
+      "link": "https://www.youtube.com/watch?v=pmRUBYlPMBM",
+      "apa": "Bio-Rad Laboratories. (2012, October 16). *Serial dilution and plate counts* [Video]. YouTube. https://www.youtube.com/watch?v=pmRUBYlPMBM"
+    },
+    "zhang-2023": {
+      "year": 2023,
+      "authors": "Zhang",
+      "title": "Low cost universal tensile testing machine",
+      "summary": [
+        "Describes a tensile tester of about $300, built from printed and common store-bought parts, as an alternative to commercial machines that start at $12,900.",
+        "It handles loads under 1000 N and can run compression tests as well as tension.",
+        "Argues that rapid-prototyping work doesn't always need the precision of a commercial machine."
+      ],
+      "link": "https://hackaday.io/project/192166-low-cost-universal-tensile-testing-machine",
+      "apa": "Zhang, X. (2023, July 31). *Low cost universal tensile testing machine*. Hackaday.io. https://hackaday.io/project/192166-low-cost-universal-tensile-testing-machine"
+    },
+    "ozer-2025": {
+      "year": 2025,
+      "authors": "Özer",
+      "title": "Infiltration-assisted mechanical strengthening of 3D-printed polypropylene lattice and thin-walled tube structures",
+      "summary": [
+        "A method for pushing epoxy into the hidden gaps inside a 3D print instead of only painting the outside.",
+        "Dipped printed parts into epoxy with help from an ultrasonic bath, at 4 different epoxy thicknesses (viscosities).",
+        "The epoxy reduced micro-voids and surface irregularities.",
+        "Weighed parts before and after, and used the weight gain to estimate how much of the inside got filled.",
+        "Thick epoxy mostly stayed on the outside as a shell, thin epoxy soaked in but left almost no surface layer, and medium thickness was the balance.",
+        "Shows that weight gain alone can be misleading, because it does not say whether the epoxy went inside or just built up on the surface.",
+        "Limits: tested on polypropylene rather than PLA, and aimed at crash strength rather than cleaning."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12526441/",
+      "apa": "Özer, H. (2025). Infiltration-assisted mechanical strengthening of 3D-printed polypropylene lattice and thin-walled tube structures. *Polymers, 17*(19), Article 2604. https://doi.org/10.3390/polym17192604"
+    },
+
+    "crawford-2018": {
+      "year": 2018,
+      "authors": "Crawford & Eagle",
+      "title": "Reuse of catheters and devices labelled for single use: Evidence, recommendations and oversight",
+      "summary": [
+        "Argues that reusing single-use devices can be ethically justified when it improves access for the least advantaged patients.",
+        "Safe reuse gives patients who can't afford the highest quality care a real chance at some level of care.",
+        "Sets conditions: reuse must be transparent, patients should be able to opt out, and devices must be expected to work about as well as new ones.",
+        "Says most of the safety studies behind reuse are from the 1980s and 1990s and vary in quality."
+      ],
+      "link": "https://heartasia.bmj.com/content/10/2/e011033",
+      "apa": "Crawford, T. C., & Eagle, K. A. (2018). Reuse of catheters and devices labelled for single use: Evidence, recommendations and oversight. *Heart Asia, 10*(2), Article e011033. https://doi.org/10.1136/heartasia-2018-011033"
+    },
+    "duffa-2025": {
+      "year": 2026,
+      "authors": "Duffa et al.",
+      "title": "Evaluating the efficacy of reprocessing contaminated single use devices for re-use in intensive care unit in Ethiopia",
+      "summary": [
+        "Single-use devices may be routinely reprocessed and reused in low-income settings.",
+        "There was no standard protocol for reprocessing these devices, so the authors wrote one and tested it.",
+        "They swabbed used devices before and after reprocessing and counted the bacteria on each.",
+        "Bacteria were measured with colony counts (CFU) on real hospital equipment."
+      ],
+      "link": "https://doi.org/10.1186/s13756-025-01683-7",
+      "apa": "Duffa, Y. M., Kasa, Z. S., Aklilu, K. K., Senbato, F. R., Bonger, Z. T., Seyoum, E. T., Zeleke, E. D., Chekol, L. T., Mekuria, Z., Welelaw, S. M., Balada-Llasat, J.-M., Wang, S.-H., & Eguale, T. (2026). Evaluating the efficacy of reprocessing contaminated single use devices for re-use in intensive care unit in Ethiopia. *Antimicrobial Resistance & Infection Control, 15*, Article 14. https://doi.org/10.1186/s13756-025-01683-7"
+    },
+    "pepin-2014": {
+      "year": 2014,
+      "authors": "Pépin et al.",
+      "title": "Evolution of the global burden of viral infections from unsafe medical injections, 2000–2010",
+      "summary": [
+        "Tracks how many viral infections worldwide come from unsafe medical injections, like reused injection equipment.",
+        "The World Health Organization's estimate for 2000 blamed unsafe injections for 5% of new HIV infections, 32% of new hepatitis B infections, and 40% of new hepatitis C infections in developing and transitional countries.",
+        "The estimates multiply how often equipment is reused, how common the virus already is, how likely it is to be passed on, and how many injections people get.",
+        "Shows what happens when reuse is caused by scarcity instead of choice."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4049770/",
+      "apa": "Pépin, J., Abou Chakra, C. N., Pépin, E., Nault, V., & Valiquette, L. (2014). Evolution of the global burden of viral infections from unsafe medical injections, 2000–2010. *PLOS ONE, 9*(6), Article e99677. https://doi.org/10.1371/journal.pone.0099677"
+    },
+    "akpa-inyang-2025": {
+      "year": 2025,
+      "authors": "Akpa-Inyang et al.",
+      "title": "Ethical and regulatory issues in the application of 3D printing in orthopaedics: A scoping review",
+      "summary": [
+        "When a hospital prints its own devices, it may become a de facto manufacturer.",
+        "This raises questions about who is responsible for quality and safety.",
+        "The rules for printing at the point of care are still undefined.",
+        "Printing facilities are expected to follow quality standards, which puts another burden on hospitals that print."
+      ],
+      "link": "https://www.sciencedirect.com/science/article/pii/S2773157X25000621",
+      "apa": "Akpa-Inyang, F., Rocher, A., O'Connor, M., & Marais, L. (2025). Ethical and regulatory issues in the application of 3D printing in orthopaedics: A scoping review. *Journal of Orthopaedic Reports, 4*(2, Suppl.), Article 100610. https://doi.org/10.1016/j.jorep.2025.100610"
+    },
+    "ante-2023": {
+      "year": 2023,
+      "authors": "Pettersson et al.",
+      "title": "Legal issues and underexplored data protection in medical 3D printing: A scoping review",
+      "summary": [
+        "Reviewed 49 articles on the legal problems of 3D-printed medical devices.",
+        "Found that liability is an open issue when a personalized printed device fails.",
+        "The law doesn't cleanly separate custom-made devices from patient-matched ones.",
+        "The legal status of design (CAD) files is unclear, so it is not clear who owns a file or who is to blame if a device fails."
+      ],
+      "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10009255/",
+      "apa": "Pettersson, A. B. V., Ballardini, R. M., Mimler, M., Li, P., Salmi, M., Minssen, T., Gibson, I., & Mäkitie, A. (2023). Legal issues and underexplored data protection in medical 3D printing: A scoping review. *Frontiers in Bioengineering and Biotechnology, 11*, Article 1102780. https://doi.org/10.3389/fbioe.2023.1102780"
+    },
+    "lantada-2023": {
+      "year": 2023,
+      "authors": "Díaz Lantada",
+      "title": "Ethical issues of 4D printed medical devices",
+      "summary": [
+        "Normally the manufacturer is accountable when a medical device injures someone.",
+        "That chain of responsibility breaks down when designs are shared online and can be printed anywhere.",
+        "Asks who answers for a design that someone downloaded and then modified: the original creator or the modifier.",
+        "Argues that regulators need ways to track design changes and control quality."
+      ],
+      "link": "https://www.embs.org/pulse/articles/ethical-issues-of-4d-printed-medical-devices/",
+      "apa": "Díaz Lantada, A. (2023, June 8). Ethical issues of 4D printed medical devices. *IEEE Pulse*. https://www.embs.org/pulse/articles/ethical-issues-of-4d-printed-medical-devices/"
+    },
+    "elliott-2020": {
+      "year": 2020,
+      "authors": "Elliott",
+      "title": "Engineers 3D-print patented valves for free to save coronavirus patients in Italy",
+      "summary": [
+        "A hospital in Brescia, Italy ran short of ventilator valves during the 2020 COVID crisis.",
+        "The original valves reportedly cost thousands each (the exact price is disputed) and had to be swapped every 8 hours.",
+        "A local startup reverse-engineered the valve and printed about 100 for free, at about 1 euro of material each.",
+        "The founder said they had no intent to profit from or keep the design."
+      ],
+      "link": "https://globalnews.ca/news/6695286/coronavirus-italy-3d-print-valves/",
+      "apa": "Elliott, J. K. (2020, March 18). Engineers 3D-print patented valves for free to save coronavirus patients in Italy. *Global News*. https://globalnews.ca/news/6695286/coronavirus-italy-3d-print-valves/"
+    },
+    "kent-2020": {
+      "year": 2020,
+      "authors": "Kent",
+      "title": "Covid-19: Start-up that saved lives with 3D-printed valve may face legal action",
+      "summary": [
+        "Focuses on the legal threat around the printed valves instead of the rescue itself.",
+        "The original manufacturer allegedly declined to share blueprints and threatened to sue for patent infringement.",
+        "The valves were printed on site at the hospital with a filament printer.",
+        "Shows the 2 sides of the conflict: patients in need on one side, and patent holders on the other."
+      ],
+      "link": "https://www.medicaldevice-network.com/news/3d-printed-valves-covid-19-italy/",
+      "apa": "Kent, C. (2020, March 18). Covid-19: Start-up that saved lives with 3D-printed valve may face legal action. *Medical Device Network*. https://www.medicaldevice-network.com/news/3d-printed-valves-covid-19-italy/"
+    },
+    "britton-2018": {
+      "year": 2018,
+      "authors": "Britton",
+      "title": "Is 3D printing a humanitarian technology?",
+      "summary": [
+        "Describes an aid organization testing whether 3D printing medical supplies on site is worth doing in Nepal.",
+        "Targeted cheap but important items like umbilical cord clamps and oxygen supply fittings.",
+        "Argues the value of printing is after a disaster, when supply routes are broken.",
+        "The team ran 11 needs-assessment visits to hospitals and health posts before investing in any equipment.",
+        "Puts the focus on finding what people lack before deciding that 3D printing is the answer."
+      ],
+      "link": "https://medium.com/frontier-technologies-hub/is-3d-printing-a-humanitarian-technology-e25222d81496",
+      "apa": "Britton, B. (2018, May 9). Is 3D printing a humanitarian technology? *Frontier Tech Hub*. https://medium.com/frontier-technologies-hub/is-3d-printing-a-humanitarian-technology-e25222d81496"
+    }
+  },
+
+  "added": [
+    {
+      "id": "shen-2021",
+      "category": "current",
+      "year": 2021,
+      "authors": "Shen et al.",
+      "title": "Effects of surface treatments on ABS mechanical properties from fused filament fabrication",
+      "summary": [
+        "Brushed Smooth-On XTC-3D, the epoxy selected for this study, onto printed ABS.",
+        "Found lower moisture uptake, and tensile strength that was not significantly different.",
+        "The coating likely began separating from the plastic at a relatively low strain.",
+        "Limits: tested on ABS rather than PLA, and not through repeated disinfection."
+      ],
+      "link": "https://mtrc.utk.edu/wp-content/uploads/sites/45/2021/11/FFF_extended_abstract.pdf",
+      "apa": "Shen, J.-J., Patterson, M. R., Marshall, E., Dvorak, J., Romberg, S., Compton, B., & Schmitz, T. (2021, November 1–5). *Effects of surface treatments on ABS mechanical properties from fused filament fabrication* [Conference paper]. American Society for Precision Engineering 36th Annual Meeting, Minneapolis, MN, United States. https://mtrc.utk.edu/wp-content/uploads/sites/45/2021/11/FFF_extended_abstract.pdf"
+    },
+    {
+      "id": "narayan-2023",
+      "category": "current",
+      "year": 2023,
+      "authors": "Narayan et al.",
+      "title": "Development of hydrophobic coating on 3D printed ABS samples and surface characterization",
+      "summary": [
+        "Dipped 3D-printed ABS samples in a solution to give them a water-repelling coating.",
+        "Water absorption tests showed less water retention after coating.",
+        "Limit: tested on ABS rather than PLA."
+      ],
+      "link": "https://journal.ump.edu.my/jmes/article/view/9362",
+      "apa": "Narayan, Y. S., Satyanarayana, P., Prakash, K. J., & Narendra, P. (2023). Development of hydrophobic coating on 3D printed ABS samples and surface characterization. *Journal of Mechanical Engineering and Sciences, 17*(4), 9791–9810. https://doi.org/10.15282/jmes.17.4.2023.11.0775"
+    },
+    {
+      "id": "cdc-2023",
+      "category": "methodology",
+      "year": 2023,
+      "authors": "Centers for Disease Control and Prevention",
+      "title": "Chemical disinfectants",
+      "summary": [
+        "Says alcohol kills bacteria best as a 60% to 90% solution in water.",
+        "Says alcohol is not recommended for the highest level of germ-killing on surgical materials, mainly because it does not destroy bacterial spores.",
+        "Warns that alcohol can swell and harden rubber and certain plastic tubing after prolonged and repeated use."
+      ],
+      "link": "https://www.cdc.gov/infection-control/hcp/disinfection-sterilization/chemical-disinfectants.html",
+      "apa": "Centers for Disease Control and Prevention. (2023, November 28). *Chemical disinfectants*. Infection Control. https://www.cdc.gov/infection-control/hcp/disinfection-sterilization/chemical-disinfectants.html"
+    },
+    {
+      "id": "astm-2017",
+      "category": "methodology",
+      "year": 2017,
+      "authors": "ASTM International",
+      "title": "Standard test methods for flexural properties of unreinforced and reinforced plastics and electrical insulating materials (ASTM D790-17)",
+      "summary": [
+        "The standard for 3-point bend tests on plastic bars.",
+        "This study uses its geometry: a support span 16 times the bar thickness, which is 64 mm for a 4 mm bar."
+      ],
+      "link": "https://store.astm.org/d0790-17.html",
+      "apa": "ASTM International. (2017). *Standard test methods for flexural properties of unreinforced and reinforced plastics and electrical insulating materials* (ASTM D790-17). https://store.astm.org/d0790-17.html"
+    }
+  ]
+}
