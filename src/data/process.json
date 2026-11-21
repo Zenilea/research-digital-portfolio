@@ -1,0 +1,295 @@
+{
+  "meta": {
+    "title": "Process",
+    "description": "How the research question took shape, what is already known, the research plan with formulas and specimen counts, the timeline, and what will be measured."
+  },
+  "kicker": "Process",
+  "titleLines": ["How my question", "took shape."],
+  "lead": "From \"Can we print surgical tools?\" to one question I can actually test.",
+
+  "nav": [
+    { "id": "topic", "label": "Choosing the topic" },
+    { "id": "known", "label": "What's already known" },
+    { "id": "plan", "label": "The research plan" },
+    { "id": "timeline", "label": "Timeline" },
+    { "id": "results", "label": "Results" }
+  ],
+
+  "topic": {
+    "heading": "Choosing the topic",
+    "funnel": {
+      "bars": [
+        "Cheap printed surgical tools for low-income areas",
+        "Bacteria, coatings, many cleaning methods, durability",
+        "Comparing 4 cleaning methods (autoclave, chemical soak, boiling, UV)",
+        "The real problem: printed parts have gaps that soak up liquid",
+        "Does an epoxy seal close the gaps, and does it survive 20 rounds of alcohol?"
+      ],
+      "caption": "My question went from \"everything\" to one thing I could actually test."
+    },
+    "blocks": [
+      {
+        "title": "Where it started",
+        "text": [
+          "I'm from a low-income area, where people who needed surgery often couldn't afford it, and many still can't. That got me thinking about cost. PLA plastic is cheap and almost any 3D printer can use it. So my first idea was simple: could some surgical tools be 3D printed instead of bought, for places that don't have much money?"
+        ]
+      },
+      {
+        "title": "Too many ideas at once",
+        "text": ["At first I wanted to test everything. My early list included:"],
+        "list": [
+          "how much bacteria stays on printed PLA",
+          "coating the PLA",
+          "comparing different cleaning methods (heat, ethanol, isopropyl alcohol)",
+          "how the plastic holds up after being cleaned over and over",
+          "printing different kinds of medical tools",
+          "antibacterial coatings"
+        ],
+        "after": ["That was way too much for one project, so I had to start cutting."]
+      },
+      {
+        "title": "The detour",
+        "text": [
+          "For a while I planned to compare four cleaning methods: autoclaving, a chemical soak, boiling, and UV light. Then I read my sources more closely. Several studies had already put printed PLA through steam autoclaving, and it warped or lost a lot of its strength. That makes sense, because PLA starts to soften at around 60 °C and a standard autoclave runs at 121 °C. I would have spent months showing something other researchers already showed."
+        ]
+      },
+      {
+        "title": "Finding the real problem",
+        "text": [
+          "While I was working this out, I asked myself something that changed the project: what's inside a 3D-printed tool? A printed part isn't solid. The layers don't fully fuse, so there are tiny gaps that lead into the hollow inside. Liquid can soak in and not fully come back out. One study (Fleischer et al., 2020) warned that printed PLA can hold onto disinfectant, which could then transfer to whatever the tool touches next.",
+          "That brought me back to an idea I'd had earlier and forgotten about: sealing the surface. If a coating closes those gaps, does it stay closed after the tool has been disinfected again and again?"
+        ]
+      },
+      {
+        "title": "Cutting it down to something I can finish",
+        "text": [
+          "My plan still had a bacteria-counting part. It would have meant approval paperwork, an approved organism, extra lab time, and biological waste disposal. I dropped it so the project would be realistic to finish. To make up for it, I added a way to measure the gaps themselves: how much liquid a bar soaks up, plus a dye test where I break the bar open and photograph how far the dye got in.",
+          "I also changed how I'd test strength. My first idea was honestly to whack the part on a desk or squeeze it in a clamp. That doesn't give a real number, so I switched to a standard three-point bend test (ASTM D790) on flat bars."
+        ]
+      }
+    ],
+    "cut": {
+      "heading": "What I cut and why",
+      "cards": [
+        { "idea": "Autoclaving and boiling", "why": "Already studied, and PLA softens well below those temperatures." },
+        { "idea": "Counting bacteria", "why": "Approval and lab time I couldn't fit. Replaced with absorption and dye tests." },
+        { "idea": "Whacking it on a desk", "why": "No real number. Replaced with a three-point bend test." }
+      ],
+      "caption": "Cutting ideas was part of the process, not a failure of it."
+    },
+    "landed": {
+      "title": "Where I landed",
+      "questionLabel": "My research question",
+      "question": "What are the individual and combined effects of epoxy sealing and 20 cycles of 70% isopropyl alcohol disinfection on the liquid absorption, flexural strength, percent mass change, and dimensional stability of 3D-printed PLA?",
+      "planLabel": "The plan (not done yet)",
+      "plan": "I'll print PLA bars and split them into four groups:",
+      "after": [
+        "Then I'll measure how much liquid each one absorbs, how much force it takes to snap it, and whether its mass or size changed.",
+        "This study is about disinfection, not sterility. Nothing I print goes into a person. It's a first step toward asking whether cheap printed tools could ever hold up."
+      ],
+      "caption": "Four groups let me test sealing, alcohol, and how the two work together."
+    }
+  },
+
+  "known": {
+    "heading": "What's already known",
+    "intro": "The short version of my literature review.",
+    "cards": [
+      { "kind": "Known", "text": "Steam autoclaving, the standard hospital method, damages PLA.", "cite": "Chen et al., 2020; Rynio et al., 2022" },
+      { "kind": "Known", "text": "Chemical disinfection is the more realistic option for printed PLA.", "cite": "Fleischer et al., 2020; Rankin et al., 2014; Vaňková et al., 2020" },
+      { "kind": "Known", "text": "Even when the plastic survives, the disinfectant may not leave it. In one study, a third of the treatments increased sample weight by up to 8.3%.", "cite": "Fleischer et al., 2020" },
+      { "kind": "Not known yet", "text": "Sealing appears to reduce absorption, but its durability is uncertain. None of the studies I reviewed tested a sealed PLA part through repeated disinfection.", "cite": "" }
+    ],
+    "link": { "label": "Read the full research page", "path": "/research/" }
+  },
+
+  "plan": {
+    "heading": "The research plan",
+    "intro": "A 2 × 2 experiment in three phases. This is what I plan to do. None of it has been run yet.",
+    "variables": {
+      "heading": "What changes and what stays the same",
+      "rows": [
+        { "label": "I change", "items": ["Surface: unsealed, or sealed with 2 thin coats of epoxy", "Alcohol exposure: 0 cycles, or 20 cycles of 70% isopropyl alcohol"] },
+        { "label": "I measure", "items": ["Liquid absorption (%)", "Bending stress at failure (MPa)", "Mass change (%)", "Size change (mm)"] },
+        { "label": "Control group", "items": ["Unsealed, 0 cycles"] },
+        { "label": "Kept the same", "items": ["Filament spool, printer, print settings and orientation", "Epoxy product, number of coats, and cure time", "Alcohol concentration, contact time, and drying", "Balance, weighing steps, span, and how the load is applied", "For the soak test: drying temperature, soak time, dye concentration, and blotting"] }
+      ]
+    },
+    "phases": [
+      {
+        "name": "Phase 1 · Pilot",
+        "note": "A practice run. Nothing from it counts as data.",
+        "steps": [
+          { "text": "Print 8 bars with the same settings as the real batch." },
+          { "text": "Break 6 of them on the bend rig and work out how much the results spread (the coefficient of variation).", "detail": "6% or less: keep 5 bars per group. 6–10%: keep 5, but state the smallest effect the study could detect. Over 10%: use more bars or fix the printing first." },
+          { "text": "Check that the breaking force is inside the force sensor's range." },
+          { "text": "Practice on the last 2 bars: coat both with epoxy, run 3 alcohol cycles on one, and dry the other at 40 °C to see how long it takes to reach a steady mass." }
+        ]
+      },
+      {
+        "name": "Preparation",
+        "note": "The same steps for every part in Phases 2 and 3.",
+        "steps": [
+          { "text": "Print all 49 parts from one spool, on one printer, with the same settings. Log every setting." },
+          { "text": "Weigh each part to 0.001 g. Mark 3 points on each bend bar and measure its width and thickness there." },
+          { "text": "Use a random number generator to put the parts into the 4 groups: 5 bend bars, 5 porosity bars, and 1 tweezer in each." },
+          { "text": "Seal two groups with 2 thin brushed coats of epoxy and let them cure for 24 hours.", "detail": "Mixed epoxy is only workable for about 10 minutes, so I write down which mixed batch each part came from." },
+          { "text": "Weigh and measure everything again. This after-cure measurement is the baseline." },
+          { "text": "Run 20 alcohol cycles on two groups: 60 seconds under 70% isopropyl alcohol, then 20 minutes on the drying rack.", "detail": "Each group has its own closed jar, and the alcohol is replaced at the start of each cycling day. The 0-cycle groups are handled and stored the same way." },
+          { "text": "Let all four groups rest for 24 hours. Then weigh, measure, and photograph everything again." }
+        ]
+      },
+      {
+        "name": "Phase 2 · Bend test",
+        "note": "20 bend bars.",
+        "steps": [
+          { "text": "Set the rig to a 64 mm span, with a polycarbonate shield in front." },
+          { "text": "Break all 20 bend bars in random order, the same way every time." },
+          { "text": "Record the force at fracture and each bar's own width and thickness, then calculate the bending stress." }
+        ]
+      },
+      {
+        "name": "Phase 3 · Soak test",
+        "note": "20 porosity bars.",
+        "steps": [
+          { "text": "Dry all 20 porosity bars at 40 °C, weighing every 2 hours until two readings in a row are within 0.005 g.", "detail": "The oven never goes above 40 °C, because PLA softens around 60 °C." },
+          { "text": "Soak them for 24 hours at room temperature in distilled water with food coloring (10 drops per 100 mL)." },
+          { "text": "Blot every bar the same way: 5 seconds to drain, one pass per face with a fresh lint-free wipe, then weigh within 30 seconds." },
+          { "text": "Snap at least one bar per group inside a sealed bag and photograph the cross-sections side by side." }
+        ]
+      }
+    ],
+    "formulas": {
+      "heading": "The formulas",
+      "items": [
+        {
+          "name": "Liquid absorption",
+          "lhs": "% absorption",
+          "num": "m<sub>wet</sub> − m<sub>dry</sub>",
+          "den": "m<sub>dry</sub>",
+          "tail": "× 100",
+          "spoken": "Percent absorption equals m wet minus m dry, divided by m dry, times 100.",
+          "where": ["m<sub>dry</sub> is the mass after drying to a steady mass (g)", "m<sub>wet</sub> is the mass after soaking and blotting (g)"]
+        },
+        {
+          "name": "Bending stress at failure",
+          "lhs": "bending stress",
+          "num": "3FL",
+          "den": "2bd<sup>2</sup>",
+          "tail": "",
+          "spoken": "Bending stress equals 3 times F times L, divided by 2 times b times d squared.",
+          "where": ["F is the force at fracture (N)", "L is the span between the supports (64 mm)", "b is the bar's width and d is its thickness (mm)", "With these units the answer comes out in MPa"]
+        },
+        {
+          "name": "Mass change",
+          "lhs": "% mass change",
+          "num": "m<sub>final</sub> − m<sub>cured</sub>",
+          "den": "m<sub>cured</sub>",
+          "tail": "× 100",
+          "spoken": "Percent mass change equals m final minus m cured, divided by m cured, times 100.",
+          "where": ["m<sub>cured</sub> is the mass after the 24-hour cure (g)", "m<sub>final</sub> is the mass after the cycles and the 24-hour rest (g)"],
+          "example": {
+            "label": "Example numbers, not data",
+            "given": "If a bar weighed 4.000 g after curing and 4.020 g at the end:",
+            "num": "4.020 − 4.000",
+            "den": "4.000",
+            "tail": "× 100 = 0.5%",
+            "spoken": "4.020 minus 4.000, divided by 4.000, times 100, equals 0.5 percent."
+          }
+        },
+        {
+          "name": "Size change",
+          "plain": "size change = average change in thickness at the 3 marked points (mm)",
+          "where": ["Each bend bar is measured at the same 3 points after curing and at the end. Width is recorded too."]
+        }
+      ]
+    },
+    "counts": {
+      "heading": "How many parts",
+      "cols": ["Part", "Groups", "In each", "Total", "Used for"],
+      "rows": [
+        ["Bend bars", "4", "5", "20", "Bending stress, mass, size"],
+        ["Porosity bars", "4", "5", "20", "Absorption and dye photos"],
+        ["Spare bars", "", "", "5", "Replacing failed prints"],
+        ["Tweezers", "4", "1", "4", "Measured and photographed only"]
+      ],
+      "total": ["In the data set", "", "", "49", ""],
+      "extra": ["Pilot bars", "", "", "8", "Phase 1 only. Not in the data set."]
+    },
+    "analysis": {
+      "heading": "How I'll analyze it",
+      "text": [
+        "I'll run a two-way ANOVA (analysis of variance) on each of the four measurements, at the 0.05 significance level. It tests the effect of sealing, the effect of alcohol, and the interaction between them, which is whether the alcohol changed what the sealing did.",
+        "Graphs will show the individual data points, not just averages.",
+        "I expect the sealed specimens to soak up significantly less liquid than the unsealed ones, but I do not predict which way their strength, mass, and dimensions will change."
+      ]
+    },
+    "limits": {
+      "heading": "What this study can and can't tell us",
+      "canLabel": "It can show",
+      "can": [
+        "Whether epoxy sealing measurably reduces liquid uptake into printed PLA",
+        "Whether that reduction survives 20 alcohol cycles",
+        "Whether sealing or alcohol exposure affects bending strength, mass, or size",
+        "Whether sealing changes how alcohol affects the material",
+        "Whether the combination deserves further study"
+      ],
+      "cantLabel": "It can't",
+      "cantLead": "It can't prove patient safety, sterility, or biocompatibility.",
+      "cant": [
+        "It can't show that printed tools are ready for hospitals, can replace commercial instruments, or solve equipment shortages.",
+        "It doesn't carry over to other epoxies, filaments, printers, disinfectants, or print settings.",
+        "Soaking up a test liquid stands in for holding on to disinfectant. It is not a direct measurement of it.",
+        "It doesn't count bacteria. A fuller study would measure that with an established plate-count method (Herigstad et al., 2001)."
+      ]
+    },
+    "safety": {
+      "heading": "Safety",
+      "text": "All lab work is done at school, supervised by Mr. Robinson or another qualified adult. None of it is done at home. Goggles, nitrile gloves, and long sleeves are worn for the epoxy and the alcohol, and a polycarbonate shield stays in front of the bend rig."
+    }
+  },
+
+  "timeline": {
+    "heading": "Timeline",
+    "kicker": "Where things stand",
+    "asOf": "November 2026",
+    "states": { "done": "Done", "next": "Up next", "upcoming": "Upcoming", "event": "Date to hit" },
+    "items": [
+      { "state": "done", "when": "Aug 31, 2026", "text": "Topic narrowed and the first full plan written" },
+      { "state": "done", "when": "Sep 14, 2026", "text": "Method settled: a 2 × 2 design in three phases" },
+      { "state": "done", "when": "Oct 4, 2026", "text": "Risk assessment form written" },
+      { "state": "done", "when": "Oct 11, 2026", "text": "Literature review, draft 4" },
+      { "state": "done", "when": "Oct 2026", "text": "Research plan form revised and materials in hand" },
+      { "state": "done", "when": "Nov 2026", "text": "Bend-test rig built" },
+      { "state": "next", "when": "", "text": "Pilot: print 8 bars and break 6" },
+      { "state": "upcoming", "when": "", "text": "Print all 49 parts" },
+      { "state": "upcoming", "when": "", "text": "First measurements and random assignment to groups" },
+      { "state": "upcoming", "when": "", "text": "Seal two groups, cure 24 hours, measure again" },
+      { "state": "upcoming", "when": "", "text": "20 alcohol cycles at 3 a day, about 7 lab days" },
+      { "state": "upcoming", "when": "", "text": "24-hour rest and final measurements" },
+      { "state": "upcoming", "when": "", "text": "Bend test" },
+      { "state": "upcoming", "when": "", "text": "Soak test and dye photos" },
+      { "state": "upcoming", "when": "", "text": "Analysis and graphs" },
+      { "state": "event", "when": "Dec 17, 2026", "text": "Science fair" }
+    ]
+  },
+
+  "results": {
+    "heading": "Results",
+    "statement": "Nothing to show yet. The experiment hasn't run.",
+    "intro": "When it has, this section will show:",
+    "items": [
+      { "name": "Liquid absorption", "unit": "%" },
+      { "name": "Flexural strength", "unit": "MPa" },
+      { "name": "Mass change", "unit": "%" },
+      { "name": "Dimensional change", "unit": "mm" },
+      { "name": "Dye-penetration photos", "unit": "photos" },
+      { "name": "Two-way ANOVA, with individual data points shown", "unit": "stats" }
+    ]
+  },
+
+  "next": [
+    { "kicker": "Next", "label": "About me", "path": "/about/" },
+    { "kicker": "Also", "label": "Research", "path": "/research/" }
+  ]
+}

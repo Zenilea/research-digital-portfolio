@@ -442,6 +442,12 @@ button:hover .arrow {
   white-space: nowrap;
 }
 
+/* Units keep their own capitals: MPa, mm. */
+.tag--unit {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
 .tag--accent {
   border-color: var(--accent);
   color: var(--accent-hi);

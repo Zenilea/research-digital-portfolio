@@ -1,0 +1,1279 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Grid2x2 from '../components/Grid2x2.astro';
+import Formula from '../components/Formula.astro';
+import Arrow from '../components/Arrow.astro';
+import NextCards from '../components/NextCards.astro';
+import process from '../data/process.json';
+import { url } from '../lib/url';
+
+const { topic, known, plan, timeline, results } = process;
+const num = (i: number) => String(i + 1).padStart(2, '0');
+const order = (id: string) => num(process.nav.findIndex((item) => item.id === id));
+// The small label over a heading. It is left out when it would only repeat the heading.
+const label = (id: string, heading: string) => {
+  const text = process.nav.find((item) => item.id === id)!.label;
+  return text === heading ? '' : text;
+};
+
+// Steps are numbered straight through, so "step 12" means one thing on the page.
+let stepCount = 0;
+const phases = plan.phases.map((phase) => ({
+  ...phase,
+  steps: phase.steps.map((step) => ({ ...step, n: ++stepCount })),
+}));
+
+type State = keyof typeof timeline.states;
+const groups = (Object.keys(timeline.states) as State[])
+  .map((state) => ({
+    state,
+    name: timeline.states[state],
+    items: timeline.items.filter((item) => item.state === state),
+  }))
+  .filter((group) => group.items.length);
+---
+
+<Base path="/process/" title={process.meta.title} description={process.meta.description}>
+  <PageHead kicker={process.kicker} lines={process.titleLines} lead={process.lead} />
+
+  <div class="proc">
+    <nav class="subnav" aria-label="Sections on this page">
+      <ol class="subnav__list wrap" data-spy>
+        {
+          process.nav.map((item, i) => (
+            <li>
+              <a href={`#${item.id}`}>
+                <span class="num">{num(i)}</span>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <!-- 01 Choosing the topic -->
+    <section class="section part" id="topic" aria-labelledby="topic-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="label"><b>{order('topic')}</b>{label('topic', topic.heading)}</p>
+          <h2 class="h2" id="topic-title">{topic.heading}</h2>
+        </div>
+
+        <figure class="funnel">
+          <ol class="funnel__bars">
+            {
+              topic.funnel.bars.map((bar, i) => (
+                <li style={`--n:${i};--i:${i}`} data-reveal>
+                  <span class="num">{num(i)}</span>
+                  <span>{bar}</span>
+                </li>
+              ))
+            }
+          </ol>
+          <figcaption>{topic.funnel.caption}</figcaption>
+        </figure>
+
+        <div class="story-blocks">
+          {
+            topic.blocks.map((block) => (
+              <section class="story-block">
+                <h3 class="h3">{block.title}</h3>
+                <div class="story-block__text">
+                  {block.text.map((line) => <p class="body">{line}</p>)}
+                  {block.list && (
+                    <ul class="dots">
+                      {block.list.map((item) => <li>{item}</li>)}
+                    </ul>
+                  )}
+                  {block.after && block.after.map((line) => <p class="body">{line}</p>)}
+                </div>
+              </section>
+            ))
+          }
+        </div>
+
+        <figure class="cut">
+          <h3 class="h3 cut__title">{topic.cut.heading}</h3>
+          <ul class="cut__cards">
+            {
+              topic.cut.cards.map((card, i) => (
+                <li class="card cut__card" data-reveal style={`--i:${i}`}>
+                  <p class="cut__idea">
+                    <span class="visually-hidden">Cut: </span>
+                    <s>{card.idea}</s>
+                  </p>
+                  <p class="cut__why">{card.why}</p>
+                </li>
+              ))
+            }
+          </ul>
+          <figcaption>{topic.cut.caption}</figcaption>
+        </figure>
+
+        <section class="landed" aria-labelledby="landed-title">
+          <h3 class="h3" id="landed-title">{topic.landed.title}</h3>
+          <div class="landed__q">
+            <p class="label">{topic.landed.questionLabel}</p>
+            <p class="landed__question">{topic.landed.question}</p>
+          </div>
+          <figure class="landed__plan">
+            <p class="label">{topic.landed.planLabel}</p>
+            <p class="body">{topic.landed.plan}</p>
+            <Grid2x2 notes={false} />
+            <figcaption>{topic.landed.caption}</figcaption>
+          </figure>
+          <div class="landed__after">
+            {topic.landed.after.map((line) => <p class="body">{line}</p>)}
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 02 What's already known -->
+    <section class="section part part--sunk" id="known" aria-labelledby="known-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="label"><b>{order('known')}</b>{label('known', known.heading)}</p>
+          <h2 class="h2" id="known-title">{known.heading}</h2>
+          <p class="lead">{known.intro}</p>
+        </div>
+        <ul class="known">
+          {
+            known.cards.map((card, i) => (
+              <li class:list={['known__card', { 'known__card--open': card.kind !== 'Known' }]} data-reveal style={`--i:${i % 2}`}>
+                <span class:list={['tag', { 'tag--accent': card.kind !== 'Known' }]}>{card.kind}</span>
+                <p class="known__text">{card.text}</p>
+                {card.cite && <p class="small">{card.cite}</p>}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="known__more">
+          <a class="btn btn--ghost" href={url(known.link.path)}>
+            {known.link.label}
+            <Arrow />
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 The research plan -->
+    <section class="section part" id="plan" aria-labelledby="plan-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="label"><b>{order('plan')}</b>{label('plan', plan.heading)}</p>
+          <h2 class="h2" id="plan-title">{plan.heading}</h2>
+          <p class="lead">{plan.intro}</p>
+        </div>
+
+        <section class="block" aria-labelledby="vars-title">
+          <h3 class="h3 block__title" id="vars-title">{plan.variables.heading}</h3>
+          <dl class="vars">
+            {
+              plan.variables.rows.map((row) => (
+                <div class="vars__row">
+                  <dt>{row.label}</dt>
+                  <dd>
+                    <ul class="dots">
+                      {row.items.map((item) => <li>{item}</li>)}
+                    </ul>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
+
+        <div class="phases">
+          {
+            phases.map((phase, p) => (
+              <section class="phase" aria-labelledby={`phase-${p}`}>
+                <header class="phase__head">
+                  <h3 class="h3" id={`phase-${p}`}>{phase.name}</h3>
+                  <p class="small">{phase.note}</p>
+                </header>
+                <ol class="phase__steps">
+                  {phase.steps.map((step, i) => (
+                    <li class="pstep" data-reveal style={`--i:${i % 2}`}>
+                      <span class="pstep__n" aria-hidden="true">{String(step.n).padStart(2, '0')}</span>
+                      <p class="pstep__text">
+                        <span class="visually-hidden">Step {step.n}. </span>
+                        {step.text}
+                      </p>
+                      {'detail' in step && step.detail && <p class="pstep__detail">{step.detail}</p>}
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            ))
+          }
+        </div>
+
+        <section class="block" aria-labelledby="formulas-title">
+          <h3 class="h3 block__title" id="formulas-title">{plan.formulas.heading}</h3>
+          <ul class="formulas">
+            {
+              plan.formulas.items.map((item) => (
+                <li class="fcard">
+                  <p class="label">{item.name}</p>
+                  {'num' in item && item.num ? (
+                    <Formula lhs={item.lhs} num={item.num} den={item.den!} tail={item.tail} spoken={item.spoken!} />
+                  ) : (
+                    <p class="fcard__plain">{item.plain}</p>
+                  )}
+                  <ul class="fcard__where">
+                    {item.where.map((line) => <li set:html={line} />)}
+                  </ul>
+                  {'example' in item && item.example && (
+                    <div class="example">
+                      <p class="example__label">{item.example.label}</p>
+                      <p class="example__given">{item.example.given}</p>
+                      <Formula num={item.example.num} den={item.example.den} tail={item.example.tail} spoken={item.example.spoken} />
+                    </div>
+                  )}
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <section class="block" aria-labelledby="counts-title">
+          <h3 class="h3 block__title" id="counts-title">{plan.counts.heading}</h3>
+          <div class="counts__scroll" tabindex="0" role="region" aria-labelledby="counts-title">
+            <table class="counts">
+              <thead>
+                <tr>
+                  {plan.counts.cols.map((col, i) => <th scope="col" class:list={{ 'is-num': i > 0 && i < 4 }}>{col}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  plan.counts.rows.map((row) => (
+                    <tr>
+                      {row.map((cell, i) =>
+                        i === 0 ? (
+                          <th scope="row">
+                            {cell}
+                            <span class="counts__for">{row[4]}</span>
+                          </th>
+                        ) : (
+                          <td class:list={{ 'is-num': i < 4 }}>{cell}</td>
+                        ),
+                      )}
+                    </tr>
+                  ))
+                }
+              </tbody>
+              <tfoot>
+                <tr class="counts__total">
+                  {plan.counts.total.map((cell, i) =>
+                    i === 0 ? <th scope="row">{cell}</th> : <td class:list={{ 'is-num': i < 4 }}>{cell}</td>,
+                  )}
+                </tr>
+                <tr class="counts__extra">
+                  {plan.counts.extra.map((cell, i) =>
+                    i === 0 ? (
+                      <th scope="row">
+                        {cell}
+                        <span class="counts__for">{plan.counts.extra[4]}</span>
+                      </th>
+                    ) : (
+                      <td class:list={{ 'is-num': i < 4 }}>{cell}</td>
+                    ),
+                  )}
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="analysis-title">
+          <h3 class="h3 block__title" id="analysis-title">{plan.analysis.heading}</h3>
+          <div class="block__text">
+            {plan.analysis.text.map((line) => <p class="body">{line}</p>)}
+          </div>
+        </section>
+
+        <section class="limits" aria-labelledby="limits-title">
+          <h3 class="h3 limits__title" id="limits-title">{plan.limits.heading}</h3>
+          <div class="limits__cols">
+            <div class="limits__col limits__col--can">
+              <p class="label">{plan.limits.canLabel}</p>
+              <ul class="limits__list">
+                {plan.limits.can.map((line) => <li>{line}</li>)}
+              </ul>
+            </div>
+            <div class="limits__col limits__col--cant">
+              <p class="label">{plan.limits.cantLabel}</p>
+              <p class="limits__lead">{plan.limits.cantLead}</p>
+              <ul class="limits__list">
+                {plan.limits.cant.map((line) => <li>{line}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <aside class="safety" aria-labelledby="safety-title">
+          <p class="label" id="safety-title">{plan.safety.heading}</p>
+          <p>{plan.safety.text}</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 04 Timeline -->
+    <section class="section part part--sunk" id="timeline" aria-labelledby="timeline-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="label"><b>{order('timeline')}</b>{label('timeline', timeline.kicker)}</p>
+          <h2 class="h2" id="timeline-title">
+            {timeline.kicker} <span class="tl__asof">· {timeline.asOf}</span>
+          </h2>
+        </div>
+        <div class="tl">
+          {
+            groups.map((group) => (
+              <section class:list={['tl__group', `tl__group--${group.state}`]}>
+                <h3 class="tl__state">{group.name}</h3>
+                <ol class="tl__items">
+                  {group.items.map((item) => (
+                    <li class="tl__item">
+                      <span class="tl__dot" aria-hidden="true" />
+                      {item.when && <span class="tl__when">{item.when}</span>}
+                      <span class="tl__text">{item.text}</span>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 Results -->
+    <section class="section part" id="results" aria-labelledby="results-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="label"><b>{order('results')}</b>{label('results', results.statement)}</p>
+          <h2 class="h2 results__statement" id="results-title">{results.statement}</h2>
+          <p class="lead">{results.intro}</p>
+        </div>
+        <ul class="slots">
+          {
+            results.items.map((item, i) => (
+              <li class="slot" data-reveal style={`--i:${i % 3}`}>
+                <span class="tag tag--unit">{item.unit}</span>
+                <span class="slot__name">{item.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <NextCards cards={process.next} />
+</Base>
+
+<style>
+  /* ---------------- sticky sub-nav ---------------- */
+  .subnav {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-block: 1px solid var(--line);
+  }
+
+  .subnav__list {
+    display: flex;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .subnav__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .subnav__list a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    min-height: 3rem;
+    padding-block: 0.8rem;
+    font-size: 0.95rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: inset 0 -2px 0 transparent;
+    transition: color 0.3s, box-shadow 0.3s;
+  }
+
+  .subnav__list .num {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: inherit;
+  }
+
+  .subnav__list a:hover,
+  .subnav__list a[aria-current] {
+    color: var(--ink);
+  }
+
+  .subnav__list a[aria-current] {
+    box-shadow: inset 0 -2px 0 var(--accent-hi);
+  }
+
+  .subnav__list a[aria-current] .num {
+    color: var(--accent-hi);
+  }
+
+  .part {
+    scroll-margin-top: calc(var(--nav-h) + 3rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .part:last-child {
+    border-bottom: 0;
+  }
+
+  .part--sunk {
+    background: var(--bg-sunk);
+  }
+
+  /* ---------------- shared bits ---------------- */
+  .dots {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--ink-2);
+  }
+
+  .dots li {
+    position: relative;
+    padding-left: 1.1rem;
+    max-width: 60ch;
+  }
+
+  .dots li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: var(--ink-dim);
+  }
+
+  .block {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .block__text {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .block__text .body + .body {
+    margin-top: 0;
+  }
+
+  @media (min-width: 60em) {
+    .block {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+
+    .block__title {
+      position: sticky;
+      top: calc(var(--nav-h) + 4.5rem);
+    }
+  }
+
+  /* ---------------- 01 funnel ---------------- */
+  .funnel__bars {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+  }
+
+  .funnel__bars li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    width: calc(100% - var(--n) * 4%);
+    padding: clamp(0.9rem, 1.8vw, 1.35rem) clamp(1rem, 2.2vw, 1.75rem);
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+    background: var(--bg-raise);
+    font-size: clamp(1rem, 1.7vw, 1.4rem);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .funnel__bars .num {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+  }
+
+  .funnel__bars li:last-child {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+  }
+
+  .funnel__bars li:last-child .num {
+    color: var(--accent-hi);
+  }
+
+  .funnel figcaption {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  @media (min-width: 48em) {
+    .funnel__bars li {
+      width: calc(100% - var(--n) * 12%);
+    }
+  }
+
+  /* ---------------- 01 the story ---------------- */
+  .story-blocks {
+    margin-top: clamp(3rem, 8vw, 6rem);
+  }
+
+  .story-block {
+    display: grid;
+    gap: 1rem;
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .story-block__text {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .story-block__text .body + .body {
+    margin-top: 0;
+  }
+
+  @media (min-width: 60em) {
+    .story-block {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+  }
+
+  /* ---------------- 01 what I cut ---------------- */
+  .cut {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .cut__title {
+    margin-bottom: 1.5rem;
+  }
+
+  .cut__cards {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .cut__card {
+    display: grid;
+    gap: 1.5rem;
+    align-content: space-between;
+    min-height: 11rem;
+  }
+
+  .cut__idea {
+    font-size: clamp(1.35rem, 2.3vw, 1.9rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--ink-3);
+  }
+
+  .cut__idea s {
+    text-decoration-color: var(--accent-hi);
+    text-decoration-thickness: 2px;
+  }
+
+  .cut__why {
+    color: var(--ink-2);
+  }
+
+  @media (min-width: 52em) {
+    .cut__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* ---------------- 01 where I landed ---------------- */
+  .landed {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    margin-top: clamp(3rem, 8vw, 6rem);
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--accent-hi);
+    border-radius: var(--radius);
+    background: var(--bg-raise);
+  }
+
+  .landed__q {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .landed__question {
+    font-size: clamp(1.35rem, 2.9vw, 2.5rem);
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+    text-wrap: pretty;
+    max-width: 34em;
+  }
+
+  .landed__plan {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .landed__plan :global(.g22__cell) {
+    background: var(--bg);
+  }
+
+  .landed__plan figcaption {
+    margin-top: 0;
+  }
+
+  .landed__after {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .landed__after .body + .body {
+    margin-top: 0;
+  }
+
+  /* ---------------- 02 known ---------------- */
+  .known {
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .known__card {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    justify-items: start;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    background: var(--bg);
+  }
+
+  .known__card--open {
+    background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  }
+
+  .known__text {
+    font-size: clamp(1.15rem, 1.9vw, 1.6rem);
+    line-height: 1.28;
+    letter-spacing: -0.025em;
+    text-wrap: pretty;
+  }
+
+  .known__more {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 48em) {
+    .known {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* ---------------- 03 variables ---------------- */
+  .vars {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .vars__row {
+    display: grid;
+    gap: 0.6rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .vars__row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .vars dt {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .vars__row:first-child dt {
+    color: var(--accent-hi);
+  }
+
+  @media (min-width: 40em) {
+    .vars__row {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
+    .vars dt {
+      padding-top: 0.3rem;
+    }
+  }
+
+  /* ---------------- 03 phases ---------------- */
+  .phase {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .phase__head {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .phase__steps {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .pstep {
+    display: grid;
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+    gap: 0.4rem 1rem;
+    padding: clamp(1.1rem, 2vw, 1.5rem);
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+    background: var(--bg-raise);
+  }
+
+  .pstep__n {
+    grid-row: span 2;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    color: var(--accent-hi);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pstep__text {
+    grid-column: 2;
+    text-wrap: pretty;
+  }
+
+  .pstep__detail {
+    grid-column: 2;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-3);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 60em) {
+    .phase {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+
+    .phase__head {
+      position: sticky;
+      top: calc(var(--nav-h) + 4.5rem);
+    }
+  }
+
+  @media (min-width: 76em) {
+    .phase__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pstep:last-child:nth-child(odd) {
+      grid-column: span 2;
+    }
+  }
+
+  /* ---------------- 03 formulas ---------------- */
+  .formulas {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .fcard {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    min-width: 0;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-raise);
+  }
+
+  .fcard__plain {
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .fcard__where {
+    display: grid;
+    gap: 0.3rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .fcard__where :global(sub) {
+    font-size: 0.72em;
+    vertical-align: baseline;
+    position: relative;
+    top: 0.3em;
+  }
+
+  .example {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+    padding: 1rem 1.1rem;
+    border: 1px dashed var(--line-2);
+    border-radius: 0.75rem;
+  }
+
+  .example__label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent-hi);
+  }
+
+  .example__given {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+  }
+
+  .example :global(.formula__in) {
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+  }
+
+  @media (min-width: 44em) {
+    .formulas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* ---------------- 03 counts ---------------- */
+  .counts__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .counts {
+    font-size: 0.98rem;
+  }
+
+  /* On a phone the last column moves under the part's name, so nothing scrolls sideways. */
+  .counts__for {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  .counts th:last-child,
+  .counts td:last-child {
+    display: none;
+  }
+
+  @media (min-width: 40em) {
+    .counts__for {
+      display: none;
+    }
+
+    .counts th:last-child,
+    .counts td:last-child {
+      display: table-cell;
+    }
+  }
+
+  .counts th,
+  .counts td {
+    padding: 0.9rem clamp(0.6rem, 2.5vw, 1.1rem);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .counts thead th {
+    font-size: 0.78rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--bg-raise);
+  }
+
+  .counts tbody th {
+    font-weight: 400;
+  }
+
+  .counts td {
+    color: var(--ink-2);
+  }
+
+  .counts .is-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .counts__total th,
+  .counts__total td {
+    color: var(--ink);
+    font-weight: 500;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .counts__total td.is-num {
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--accent-hi);
+  }
+
+  .counts__extra th,
+  .counts__extra td {
+    border-bottom: 0;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  /* ---------------- 03 can and can't ---------------- */
+  .limits {
+    margin-top: clamp(1rem, 3vw, 2rem);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .limits__title {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: clamp(1.6rem, 3.2vw, 2.75rem);
+    letter-spacing: -0.04em;
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  .limits__col {
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .limits__col--can {
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  .limits__col--can .label {
+    color: var(--accent-hi);
+  }
+
+  .limits__col--cant {
+    background: var(--bg-raise);
+  }
+
+  .limits__lead {
+    font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .limits__list {
+    display: grid;
+    gap: 0.7rem;
+    color: var(--ink-2);
+  }
+
+  .limits__list li {
+    position: relative;
+    padding-left: 1.5rem;
+    text-wrap: pretty;
+  }
+
+  .limits__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--ink-dim);
+  }
+
+  .limits__col--can .limits__list li::before {
+    top: 0.5em;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent-hi);
+  }
+
+  @media (min-width: 56em) {
+    .limits__cols {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .limits__col--can {
+      border-bottom: 0;
+      border-right: 1px solid var(--line-2);
+    }
+  }
+
+  .safety {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem clamp(1.25rem, 2.5vw, 2rem);
+    border-left: 2px solid var(--accent-hi);
+    color: var(--ink-2);
+    max-width: 70ch;
+  }
+
+  /* ---------------- 04 timeline ---------------- */
+  .tl__asof {
+    color: var(--ink-dim);
+    white-space: nowrap;
+  }
+
+  .tl {
+    display: grid;
+    max-width: 62rem;
+  }
+
+  .tl__group {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .tl__state {
+    font-size: 0.78rem;
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .tl__items {
+    position: relative;
+    display: grid;
+  }
+
+  /* the line the dots sit on */
+  .tl__items::before {
+    content: '';
+    position: absolute;
+    left: 0.3rem;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    width: 1px;
+    background: var(--line-2);
+  }
+
+  .tl__item {
+    position: relative;
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.55rem 0 0.55rem 1.9rem;
+  }
+
+  .tl__dot {
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 1.5px solid var(--ink-dim);
+    border-radius: 50%;
+    background: var(--bg-sunk);
+  }
+
+  .tl__when {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tl__text {
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .tl__group--done .tl__dot {
+    border-color: var(--accent-hi);
+    background: var(--accent-hi);
+  }
+
+  .tl__group--done .tl__text {
+    color: var(--ink-2);
+  }
+
+  .tl__group--next .tl__items::before,
+  .tl__group--event .tl__items::before {
+    display: none;
+  }
+
+  .tl__group--next .tl__dot,
+  .tl__group--event .tl__dot {
+    top: 1.1rem;
+  }
+
+  .tl__group--next .tl__state {
+    color: var(--accent-hi);
+  }
+
+  .tl__group--next .tl__dot {
+    border-color: var(--accent-hi);
+    box-shadow: 0 0 0 4px var(--accent-wash);
+  }
+
+  .tl__group--next .tl__text {
+    font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+    letter-spacing: -0.035em;
+  }
+
+  .tl__group--upcoming .tl__text {
+    color: var(--ink-2);
+  }
+
+  .tl__group--event .tl__dot {
+    border-radius: 2px;
+    border-color: var(--ink);
+    background: var(--ink);
+    transform: rotate(45deg);
+  }
+
+  .tl__group--event .tl__when {
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  .tl__group--event .tl__text {
+    font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+    letter-spacing: -0.035em;
+  }
+
+  :global(html.motion) .tl__group--next .tl__dot {
+    animation: tl-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes tl-pulse {
+    50% {
+      box-shadow: 0 0 0 8px transparent;
+    }
+  }
+
+  @media (min-width: 48em) {
+    .tl__group {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
+    .tl__state {
+      padding-top: 0.95rem;
+    }
+
+    .tl__item {
+      grid-template-columns: 8rem minmax(0, 1fr);
+      gap: 1rem;
+      align-items: baseline;
+    }
+
+    .tl__text {
+      grid-column: 2;
+    }
+
+    .tl__group--next .tl__dot,
+    .tl__group--event .tl__dot {
+      top: 1.5rem;
+    }
+  }
+
+  /* ---------------- 05 results ---------------- */
+  .results__statement {
+    max-width: 16em;
+  }
+
+  .slots {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .slot {
+    display: grid;
+    gap: 2.5rem;
+    align-content: space-between;
+    justify-items: start;
+    min-height: 9rem;
+    padding: clamp(1.1rem, 2vw, 1.5rem);
+    border: 1px dashed var(--line-2);
+    border-radius: var(--radius);
+  }
+
+  .slot__name {
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--ink-2);
+    text-wrap: balance;
+  }
+
+  @media (min-width: 40em) {
+    .slots {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64em) {
+    .slots {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

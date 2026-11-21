@@ -1,0 +1,81 @@
+---
+// One formula written as a real fraction. Screen readers get the spoken version.
+interface Props {
+  lhs?: string;
+  num: string;
+  den: string;
+  tail?: string;
+  spoken: string;
+}
+const { lhs, num, den, tail, spoken } = Astro.props;
+---
+
+<p class="formula" role="math" aria-label={spoken}>
+  <span class="formula__in" aria-hidden="true">
+    {lhs && <span class="formula__lhs">{lhs} =</span>}
+    <span class="formula__rhs">
+      <span class="formula__frac">
+        <span class="formula__num" set:html={num} />
+        <span class="formula__den" set:html={den} />
+      </span>
+      {tail && <span>{tail}</span>}
+    </span>
+  </span>
+</p>
+
+<style>
+  .formula {
+    padding-block: 0.25rem;
+  }
+
+  /* The name sits on its own line when the card is too narrow for both. */
+  .formula__in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em 0.55em;
+    font-size: clamp(1.1rem, 1.7vw, 1.45rem);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .formula__lhs,
+  .formula__rhs {
+    white-space: nowrap;
+  }
+
+  .formula__rhs {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+  }
+
+  .formula__frac {
+    display: inline-grid;
+    justify-items: center;
+  }
+
+  .formula__num {
+    padding: 0 0.5em 0.2em;
+    border-bottom: 1.5px solid currentColor;
+  }
+
+  .formula__den {
+    padding: 0.2em 0.5em 0;
+  }
+
+  .formula :global(sub) {
+    font-size: 0.62em;
+    letter-spacing: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: 0.3em;
+  }
+
+  .formula :global(sup) {
+    font-size: 0.62em;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.55em;
+  }
+</style>

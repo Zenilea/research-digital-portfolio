@@ -26,7 +26,9 @@ const { glance } = home;
             <th scope="row"><span>{rowLabel}</span></th>
             {glance.cells[r].map((cell) => (
               <td class:list={['g22__cell', { 'g22__cell--sealed': r === 1 }]}>
-                <span class="g22__code">{cell.code}</span>
+                <span class="g22__code">
+                  {cell.code[0]}<span class="g22__n">{cell.code.slice(1)}</span>
+                </span>
                 <span class="g22__name">{cell.name}</span>
                 {notes && <span class="g22__note">{cell.note}</span>}
                 <span class="g22__each">{glance.each}</span>
@@ -100,6 +102,12 @@ const { glance } = home;
     font-size: clamp(2.5rem, 6.5vw, 5.5rem);
     line-height: 0.95;
     letter-spacing: -0.06em;
+  }
+
+  /* The letter is the surface and the number is the cycles.
+     Dimming the number also stops "S0" reading as "SO". */
+  .g22__n {
+    color: var(--ink-dim);
   }
 
   .g22__name {
