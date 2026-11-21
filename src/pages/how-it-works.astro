@@ -279,9 +279,11 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       color: var(--ink-dim);
     }
 
+    /* The number is small, so it needs a lighter grey than the big step name. */
     .steps__list .num {
       width: 2.2em;
       letter-spacing: 0.08em;
+      color: var(--ink-3);
     }
 
     .step {
