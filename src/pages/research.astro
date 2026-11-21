@@ -1,0 +1,461 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import SourceLibrary from '../components/SourceLibrary.astro';
+import NextCards from '../components/NextCards.astro';
+import research from '../data/research.json';
+import { getSources, getReferences, apaToHtml } from '../lib/sources';
+import { Content as Review, getHeadings } from '../writing/literature-review.md';
+
+const sources = getSources();
+const references = getReferences();
+const { library, key, gap, review } = research;
+const headings = getHeadings().filter((h) => h.depth === 2);
+const num = (i: number) => String(i + 1).padStart(2, '0');
+---
+
+<Base path="/research/" title={research.meta.title} description={research.meta.description}>
+  <PageHead kicker={research.kicker} lines={[research.title]} lead={research.lead} giant />
+
+  <nav class="jump wrap" aria-label="On this page">
+    <ul class="jump__list">
+      <li><a href="#library">{library.label} <span class="num">{sources.length}</span></a></li>
+      <li><a href="#key">{key.label}</a></li>
+      <li><a href="#gap">{gap.label}</a></li>
+      <li><a href="#review">{review.label}</a></li>
+      <li><a href="#references">{research.references.label}</a></li>
+    </ul>
+  </nav>
+
+  <section class="section" id="library" aria-labelledby="library-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label"><b>01</b>{library.label}</p>
+        <h2 class="h2" id="library-title">{library.heading}</h2>
+        <p class="lead">{library.intro}</p>
+      </div>
+      <SourceLibrary />
+    </div>
+  </section>
+
+  <section class="section key" id="key" aria-labelledby="key-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label"><b>02</b>{key.label}</p>
+        <h2 class="h2" id="key-title">{key.heading}</h2>
+      </div>
+
+      <div class="key__groups">
+        {
+          key.groups.map((group, g) => (
+            <section class="key__group" aria-labelledby={`key-${g}`}>
+              <h3 class="key__q" id={`key-${g}`}>
+                <span class="num">{num(g)}</span>
+                {group.question}
+              </h3>
+              <ul class="key__items">
+                {group.items.map((item, i) => (
+                  <li class="key__item" data-reveal style={`--i:${i % 2}`}>
+                    <p>
+                      <a href={`#src-${item.source}`}>{item.cite}</a> {item.text}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+
+        <section class="key__group key__group--gap" id="gap" aria-labelledby="gap-title">
+          <h3 class="key__q" id="gap-title">
+            <span class="num">{num(key.groups.length)}</span>
+            {gap.question}
+          </h3>
+          <div class="gap">
+            <p class="gap__statement">{gap.statement}</p>
+
+            <div class="gap__scroll" tabindex="0" role="region" aria-label={gap.tableCaption}>
+              <table class="gap__table">
+                <caption>{gap.tableCaption}</caption>
+                <thead>
+                  <tr>
+                    {gap.cols.map((col) => <th scope="col">{col}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    gap.rows.map((row) => (
+                      <tr class:list={{ 'gap__mine': !row.source }}>
+                        <th scope="row">
+                          {row.source ? <a href={`#src-${row.source}`}>{row.study}</a> : row.study}
+                        </th>
+                        {row.cells.map(([answer, detail]) => (
+                          <td>
+                            <span class:list={['gap__answer', answer === 'Yes' ? 'is-yes' : 'is-no']}>{answer}</span>
+                            {detail && <span class="gap__detail">{detail}</span>}
+                          </td>
+                        ))}
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            {gap.after.map((line) => <p class="body">{line}</p>)}
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="section review" id="review" aria-labelledby="review-title">
+    <div class="wrap review__grid">
+      <aside class="review__side">
+        <p class="label"><b>03</b>{review.label}</p>
+        <nav aria-label={review.tocLabel} data-source-wording>
+          <ol class="review__toc" data-spy>
+            <li><a href="#review-top">{review.opening}</a></li>
+            {headings.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+            <li><a href="#references">{review.refsLink}</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <article class="review__text" data-source-wording>
+        <header class="review__head" id="review-top">
+          <h2 class="h2" id="review-title">{review.heading}</h2>
+          <p class="small">{review.version}</p>
+        </header>
+        <div class="prose">
+          <Review />
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section refs" id="references" aria-labelledby="refs-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label"><b>04</b>{research.references.label}</p>
+        <h2 class="h2" id="refs-title">{research.references.heading}</h2>
+        <p class="lead">{research.references.intro}</p>
+      </div>
+      <ul class="refs__list" data-source-wording>
+        {references.map((ref) => <li id={`ref-${ref.id}`} set:html={apaToHtml(ref.apa)} />)}
+      </ul>
+    </div>
+  </section>
+
+  <NextCards cards={research.next} />
+</Base>
+
+<style>
+  .jump {
+    padding-bottom: clamp(1rem, 3vw, 2rem);
+  }
+
+  .jump__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .jump__list a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .jump__list a:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .jump__list .num {
+    font-size: 0.8em;
+  }
+
+  section[id],
+  .src {
+    scroll-margin-top: calc(var(--nav-h) + 1rem);
+  }
+
+  .section {
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---------------- key sources ---------------- */
+  .key {
+    background: var(--bg-sunk);
+  }
+
+  .key__groups {
+    display: grid;
+  }
+
+  .key__group {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+    border-top: 1px solid var(--line-2);
+  }
+
+  .key__q {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: clamp(1.6rem, 3.2vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .key__q .num {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    flex: none;
+  }
+
+  .key__items {
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .key__item {
+    padding: clamp(1.1rem, 2.2vw, 1.75rem);
+    background: var(--bg);
+    color: var(--ink-2);
+  }
+
+  .key__item a {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  @media (min-width: 44em) {
+    .key__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .key__item:last-child:nth-child(odd) {
+      grid-column: span 2;
+    }
+  }
+
+  @media (min-width: 72em) {
+    .key__group {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+  }
+
+  /* ---------------- the gap ---------------- */
+  .key__group--gap {
+    border-top: 2px solid var(--accent-hi);
+  }
+
+  .gap {
+    display: grid;
+    gap: 1.75rem;
+    min-width: 0;
+  }
+
+  .gap .body + .body {
+    margin-top: 0;
+  }
+
+  .gap__statement {
+    font-size: clamp(1.35rem, 2.5vw, 2.1rem);
+    line-height: 1.22;
+    letter-spacing: -0.03em;
+    text-wrap: pretty;
+  }
+
+  .gap__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+
+  .gap__table {
+    min-width: 36rem;
+    font-size: 0.95rem;
+  }
+
+  .gap__table caption {
+    padding: 1rem 1.25rem 0.5rem;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  .gap__table th,
+  .gap__table td {
+    padding: 0.85rem 1.25rem;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .gap__table thead th {
+    border-top: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .gap__table tbody th {
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .gap__answer {
+    display: block;
+    font-weight: 500;
+  }
+
+  .gap__answer.is-yes {
+    color: var(--accent-hi);
+  }
+
+  .gap__answer.is-no {
+    color: var(--ink-3);
+  }
+
+  .gap__detail {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  .gap__mine th,
+  .gap__mine td {
+    background: var(--accent-wash);
+  }
+
+  .gap__mine th {
+    font-weight: 500;
+  }
+
+  /* ---------------- literature review ---------------- */
+  .review__grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .review__side {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  .review__toc {
+    display: grid;
+    gap: 0.1rem;
+    border-left: 1px solid var(--line-2);
+  }
+
+  .review__toc a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-left: -1px;
+    padding: 0.35rem 0 0.35rem 1rem;
+    border-left: 2px solid transparent;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: var(--ink-3);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .review__toc a:hover {
+    color: var(--ink);
+  }
+
+  .review__toc a[aria-current] {
+    color: var(--ink);
+    border-left-color: var(--accent-hi);
+  }
+
+  .review__head {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: clamp(1.5rem, 4vw, 3rem);
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+  }
+
+  .prose {
+    max-width: 66ch;
+    font-size: clamp(1.06rem, 1.25vw, 1.2rem);
+    line-height: 1.7;
+    color: var(--ink);
+    hyphens: manual;
+  }
+
+  .prose :global(p) {
+    margin-top: 1.15em;
+    color: color-mix(in srgb, var(--ink) 88%, var(--bg));
+    text-wrap: pretty;
+  }
+
+  .prose :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(h2) {
+    margin-top: 2.2em;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+  }
+
+  @media (min-width: 60em) {
+    .review__grid {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+
+    .review__side {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+    }
+  }
+
+  /* ---------------- references ---------------- */
+  .refs__list {
+    display: grid;
+    gap: 1rem;
+    max-width: 62rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .refs__list :global(li) {
+    padding-left: 2.2em;
+    text-indent: -2.2em;
+    overflow-wrap: anywhere;
+    scroll-margin-top: calc(var(--nav-h) + 1rem);
+  }
+
+  .refs__list :global(a) {
+    color: var(--ink-2);
+  }
+</style>

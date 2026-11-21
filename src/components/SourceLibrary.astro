@@ -1,0 +1,264 @@
+---
+// The source library. Each row is a <details>, so it opens without JavaScript.
+// The filter chips only appear when JavaScript is on.
+import research from '../data/research.json';
+import { CATEGORIES, getSources } from '../lib/sources';
+
+const sources = getSources();
+const { library } = research;
+const labelOf = (id: string) => CATEGORIES.find((c) => c.id === id)?.label ?? id;
+const countOf = (id: string) => sources.filter((s) => s.category === id).length;
+---
+
+<div class="lib" data-filter-group>
+  <div class="lib__bar">
+    <div class="lib__chips" role="group" aria-label="Filter sources by type">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">
+        {library.all} <span class="count">{sources.length}</span>
+      </button>
+      {
+        CATEGORIES.map((category) => (
+          <button class="chip" type="button" data-filter={category.id} aria-pressed="false">
+            {category.label} <span class="count">{countOf(category.id)}</span>
+          </button>
+        ))
+      }
+    </div>
+    <p class="small lib__status" data-filter-status aria-live="polite">
+      Showing {sources.length} of {sources.length} sources
+    </p>
+  </div>
+
+  <div class="lib__head" aria-hidden="true">
+    <span>Year</span>
+    <span>Title</span>
+    <span>Author</span>
+  </div>
+
+  <ul class="lib__list">
+    {
+      sources.map((source) => (
+        <li data-cat={source.category}>
+          <details class="src" id={`src-${source.id}`}>
+            <summary class="src__row">
+              <span class="src__year">{source.year}</span>
+              <span class="src__title" data-source-wording>
+                {source.title}
+              </span>
+              <span class="src__author">{source.authors}</span>
+              <span class="src__plus" aria-hidden="true" />
+            </summary>
+            <div class="src__body">
+              <p class="src__tags">
+                <span class="tag">{labelOf(source.category)}</span>
+                {source.tag && <span class="tag tag--accent">{source.tag}</span>}
+              </p>
+              <ul class="src__points">
+                {source.summary.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+              {source.note && <p class="src__note">{source.note}</p>}
+              <p>
+                <a class="src__link" href={source.link} target="_blank" rel="noopener noreferrer">
+                  {library.read}
+                  <span class="visually-hidden"> (opens in a new tab)</span>
+                </a>
+              </p>
+            </div>
+          </details>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .lib__bar {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  :global(html.js) .lib__bar {
+    display: flex;
+  }
+
+  .lib__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .lib__head,
+  .src__row {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr) 1.5rem;
+    column-gap: 1rem;
+  }
+
+  .lib__head {
+    padding: 0 0 0.6rem;
+    border-bottom: 1px solid var(--line-2);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .lib__head span:nth-child(3) {
+    display: none;
+  }
+
+  .lib__list > li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .lib__list > li[hidden] {
+    display: none;
+  }
+
+  .src__row {
+    align-items: start;
+    row-gap: 0.15rem;
+    padding: 1.1rem 0;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s;
+  }
+
+  .src__row::-webkit-details-marker {
+    display: none;
+  }
+
+  .src__year {
+    grid-row: span 2;
+    padding-top: 0.15rem;
+    font-size: 0.9rem;
+    color: var(--accent-hi);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .src__title {
+    font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+
+  .src__author {
+    grid-column: 2;
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .src__plus {
+    position: relative;
+    grid-column: 3;
+    grid-row: 1;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.3rem;
+    justify-self: end;
+  }
+
+  .src__plus::before,
+  .src__plus::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: var(--ink-2);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .src__plus::after {
+    transform: rotate(90deg);
+  }
+
+  .src[open] .src__plus::after {
+    transform: rotate(0deg);
+  }
+
+  .src__row:hover .src__title {
+    color: var(--accent-hi);
+  }
+
+  .src__body {
+    display: grid;
+    gap: 1rem;
+    padding: 0.25rem 0 1.75rem 4.25rem;
+    max-width: 52rem;
+  }
+
+  .src__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .src__points {
+    display: grid;
+    gap: 0.5rem;
+    padding-left: 1.1rem;
+    color: var(--ink-2);
+  }
+
+  .src__points li::marker {
+    color: var(--accent-hi);
+  }
+
+  .src__note {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--accent-hi);
+  }
+
+  .src__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--ink);
+  }
+
+  @media (max-width: 40em) {
+    .src__body {
+      padding-left: 0;
+    }
+  }
+
+  @media (min-width: 60em) {
+    .lib__head,
+    .src__row {
+      grid-template-columns: 5rem minmax(0, 1fr) 14rem 1.5rem;
+      column-gap: 1.5rem;
+    }
+
+    .lib__head span:nth-child(3) {
+      display: block;
+    }
+
+    .src__year {
+      grid-row: auto;
+    }
+
+    .src__author {
+      grid-column: 3;
+      padding-top: 0.2rem;
+    }
+
+    .src__plus {
+      grid-column: 4;
+    }
+
+    .src__body {
+      padding-left: 6.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Research",
+    "description": "The sources behind the project, what they found about cleaning 3D-printed PLA, the gap this study tests, and the full literature review."
+  },
+  "kicker": "What is already known",
+  "title": "Research",
+  "lead": "What other studies found, where they stop, and every source behind this project.",
+
+  "library": {
+    "label": "Source library",
+    "heading": "Every source, in one place.",
+    "intro": "Pick a row to see my notes and a link to the source. All of them were checked against the original pages in November 2026.",
+    "filterLabel": "Show",
+    "all": "All",
+    "read": "Read the source",
+    "limitNote": "Limitations only"
+  },
+
+  "key": {
+    "label": "Key sources",
+    "heading": "Four questions the sources answer.",
+    "groups": [
+      {
+        "question": "Can printed tools work at all?",
+        "items": [
+          { "source": "rankin-2014", "cite": "Rankin et al. (2014)", "text": "printed a PLA Army-Navy retractor that held 13.6 kg of force before breaking. It used $0.46 of plastic." },
+          { "source": "chen-2019", "cite": "Chen et al. (2019)", "text": "found that their best printed retractor took more than 15 times the force that surgeons called clinically excessive." }
+        ]
+      },
+      {
+        "question": "Where PLA breaks down",
+        "items": [
+          { "source": "chen-2020", "cite": "Chen et al. (2020)", "text": "found that autoclaving reduced a PLA retractor's failure load from 95 N to 15.7 N." },
+          { "source": "rynio-2022", "cite": "Rynio et al. (2022)", "text": "found that steam at 121 °C badly deformed PLA templates, even though it eliminated every microorganism tested." },
+          { "source": "fleischer-2020", "cite": "Fleischer et al. (2020)", "text": "found that a third of their chemical treatments increased sample weight by up to 8.3%, while the samples with the best surface quality gained nothing." },
+          { "source": "vankova-2020", "cite": "Vaňková et al. (2020)", "text": "showed that 70% isopropyl alcohol removed applied bacteria from PLA without major surface changes. So alcohol looks gentler than heat." }
+        ]
+      },
+      {
+        "question": "How people have tried to fix it",
+        "items": [
+          { "source": "kiel-2022", "cite": "Kiel et al. (2022)", "text": "found that bacteria attached to both standard PLA and a nano-copper \"antimicrobial\" PLA. The copper slowed only one of the three species tested." },
+          { "source": "ozer-2025", "cite": "Özer (2025)", "text": "pushed epoxy into printed polypropylene parts, which reduced micro-voids and surface irregularities." },
+          { "source": "shen-2021", "cite": "Shen et al. (2021)", "text": "brushed Smooth-On XTC-3D onto printed ABS and found lower moisture uptake with little change in tensile strength. The coating began separating at a relatively low strain." },
+          { "source": "narayan-2023", "cite": "Narayan et al. (2023)", "text": "put a water-repelling coating on printed ABS and saw less water retention." }
+        ]
+      }
+    ]
+  },
+
+  "gap": {
+    "label": "The gap",
+    "question": "The gap",
+    "statement": "Prior research has established that printed PLA tolerates chemical disinfection and that coatings reduce absorption in other printed plastics, but none of the reviewed studies tested whether a coating on printed PLA keeps working through repeated disinfection.",
+    "tableCaption": "The closest studies each cover part of the question.",
+    "cols": ["Study", "Coating?", "Repeated disinfection?", "PLA?"],
+    "rows": [
+      { "source": "fleischer-2020", "study": "Fleischer et al. (2020)", "cells": [["No", ""], ["Yes", "Cidex OPA or chlorine"], ["Yes", ""]] },
+      { "source": "vankova-2020", "study": "Vaňková et al. (2020)", "cells": [["No", ""], ["Yes", "including 70% isopropanol"], ["Yes", ""]] },
+      { "source": "ozer-2025", "study": "Özer (2025)", "cells": [["Yes", "epoxy infiltration"], ["No", ""], ["No", "polypropylene"]] },
+      { "source": "shen-2021", "study": "Shen et al. (2021)", "cells": [["Yes", "XTC-3D epoxy"], ["No", ""], ["No", "ABS"]] },
+      { "source": "", "study": "This study", "cells": [["Yes", "XTC-3D epoxy"], ["Yes", "70% isopropyl alcohol, 20 cycles"], ["Yes", ""]] }
+    ],
+    "after": [
+      "It is hypothesized that sealing will reduce liquid absorption and that repeated alcohol exposure will change how much protection the seal provides. Because evidence on repeated alcohol exposure is limited, no direction is predicted for strength, mass, or dimensions.",
+      "If a single coating step proves durable, groups printing reusable instruments in low-resource settings would gain an inexpensive way to limit disinfectant retention; if it fails, they would know not to rely on it."
+    ]
+  },
+
+  "review": {
+    "label": "Literature review",
+    "heading": "Literature review",
+    "version": "Draft 4 · October 11, 2026",
+    "tocLabel": "In this review",
+    "opening": "Opening",
+    "refsLink": "References"
+  },
+
+  "references": {
+    "label": "References",
+    "heading": "Reference list",
+    "intro": "Every source on this page, in APA 7 style."
+  },
+
+  "next": [
+    { "kicker": "Next", "label": "Process", "path": "/process/" },
+    { "kicker": "Also", "label": "How it works", "path": "/how-it-works/" }
+  ]
+}
