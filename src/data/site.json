@@ -4,12 +4,16 @@
   "title": "Does the seal survive the cleaning?",
   "description": "An AP Research study on epoxy-sealed 3D-printed PLA and 20 rounds of 70% isopropyl alcohol disinfection.",
   "lastUpdated": "November 2026",
+  "email": "adhityasudhakar@gmail.com",
   "heroTitleFont": "sans",
   "nav": [
     { "label": "Home", "path": "/" },
+    { "label": "Ideation", "path": "/ideation/" },
+    { "label": "About me", "path": "/about/" }
+  ],
+  "navHidden": [
     { "label": "How it works", "path": "/how-it-works/" },
     { "label": "Research", "path": "/research/" },
-    { "label": "Process", "path": "/process/" },
-    { "label": "About", "path": "/about/" }
+    { "label": "Process", "path": "/process/" }
   ]
 }

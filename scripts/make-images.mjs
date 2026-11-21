@@ -41,7 +41,7 @@ const beads = (y, shift) =>
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face{font-family:Geist;src:url(data:font/woff2;base64,${font}) format('woff2');font-weight:100 900}
 *{box-sizing:border-box;margin:0}
-body{width:1200px;height:630px;background:#0b0a09;color:#f3f2ec;font-family:Geist,sans-serif;position:relative;overflow:hidden}
+body{width:1200px;height:630px;background:#000000;color:#f3f2ec;font-family:Geist,sans-serif;position:relative;overflow:hidden}
 .top{position:absolute;left:72px;top:60px;display:flex;align-items:center;gap:14px;font-size:26px;font-weight:500;letter-spacing:-.01em}
 .top span{color:#8f8d84;font-weight:400}
 .top svg{width:30px;height:27px}

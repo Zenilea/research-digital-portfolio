@@ -1,6 +1,5 @@
 ---
 import home from '../data/home.json';
-import { url } from '../lib/url';
 import { getSource } from '../lib/sources';
 
 const { why } = home;
@@ -34,7 +33,11 @@ const fmt = (value: number, decimals: number) => value.toFixed(decimals);
               </p>
               <p class="stat__text">{stat.text}</p>
               <p class="stat__cite">
-                Source: <a href={`${url('/research/')}#src-${source.id}`}>{stat.cite}</a>
+                Source:{' '}
+                <a href={source.link} target="_blank" rel="noopener noreferrer">
+                  {stat.cite}
+                  <span class="visually-hidden"> (opens in a new tab)</span>
+                </a>
               </p>
             </li>
           );

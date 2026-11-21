@@ -3,7 +3,7 @@
     "title": "About",
     "description": "About Adhitya Harisudhakar, a junior at Innovation Academy studying epoxy-sealed 3D-printed PLA for AP Research."
   },
-  "kicker": "About",
+  "kicker": "About me",
   "nameLines": ["Adhitya", "Harisudhakar"],
   "portraitAlt": "Black and white portrait of Adhitya Harisudhakar standing outdoors, with a lake and hills in the background.",
   "bioLabel": "In my words",
@@ -12,6 +12,22 @@
     "Combining my passions, I have dedicated my junior year's research project to analyzing how 3D printing has the potential to be used as an alternative to stainless steel in medical facilities located in low-income areas.",
     "Specifically, I want to evaluate how well 3D-printed parts hold up against stress and liquids, and how those factors are affected by surface coatings."
   ],
+  "interests": {
+    "label": "What I care about",
+    "heading": "Three passions, one project.",
+    "items": ["Medicine", "Technology", "Engineering"]
+  },
+  "project": {
+    "label": "My AP Research project",
+    "plainLabel": "In plain terms",
+    "primary": { "label": "How the idea took shape", "path": "/ideation/" },
+    "secondary": { "label": "The project", "path": "/" }
+  },
+  "contact": {
+    "label": "Contact",
+    "heading": "Get in touch.",
+    "emailLabel": "Email"
+  },
   "factsLabel": "The basics",
   "facts": [
     { "label": "School", "value": "Innovation Academy" },
@@ -21,7 +37,7 @@
     { "label": "Research teacher", "value": "Mr. Robinson" }
   ],
   "next": [
-    { "kicker": "Start here", "label": "The project", "path": "/" },
-    { "kicker": "Also", "label": "Process", "path": "/process/" }
+    { "kicker": "Next", "label": "Ideation", "path": "/ideation/" },
+    { "kicker": "Back to", "label": "The project", "path": "/" }
   ]
 }

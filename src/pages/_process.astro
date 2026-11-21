@@ -6,9 +6,12 @@ import Formula from '../components/Formula.astro';
 import Arrow from '../components/Arrow.astro';
 import NextCards from '../components/NextCards.astro';
 import process from '../data/process.json';
+import ideation from '../data/ideation.json';
 import { url } from '../lib/url';
 
-const { topic, known, plan, timeline, results } = process;
+// The topic story lives in ideation.json, shared with the Ideation page.
+const topic = ideation;
+const { known, plan, timeline, results } = process;
 const num = (i: number) => String(i + 1).padStart(2, '0');
 const order = (id: string) => num(process.nav.findIndex((item) => item.id === id));
 // The small label over a heading. It is left out when it would only repeat the heading.

@@ -1,20 +1,20 @@
 /* ------------------------------------------------------------------
    Design tokens
-   Dark, warm near-black with cream text and one muted green accent.
+   True black with near-white text and one muted green accent.
    The green stands for "the seal" everywhere on the site.
 ------------------------------------------------------------------- */
 :root {
   color-scheme: dark;
 
-  --bg: #0b0a09;
-  --bg-raise: #141311;
-  --bg-sunk: #070606;
-  --ink: #f3f2ec;
-  --ink-2: #bdbbb1;
-  --ink-3: #8f8d84;
-  --ink-dim: #77756f; /* large text only */
-  --line: rgba(243, 242, 236, 0.13);
-  --line-2: rgba(243, 242, 236, 0.28);
+  --bg: #000;
+  --bg-raise: #0c0c0c;
+  --bg-sunk: #050505;
+  --ink: #f5f5f1;
+  --ink-2: #b9b9b3;
+  --ink-3: #8e8e88;
+  --ink-dim: #6f6f6b; /* large text only */
+  --line: rgba(245, 245, 241, 0.12);
+  --line-2: rgba(245, 245, 241, 0.26);
   --accent: #65944a;
   --accent-hi: #8db86f;
   --accent-wash: rgba(101, 148, 74, 0.16);
@@ -31,23 +31,6 @@
   --section: clamp(5rem, 11vw, 10.5rem);
   --radius: 1.25rem;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-/* The About page flips to cream. */
-.theme-cream {
-  color-scheme: light;
-  --bg: #f3f2ec;
-  --bg-raise: #e9e7dd;
-  --bg-sunk: #e2e0d5;
-  --ink: #0b0a09;
-  --ink-2: #45433d;
-  --ink-3: #66635b;
-  --ink-dim: #7d7a71;
-  --line: rgba(11, 10, 9, 0.14);
-  --line-2: rgba(11, 10, 9, 0.32);
-  --accent: #3f6a2a;
-  --accent-hi: #3f6a2a;
-  --accent-wash: rgba(63, 106, 42, 0.12);
 }
 
 /* ------------------------------------------------------------------

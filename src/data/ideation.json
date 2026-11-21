@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "title": "Ideation",
+    "description": "How my AP Research question took shape: from cheap 3D-printed surgical tools for low-income areas to one question I can actually test."
+  },
+  "kicker": "Ideation",
+  "titleLines": ["How my question", "took shape."],
+  "lead": "From \"Can we print surgical tools?\" to one question I can actually test.",
+
+  "heading": "Choosing the topic",
+  "contentsLabel": "Chapters",
+
+  "funnel": {
+    "label": "The short version",
+    "heading": "From everything to one question.",
+    "bars": [
+      "Cheap printed surgical tools for low-income areas",
+      "Bacteria, coatings, many cleaning methods, durability",
+      "Comparing 4 cleaning methods (autoclave, chemical soak, boiling, UV)",
+      "The real problem: printed parts have gaps that soak up liquid",
+      "Does an epoxy seal close the gaps, and does it survive 20 rounds of alcohol?"
+    ],
+    "caption": "My question went from \"everything\" to one thing I could actually test."
+  },
+
+  "blocks": [
+    {
+      "id": "start",
+      "title": "Where it started",
+      "visual": "quote",
+      "quote": "Could some surgical tools be 3D printed instead of bought, for places that don't have much money?",
+      "quoteLabel": "My first idea",
+      "text": [
+        "I'm from a low-income area, where people who needed surgery often couldn't afford it, and many still can't. That got me thinking about cost. PLA plastic is cheap and almost any 3D printer can use it. So my first idea was simple: could some surgical tools be 3D printed instead of bought, for places that don't have much money?"
+      ]
+    },
+    {
+      "id": "ideas",
+      "title": "Too many ideas at once",
+      "visual": "map",
+      "text": ["At first I wanted to test everything. My early list included:"],
+      "list": [
+        "how much bacteria stays on printed PLA",
+        "coating the PLA",
+        "comparing different cleaning methods (heat, ethanol, isopropyl alcohol)",
+        "how the plastic holds up after being cleaned over and over",
+        "printing different kinds of medical tools",
+        "antibacterial coatings"
+      ],
+      "mapCenter": "Cheap printed surgical tools",
+      "mapCaption": "My early list, all hanging off one idea.",
+      "after": ["That was way too much for one project, so I had to start cutting."]
+    },
+    {
+      "id": "detour",
+      "title": "The detour",
+      "visual": "heat",
+      "text": [
+        "For a while I planned to compare four cleaning methods: autoclaving, a chemical soak, boiling, and UV light. Then I read my sources more closely. Several studies had already put printed PLA through steam autoclaving, and it warped or lost a lot of its strength. That makes sense, because PLA starts to soften at around 60 °C and a standard autoclave runs at 121 °C. I would have spent months showing something other researchers already showed."
+      ]
+    },
+    {
+      "id": "problem",
+      "title": "Finding the real problem",
+      "visual": "diagram",
+      "text": [
+        "While I was working this out, I asked myself something that changed the project: what's inside a 3D-printed tool? A printed part isn't solid. The layers don't fully fuse, so there are tiny gaps that lead into the hollow inside. Liquid can soak in and not fully come back out. One study (Fleischer et al., 2020) warned that printed PLA can hold onto disinfectant, which could then transfer to whatever the tool touches next.",
+        "That brought me back to an idea I'd had earlier and forgotten about: sealing the surface. If a coating closes those gaps, does it stay closed after the tool has been disinfected again and again?"
+      ]
+    },
+    {
+      "id": "cutting",
+      "title": "Cutting it down to something I can finish",
+      "visual": "cuts",
+      "text": [
+        "My plan still had a bacteria-counting part. It would have meant approval paperwork, an approved organism, extra lab time, and biological waste disposal. I dropped it so the project would be realistic to finish. To make up for it, I added a way to measure the gaps themselves: how much liquid a bar soaks up, plus a dye test where I break the bar open and photograph how far the dye got in.",
+        "I also changed how I'd test strength. My first idea was honestly to whack the part on a desk or squeeze it in a clamp. That doesn't give a real number, so I switched to a standard three-point bend test (ASTM D790) on flat bars."
+      ]
+    }
+  ],
+
+  "heat": {
+    "methodsLabel": "The four-method plan",
+    "methods": [
+      { "name": "Autoclaving", "cut": true },
+      { "name": "Chemical soak", "cut": false },
+      { "name": "Boiling", "cut": true },
+      { "name": "UV light", "cut": false }
+    ],
+    "scaleLabel": "Why heat was out",
+    "max": 130,
+    "marks": [
+      { "temp": 60, "value": "~60 °C", "text": "PLA starts to soften", "kind": "pla" },
+      { "temp": 100, "value": "100 °C", "text": "Boiling water", "kind": "heat" },
+      { "temp": 121, "value": "121 °C", "text": "Standard autoclave", "kind": "heat" }
+    ],
+    "caption": "Both heat methods run well above the point where PLA starts to soften. Temperatures are approximate."
+  },
+
+  "diagrams": {
+    "items": [
+      {
+        "step": 2,
+        "title": "Unsealed",
+        "text": "The gaps can let liquid in, and it can stay there.",
+        "alt": "Drawing of a slice through a 3D-printed part. Liquid runs down through the gaps between the plastic lines and collects in the hollow inside."
+      },
+      {
+        "step": 4,
+        "title": "Sealed",
+        "text": "The idea: if the seal works, the liquid stays on the outside.",
+        "alt": "The same slice with a green layer of epoxy over the top surface. Droplets sit on top of the epoxy and no liquid is inside the part."
+      }
+    ],
+    "disclaimer": "Illustration of the idea, not results."
+  },
+
+  "cut": {
+    "heading": "What I cut and why",
+    "cards": [
+      { "idea": "Autoclaving and boiling", "why": "Already studied, and PLA softens well below those temperatures." },
+      { "idea": "Counting bacteria", "why": "Approval and lab time I couldn't fit. Replaced with absorption and dye tests." },
+      { "idea": "Whacking it on a desk", "why": "No real number. Replaced with a three-point bend test." }
+    ],
+    "caption": "Cutting ideas was part of the process, not a failure of it."
+  },
+
+  "landed": {
+    "title": "Where I landed",
+    "questionLabel": "My research question",
+    "question": "What are the individual and combined effects of epoxy sealing and 20 cycles of 70% isopropyl alcohol disinfection on the liquid absorption, flexural strength, percent mass change, and dimensional stability of 3D-printed PLA?",
+    "planLabel": "The plan (not done yet)",
+    "plan": "I'll print PLA bars and split them into four groups:",
+    "after": [
+      "Then I'll measure how much liquid each one absorbs, how much force it takes to snap it, and whether its mass or size changed.",
+      "This study is about disinfection, not sterility. Nothing I print goes into a person. It's a first step toward asking whether cheap printed tools could ever hold up."
+    ],
+    "caption": "Four groups let me test sealing, alcohol, and how the two work together.",
+    "milestonesLabel": "Milestones"
+  },
+
+  "next": [
+    { "kicker": "Next", "label": "About me", "path": "/about/" },
+    { "kicker": "Back to", "label": "The project", "path": "/" }
+  ]
+}

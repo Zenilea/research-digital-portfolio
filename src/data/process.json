@@ -15,82 +15,6 @@
     { "id": "results", "label": "Results" }
   ],
 
-  "topic": {
-    "heading": "Choosing the topic",
-    "funnel": {
-      "bars": [
-        "Cheap printed surgical tools for low-income areas",
-        "Bacteria, coatings, many cleaning methods, durability",
-        "Comparing 4 cleaning methods (autoclave, chemical soak, boiling, UV)",
-        "The real problem: printed parts have gaps that soak up liquid",
-        "Does an epoxy seal close the gaps, and does it survive 20 rounds of alcohol?"
-      ],
-      "caption": "My question went from \"everything\" to one thing I could actually test."
-    },
-    "blocks": [
-      {
-        "title": "Where it started",
-        "text": [
-          "I'm from a low-income area, where people who needed surgery often couldn't afford it, and many still can't. That got me thinking about cost. PLA plastic is cheap and almost any 3D printer can use it. So my first idea was simple: could some surgical tools be 3D printed instead of bought, for places that don't have much money?"
-        ]
-      },
-      {
-        "title": "Too many ideas at once",
-        "text": ["At first I wanted to test everything. My early list included:"],
-        "list": [
-          "how much bacteria stays on printed PLA",
-          "coating the PLA",
-          "comparing different cleaning methods (heat, ethanol, isopropyl alcohol)",
-          "how the plastic holds up after being cleaned over and over",
-          "printing different kinds of medical tools",
-          "antibacterial coatings"
-        ],
-        "after": ["That was way too much for one project, so I had to start cutting."]
-      },
-      {
-        "title": "The detour",
-        "text": [
-          "For a while I planned to compare four cleaning methods: autoclaving, a chemical soak, boiling, and UV light. Then I read my sources more closely. Several studies had already put printed PLA through steam autoclaving, and it warped or lost a lot of its strength. That makes sense, because PLA starts to soften at around 60 °C and a standard autoclave runs at 121 °C. I would have spent months showing something other researchers already showed."
-        ]
-      },
-      {
-        "title": "Finding the real problem",
-        "text": [
-          "While I was working this out, I asked myself something that changed the project: what's inside a 3D-printed tool? A printed part isn't solid. The layers don't fully fuse, so there are tiny gaps that lead into the hollow inside. Liquid can soak in and not fully come back out. One study (Fleischer et al., 2020) warned that printed PLA can hold onto disinfectant, which could then transfer to whatever the tool touches next.",
-          "That brought me back to an idea I'd had earlier and forgotten about: sealing the surface. If a coating closes those gaps, does it stay closed after the tool has been disinfected again and again?"
-        ]
-      },
-      {
-        "title": "Cutting it down to something I can finish",
-        "text": [
-          "My plan still had a bacteria-counting part. It would have meant approval paperwork, an approved organism, extra lab time, and biological waste disposal. I dropped it so the project would be realistic to finish. To make up for it, I added a way to measure the gaps themselves: how much liquid a bar soaks up, plus a dye test where I break the bar open and photograph how far the dye got in.",
-          "I also changed how I'd test strength. My first idea was honestly to whack the part on a desk or squeeze it in a clamp. That doesn't give a real number, so I switched to a standard three-point bend test (ASTM D790) on flat bars."
-        ]
-      }
-    ],
-    "cut": {
-      "heading": "What I cut and why",
-      "cards": [
-        { "idea": "Autoclaving and boiling", "why": "Already studied, and PLA softens well below those temperatures." },
-        { "idea": "Counting bacteria", "why": "Approval and lab time I couldn't fit. Replaced with absorption and dye tests." },
-        { "idea": "Whacking it on a desk", "why": "No real number. Replaced with a three-point bend test." }
-      ],
-      "caption": "Cutting ideas was part of the process, not a failure of it."
-    },
-    "landed": {
-      "title": "Where I landed",
-      "questionLabel": "My research question",
-      "question": "What are the individual and combined effects of epoxy sealing and 20 cycles of 70% isopropyl alcohol disinfection on the liquid absorption, flexural strength, percent mass change, and dimensional stability of 3D-printed PLA?",
-      "planLabel": "The plan (not done yet)",
-      "plan": "I'll print PLA bars and split them into four groups:",
-      "after": [
-        "Then I'll measure how much liquid each one absorbs, how much force it takes to snap it, and whether its mass or size changed.",
-        "This study is about disinfection, not sterility. Nothing I print goes into a person. It's a first step toward asking whether cheap printed tools could ever hold up."
-      ],
-      "caption": "Four groups let me test sealing, alcohol, and how the two work together."
-    }
-  },
-
   "known": {
     "heading": "What's already known",
     "intro": "The short version of my literature review.",
@@ -255,8 +179,8 @@
     "asOf": "November 2026",
     "states": { "done": "Done", "next": "Up next", "upcoming": "Upcoming", "event": "Date to hit" },
     "items": [
-      { "state": "done", "when": "Aug 31, 2026", "text": "Topic narrowed and the first full plan written" },
-      { "state": "done", "when": "Sep 14, 2026", "text": "Method settled: a 2 × 2 design in three phases" },
+      { "state": "done", "when": "Aug 31, 2026", "text": "Topic narrowed and the first full plan written", "ideation": true },
+      { "state": "done", "when": "Sep 14, 2026", "text": "Method settled: a 2 × 2 design in three phases", "ideation": true },
       { "state": "done", "when": "Oct 4, 2026", "text": "Risk assessment form written" },
       { "state": "done", "when": "Oct 11, 2026", "text": "Literature review, draft 4" },
       { "state": "done", "when": "Oct 2026", "text": "Research plan form revised and materials in hand" },

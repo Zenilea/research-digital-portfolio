@@ -1,0 +1,1001 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import CrossSection from '../components/CrossSection.astro';
+import Grid2x2 from '../components/Grid2x2.astro';
+import Arrow from '../components/Arrow.astro';
+import NextCards from '../components/NextCards.astro';
+import ideation from '../data/ideation.json';
+import process from '../data/process.json';
+
+const { funnel, blocks, heat, diagrams, cut, landed } = ideation;
+const num = (i: number) => String(i + 1).padStart(2, '0');
+
+// The chapters, then "Where I landed" as the last stop.
+const chapters = [...blocks.map((b) => ({ id: b.id, title: b.title })), { id: 'landed', title: landed.title }];
+
+// Dated milestones come from the one timeline in process.json.
+const milestones = process.timeline.items.filter((item) => 'ideation' in item && item.ideation);
+
+// Where each early idea sits around the centre of the idea map: [column, row] in a
+// 3 by 3 grid. The middle cell is the centre idea. The lines run to each cell's middle.
+const cells = [
+  [1, 1],
+  [2, 1],
+  [3, 1],
+  [1, 3],
+  [2, 3],
+  [3, 3],
+];
+const mid = (n: number) => `${(((n - 0.5) / 3) * 100).toFixed(2)}%`;
+
+const at = (temp: number) => `${((temp / heat.max) * 100).toFixed(2)}%`;
+---
+
+<Base path="/ideation/" title={ideation.meta.title} description={ideation.meta.description}>
+  <PageHead kicker={ideation.kicker} lines={ideation.titleLines} lead={ideation.lead} />
+
+  <!-- The short version: the question narrowing down -->
+  <section class="funnel-sec" aria-labelledby="funnel-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">{funnel.label}</p>
+        <h2 class="h2" id="funnel-title">{funnel.heading}</h2>
+      </div>
+      <figure class="funnel">
+        <ol class="funnel__bars">
+          {
+            funnel.bars.map((bar, i) => (
+              <li style={`--n:${i};--i:${i}`} data-reveal>
+                <span class="num">{num(i)}</span>
+                <span>{bar}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <figcaption>{funnel.caption}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="ch-wrap wrap">
+    <nav class="rail" aria-label={ideation.contentsLabel}>
+      <p class="label rail__label">{ideation.contentsLabel}</p>
+      <ol class="rail__list" data-spy>
+        {
+          chapters.map((c, i) => (
+            <li>
+              <a href={`#${c.id}`}>
+                <span class="num" aria-hidden="true">
+                  {num(i)}
+                </span>
+                <span>{c.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="chapters">
+      {
+        blocks.map((block, i) => (
+          <section class="ch" id={block.id} aria-labelledby={`${block.id}-title`}>
+            <header class="ch__head">
+              <span class="ch__num" aria-hidden="true">
+                {num(i)}
+              </span>
+              <p class="label">Chapter {i + 1}</p>
+              <h2 class="h2 ch__title" id={`${block.id}-title`}>
+                {block.title}
+              </h2>
+            </header>
+
+            {block.visual === 'quote' && (
+              <blockquote class="pull" data-reveal>
+                <p>“{block.quote}”</p>
+                <footer class="label">{block.quoteLabel}</footer>
+              </blockquote>
+            )}
+
+            <div class="ch__text">
+              {block.text.map((line) => (
+                <p class="body">{line}</p>
+              ))}
+            </div>
+
+            {block.visual === 'map' && block.list && (
+              <figure class="map" aria-labelledby={`${block.id}-map-cap`}>
+                <div class="map__box">
+                  <svg class="map__lines" aria-hidden="true" focusable="false">
+                    {cells.map(([c, r]) => (
+                      <line x1="50%" y1="50%" x2={mid(c)} y2={mid(r)} />
+                    ))}
+                  </svg>
+                  <p class="map__center">{block.mapCenter}</p>
+                  <ul class="map__nodes">
+                    {block.list.map((item, j) => (
+                      <li style={`--c:${cells[j][0]};--r:${cells[j][1]};--i:${j}`} data-reveal>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <figcaption id={`${block.id}-map-cap`}>{block.mapCaption}</figcaption>
+              </figure>
+            )}
+
+            {block.visual === 'heat' && (
+              <div class="heat">
+                <div class="heat__methods">
+                  <p class="label">{heat.methodsLabel}</p>
+                  <ul class="heat__pills">
+                    {heat.methods.map((m) => (
+                      <li class:list={['heat__pill', { 'heat__pill--cut': m.cut }]}>
+                        {m.cut ? (
+                          <>
+                            <span class="visually-hidden">Cut: </span>
+                            <s>{m.name}</s>
+                          </>
+                        ) : (
+                          m.name
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <figure class="scale" aria-labelledby="scale-cap">
+                  <p class="label">{heat.scaleLabel}</p>
+                  <div class="scale__track">
+                    <div class="scale__bar" aria-hidden="true">
+                      <span class="scale__soft" style={`--at:${at(heat.marks[0].temp)}`} />
+                    </div>
+                    <ol class="scale__marks">
+                      {heat.marks.map((m, j) => (
+                        <li
+                          class:list={['scale__mark', `scale__mark--${m.kind}`, j % 2 ? 'is-below' : 'is-above', { 'is-last': j === heat.marks.length - 1 }]}
+                          style={`--at:${at(m.temp)}`}
+                        >
+                          <span class="scale__value">{m.value}</span>
+                          <span class="scale__text">{m.text}</span>
+                        </li>
+                      ))}
+                    </ol>
+                    <p class="scale__ends" aria-hidden="true">
+                      <span>0 °C</span>
+                      <span>{heat.max} °C</span>
+                    </p>
+                  </div>
+                  <figcaption id="scale-cap">{heat.caption}</figcaption>
+                </figure>
+              </div>
+            )}
+
+            {block.visual === 'diagram' && (
+              <div class="dg">
+                <div class="dg__pair">
+                  {diagrams.items.map((d, j) => (
+                    <figure class:list={['dg__fig', { 'dg__fig--sealed': d.step >= 3 }]} data-reveal style={`--i:${j}`}>
+                      <p class="tag">{d.title}</p>
+                      <CrossSection step={d.step as 2 | 4} label={d.alt} />
+                      <figcaption>{d.text}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+                <p class="not-results">{diagrams.disclaimer}</p>
+              </div>
+            )}
+
+            {block.visual === 'cuts' && (
+              <figure class="cut" aria-labelledby="cut-title">
+                <h3 class="h3 cut__title" id="cut-title">
+                  {cut.heading}
+                </h3>
+                <ul class="cut__list">
+                  {cut.cards.map((card, j) => (
+                    <li class="cut__row" data-reveal style={`--i:${j}`}>
+                      <p class="cut__idea">
+                        <span class="visually-hidden">Cut: </span>
+                        <s>{card.idea}</s>
+                      </p>
+                      <Arrow />
+                      <p class="cut__why">{card.why}</p>
+                    </li>
+                  ))}
+                </ul>
+                <figcaption>{cut.caption}</figcaption>
+              </figure>
+            )}
+
+            {block.list && block.visual !== 'map' && (
+              <ul class="dots">
+                {block.list.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+
+            {block.after && (
+              <div class="ch__text">
+                {block.after.map((line) => (
+                  <p class="body ch__after">{line}</p>
+                ))}
+              </div>
+            )}
+          </section>
+        ))
+      }
+
+      <section class="landed" id="landed" aria-labelledby="landed-title">
+        <header class="ch__head">
+          <span class="ch__num ch__num--accent" aria-hidden="true">
+            {num(blocks.length)}
+          </span>
+          <p class="label">Destination</p>
+          <h2 class="h2 ch__title" id="landed-title">{landed.title}</h2>
+        </header>
+
+        <div class="landed__card">
+          <p class="label">{landed.questionLabel}</p>
+          <p class="landed__question">{landed.question}</p>
+        </div>
+
+        <figure class="landed__plan">
+          <p class="label">{landed.planLabel}</p>
+          <p class="body">{landed.plan}</p>
+          <Grid2x2 notes={false} />
+          <figcaption>{landed.caption}</figcaption>
+        </figure>
+
+        <div class="ch__text">
+          {landed.after.map((line) => <p class="body">{line}</p>)}
+        </div>
+
+        {
+          milestones.length > 0 && (
+            <div class="miles">
+              <p class="label">{landed.milestonesLabel}</p>
+              <ol class="miles__list">
+                {milestones.map((m) => (
+                  <li>
+                    <span class="miles__when">{m.when}</span>
+                    <span class="miles__text">{m.text}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )
+        }
+      </section>
+    </div>
+  </div>
+
+  <NextCards cards={ideation.next} />
+</Base>
+
+<style>
+  /* ---------------- the funnel ---------------- */
+  .funnel-sec {
+    padding-block: clamp(3.5rem, 8vw, 7rem);
+    border-block: 1px solid var(--line);
+    background:
+      radial-gradient(60% 80% at 50% 100%, rgba(101, 148, 74, 0.1), transparent 70%),
+      var(--bg);
+  }
+
+  .funnel-sec .section-head {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .funnel__bars {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+  }
+
+  .funnel__bars li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    width: calc(100% - var(--n) * 4%);
+    padding: clamp(0.95rem, 1.8vw, 1.4rem) clamp(1.1rem, 2.2vw, 1.85rem);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-raise);
+    font-size: clamp(1rem, 1.7vw, 1.4rem);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .funnel__bars .num {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+  }
+
+  .funnel__bars li:last-child {
+    border-color: var(--accent);
+    background: var(--accent-wash);
+    box-shadow: 0 0 3rem -0.5rem rgba(101, 148, 74, 0.45);
+  }
+
+  .funnel__bars li:last-child .num {
+    color: var(--accent-hi);
+  }
+
+  .funnel figcaption {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  @media (max-width: 40em) {
+    .funnel__bars li {
+      border-radius: 1rem;
+    }
+  }
+
+  @media (min-width: 48em) {
+    .funnel__bars li {
+      width: calc(100% - var(--n) * 11%);
+    }
+  }
+
+  /* ---------------- layout: rail + chapters ---------------- */
+  .ch-wrap {
+    display: grid;
+    gap: 2rem;
+    padding-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .rail {
+    display: grid;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .rail__list {
+    display: grid;
+    gap: 0.15rem;
+    counter-reset: none;
+  }
+
+  .rail__list a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding-block: 0.55rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    line-height: 1.3;
+    transition: color 0.25s;
+  }
+
+  .rail__list .num {
+    flex: none;
+    width: 1.6rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    transition: color 0.25s;
+  }
+
+  .rail__list a:hover,
+  .rail__list a[aria-current] {
+    color: var(--ink);
+  }
+
+  .rail__list a[aria-current] .num {
+    color: var(--accent-hi);
+  }
+
+  @media (min-width: 64em) {
+    .ch-wrap {
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .rail {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+      padding: 0;
+      border: 0;
+    }
+
+    .rail__list {
+      gap: 0;
+      border-left: 1px solid var(--line);
+    }
+
+    .rail__list a {
+      position: relative;
+      padding-left: 1.1rem;
+      font-size: 0.95rem;
+    }
+
+    .rail__list a::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      width: 2px;
+      background: transparent;
+      transition: background 0.25s;
+    }
+
+    .rail__list a[aria-current]::before {
+      background: var(--accent-hi);
+    }
+  }
+
+  /* ---------------- a chapter ---------------- */
+  .chapters {
+    display: grid;
+    min-width: 0;
+  }
+
+  .ch,
+  .landed {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+    border-top: 1px solid var(--line);
+    scroll-margin-top: calc(var(--nav-h) + 1rem);
+  }
+
+  .ch:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .ch__head {
+    position: relative;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .ch__num {
+    font-size: clamp(4.5rem, 11vw, 8.5rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    font-weight: 300;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(245, 245, 241, 0.5);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ch__num--accent {
+    -webkit-text-stroke-color: var(--accent-hi);
+  }
+
+  .ch__title {
+    max-width: 18ch;
+  }
+
+  .ch__text {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .ch__text .body {
+    font-size: clamp(1.05rem, 1.25vw, 1.15rem);
+    line-height: 1.7;
+  }
+
+  .ch__text .body + .body {
+    margin-top: 0;
+  }
+
+  .ch__after {
+    color: var(--ink);
+  }
+
+  .dots {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--ink-2);
+  }
+
+  .dots li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  .dots li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: var(--ink-dim);
+  }
+
+  /* ---------------- 01 the pull quote ---------------- */
+  .pull {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding-left: clamp(1.25rem, 3vw, 2.25rem);
+    border-left: 3px solid var(--accent-hi);
+  }
+
+  .pull p {
+    font-size: clamp(1.6rem, 3.6vw, 3.1rem);
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  /* ---------------- 02 the idea map ---------------- */
+  .map__box {
+    position: relative;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .map__lines {
+    display: none;
+  }
+
+  .map__center {
+    justify-self: start;
+    padding: 0.9rem 1.4rem;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .map__nodes {
+    display: grid;
+    gap: 0.6rem;
+    margin-left: 1.4rem;
+    padding-left: 1.2rem;
+    border-left: 1px solid var(--line-2);
+  }
+
+  .map__nodes li {
+    position: relative;
+    padding: 0.8rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+    background: var(--bg-raise);
+    color: var(--ink-2);
+    line-height: 1.35;
+  }
+
+  .map__nodes li::first-letter {
+    text-transform: uppercase;
+  }
+
+  .map__nodes li::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.2rem - 1px);
+    top: 50%;
+    width: 1.2rem;
+    border-top: 1px solid var(--line-2);
+  }
+
+  @media (min-width: 52em) {
+    .map__box {
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(245, 245, 241, 0.05), transparent 55%),
+        var(--bg);
+    }
+
+    .map__lines {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .map__lines line {
+      stroke: var(--line-2);
+      stroke-width: 1;
+      stroke-dasharray: 3 5;
+    }
+
+    .map__center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      max-width: 13rem;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 0.6rem var(--bg);
+    }
+
+    /* Equal rows, so the middle row leaves room for the centre idea. */
+    .map__nodes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(3, 1fr);
+      gap: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 3vw, 2.5rem);
+      margin: 0;
+      padding: clamp(1.25rem, 3vw, 2.25rem);
+      border: 0;
+    }
+
+    .map__nodes li {
+      grid-column: var(--c);
+      grid-row: var(--r);
+      align-self: center;
+      justify-self: center;
+      z-index: 1;
+      width: min(15rem, 100%);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .map__nodes li::before {
+      display: none;
+    }
+  }
+
+  /* ---------------- 03 the heat scale ---------------- */
+  .heat {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .heat__methods {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .heat__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .heat__pill {
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    color: var(--ink);
+  }
+
+  .heat__pill--cut {
+    border-color: var(--line);
+    color: var(--ink-3);
+  }
+
+  .heat__pill s {
+    text-decoration-color: var(--heat);
+    text-decoration-thickness: 2px;
+  }
+
+  .scale {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-raise);
+  }
+
+  .heat {
+    --heat: #e08a4f;
+  }
+
+  .scale__track {
+    position: relative;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .scale__bar {
+    position: relative;
+    height: 0.75rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1d2a33, #3a4750 40%, #6b4a33 70%, var(--heat));
+    overflow: hidden;
+  }
+
+  /* Everything above the point where PLA starts to soften. */
+  .scale__soft {
+    position: absolute;
+    inset: 0 0 0 var(--at);
+    background: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.35) 0 4px, transparent 4px 9px);
+    border-left: 2px solid var(--ink);
+  }
+
+  .scale__ends {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scale__marks {
+    display: grid;
+    gap: 0.6rem;
+    order: 3;
+  }
+
+  .scale__mark {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+
+  .scale__value {
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .scale__mark--heat .scale__value {
+    color: var(--heat);
+  }
+
+  .scale__text {
+    color: var(--ink-2);
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 40em) {
+    .scale__track {
+      padding-block: 4.25rem 3.75rem;
+    }
+
+    .scale__marks {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    .scale__mark {
+      position: absolute;
+      left: var(--at);
+      display: grid;
+      gap: 0.1rem;
+      justify-items: center;
+      text-align: center;
+      translate: -50% 0;
+    }
+
+    .scale__mark.is-last {
+      justify-items: end;
+      text-align: right;
+      translate: -100% 0;
+    }
+
+    /* the tick down to the bar */
+    .scale__mark::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      width: 1px;
+      height: 1.2rem;
+      background: var(--line-2);
+    }
+
+    .scale__mark.is-last::after {
+      left: auto;
+      right: 0;
+    }
+
+    .scale__mark.is-above {
+      bottom: calc(100% - 4.25rem + 0.4rem);
+    }
+
+    .scale__mark.is-above::after {
+      top: 100%;
+    }
+
+    .scale__mark.is-below {
+      top: calc(4.25rem + 0.75rem + 0.4rem);
+    }
+
+    .scale__mark.is-below::after {
+      bottom: 100%;
+    }
+
+    .scale__mark.is-above,
+    .scale__mark.is-below {
+      padding-block: 0;
+    }
+
+    .scale__mark.is-above {
+      margin-bottom: 1.2rem;
+    }
+
+    .scale__mark.is-below {
+      margin-top: 1.2rem;
+    }
+
+    .scale__value {
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+
+    .scale__ends {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(4.25rem + 0.75rem + 0.4rem);
+      pointer-events: none;
+    }
+
+    .scale__ends span:last-child {
+      visibility: hidden;
+    }
+  }
+
+  /* ---------------- 04 the two drawings ---------------- */
+  .dg {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .dg__pair {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .dg__fig {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-raise);
+  }
+
+  .dg__fig figcaption {
+    margin-top: 0;
+    color: var(--ink-2);
+  }
+
+  .dg__fig--sealed {
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+
+  .dg__fig--sealed .tag {
+    border-color: var(--accent);
+    color: var(--accent-hi);
+  }
+
+  @media (min-width: 48em) {
+    .dg__pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* ---------------- 05 what I cut ---------------- */
+  .cut {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .cut__list {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .cut__row {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cut__row :global(.arrow) {
+    display: none;
+    color: var(--accent-hi);
+  }
+
+  .cut__idea {
+    font-size: clamp(1.3rem, 2.3vw, 1.8rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--ink-3);
+  }
+
+  .cut__idea s {
+    text-decoration-color: var(--accent-hi);
+    text-decoration-thickness: 2px;
+  }
+
+  .cut__why {
+    color: var(--ink-2);
+  }
+
+  .cut figcaption {
+    margin-top: 0;
+  }
+
+  @media (min-width: 52em) {
+    .cut__row {
+      grid-template-columns: minmax(0, 5fr) auto minmax(0, 6fr);
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .cut__row :global(.arrow) {
+      display: block;
+    }
+  }
+
+  /* ---------------- 06 where I landed ---------------- */
+  .landed__card {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(90% 120% at 0% 0%, rgba(101, 148, 74, 0.16), transparent 60%),
+      var(--bg-raise);
+  }
+
+  .landed__question {
+    font-size: clamp(1.35rem, 2.8vw, 2.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+    text-wrap: pretty;
+  }
+
+  .landed__plan {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .landed__plan figcaption {
+    margin-top: 0;
+  }
+
+  .miles {
+    display: grid;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .miles__list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .miles__list li {
+    display: grid;
+    gap: 0.2rem;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--accent-hi);
+  }
+
+  .miles__when {
+    font-size: 0.85rem;
+    color: var(--accent-hi);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 48em) {
+    .miles__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

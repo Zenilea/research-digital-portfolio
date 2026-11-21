@@ -2,11 +2,18 @@
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import NextCards from '../components/NextCards.astro';
+import Arrow from '../components/Arrow.astro';
 import about from '../data/about.json';
+import site from '../data/site.json';
+import home from '../data/home.json';
 import portrait from '../assets/portrait.jpg';
+import { url } from '../lib/url';
+
+const { interests, project, contact } = about;
+const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
-<Base path="/about/" title={about.meta.title} description={about.meta.description} theme="cream">
+<Base path="/about/" title={about.meta.title} description={about.meta.description}>
   <header class="who wrap">
     <p class="label" data-rise style="--i:0">{about.kicker}</p>
     <h1 class="who__name">
@@ -48,6 +55,64 @@ import portrait from '../assets/portrait.jpg';
         </dl>
       </div>
     </div>
+  </section>
+
+  <section class="cares" aria-labelledby="cares-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">{interests.label}</p>
+        <h2 class="h2" id="cares-title">{interests.heading}</h2>
+      </div>
+    </div>
+    <ul class="cares__list wrap">
+      {
+        interests.items.map((item, i) => (
+          <li class="cares__item" data-reveal style={`--i:${i}`}>
+            <span class="num">{num(i)}</span>
+            <span class="cares__word">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="proj wrap" aria-labelledby="proj-title">
+    <div class="proj__card">
+      <div class="proj__main">
+        <p class="label">{project.label}</p>
+        <h2 class="h2 proj__title" id="proj-title">{site.title}</h2>
+        <p class="lead">{site.description}</p>
+      </div>
+      <div class="proj__side">
+        <p class="label">{project.plainLabel}</p>
+        <ol class="proj__plain">
+          {
+            home.question.plain.map((line, i) => (
+              <li>
+                <span class="num">{num(i)}</span>
+                <span>{line}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="proj__actions">
+          <a class="btn" href={url(project.primary.path)}>{project.primary.label} <Arrow /></a>
+          <a class="btn btn--ghost" href={url(project.secondary.path)}>{project.secondary.label}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact wrap" id="contact" aria-labelledby="contact-title">
+    <p class="label">{contact.label}</p>
+    <h2 class="h2" id="contact-title">{contact.heading}</h2>
+    <p class="contact__line">
+      <span class="contact__kind">{contact.emailLabel}</span>
+      <a class="contact__email" href={`mailto:${site.email}`}>
+        {site.email}
+        <Arrow />
+      </a>
+    </p>
   </section>
 
   <NextCards cards={about.next} />
@@ -167,6 +232,142 @@ import portrait from '../assets/portrait.jpg';
       position: sticky;
       top: calc(var(--nav-h) + 2rem);
     }
+  }
+
+  /* ---------------- what I care about ---------------- */
+  .cares {
+    padding-block: var(--section);
+    border-top: 1px solid var(--line);
+  }
+
+  .cares__list {
+    display: grid;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .cares__item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding-block: clamp(1.25rem, 3vw, 2.25rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cares__item .num {
+    flex: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  .cares__word {
+    font-size: clamp(2.6rem, 8.5vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+    transition: color 0.3s var(--ease);
+  }
+
+  /* ---------------- my project ---------------- */
+  .proj {
+    padding-bottom: var(--section);
+  }
+
+  .proj__card {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: clamp(1.5rem, 4.5vw, 4rem);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(80% 120% at 0% 0%, rgba(101, 148, 74, 0.16), transparent 60%),
+      var(--bg-raise);
+  }
+
+  .proj__main,
+  .proj__side {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  .proj__title {
+    max-width: 13ch;
+  }
+
+  .proj__main .lead {
+    max-width: 34ch;
+  }
+
+  .proj__plain {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .proj__plain li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .proj__plain .num {
+    flex: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+
+  .proj__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 60em) {
+    .proj__card {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    }
+  }
+
+  /* ---------------- contact ---------------- */
+  .contact {
+    display: grid;
+    gap: 1.25rem;
+    padding-bottom: var(--section);
+  }
+
+  .contact__line {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .contact__kind {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+  }
+
+  .contact__email {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    justify-self: start;
+    max-width: 100%;
+    font-size: clamp(1.35rem, 4.6vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    overflow-wrap: anywhere;
+    text-decoration-color: var(--accent-hi);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+  }
+
+  .contact__email:hover {
+    color: var(--accent-hi);
   }
 
   :global(html.motion) [data-rise] {

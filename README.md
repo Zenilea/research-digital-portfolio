@@ -8,6 +8,19 @@ Live site: https://zenilea.github.io/research-digital-portfolio/
 It is a static site built with [Astro](https://astro.build). Every push to `main` rebuilds it
 and publishes it to GitHub Pages.
 
+## Pages
+
+The live site has three pages: **Home**, **Ideation** and **About me**. The whole site uses one
+true-black theme (`--bg: #000` in `src/styles/global.css`).
+
+How it works, Research and Process are built but hidden for now. Astro skips any page file whose
+name starts with `_`, so they are `src/pages/_how-it-works.astro`, `_research.astro` and
+`_process.astro`. To bring one back:
+
+1. Rename the file without the `_`.
+2. Move its menu entry from `navHidden` to `nav` in `src/data/site.json`.
+3. Run `npm run verify`. That page's browser tests switch back on by themselves.
+
 ## Where the words live
 
 The text is kept apart from the layout, so most edits are one line in one file.
@@ -16,12 +29,17 @@ The text is kept apart from the layout, so most edits are one line in one file.
 | --- | --- |
 | My name, the title in the browser tab, "Last updated", the nav | `src/data/site.json` |
 | Home, including the big hero title (`titleLines`) | `src/data/home.json` |
-| How it works | `src/data/how.json` |
-| Research page text, key sources, the gap table | `src/data/research.json` |
-| The literature review | `src/writing/literature-review.md` |
-| Process, the plan, the timeline, the results list | `src/data/process.json` |
-| About | `src/data/about.json` |
+| Ideation: the funnel, the five chapters, what I cut, where I landed | `src/data/ideation.json` |
+| About me, including the three interests and the project card | `src/data/about.json` |
 | The portrait | `src/assets/portrait.jpg` (4:5, already black and white) |
+| How it works (hidden) | `src/data/how.json` |
+| Research page text, key sources, the gap table (hidden) | `src/data/research.json` |
+| The literature review (hidden) | `src/writing/literature-review.md` |
+| Process: the plan, the timeline, the results list (hidden) | `src/data/process.json` |
+
+The Ideation story is in one place, `ideation.json`. The hidden Process page reads it from there
+too. The two dated milestones on Ideation come from the timeline in `process.json`: any timeline
+item with `"ideation": true` shows on Ideation.
 
 Common edits:
 
@@ -32,7 +50,7 @@ Common edits:
   The same words are in `title` in `site.json`, which is used for the browser tab and the share image.
   Change both, then run `npm run images`.
 - **Hero title font.** In `site.json`, set `heroTitleFont` to `"sans"` or `"serif"`.
-- **Results.** When the experiment has run, the Results section in `src/pages/process.astro`
+- **Results.** When the experiment has run, the Results section in `src/pages/_process.astro`
   is the place for the numbers and graphs. Until then it says nothing has been measured.
 
 ## Sources
@@ -80,7 +98,8 @@ reduced motion). Those need Playwright: `npm i -D playwright` and `npx playwrigh
   literature review and the reference list. My treatment is **disinfection**. The word
   "sterility" is allowed, because the site says the study is not about it.
 - the phrase "no research exists"
-- an email address or phone number, in the text or in a link
+- an email address or phone number, in the text or in a link. The one exception is my own
+  address, set as `email` in `src/data/site.json`. It shows on About and in the footer.
 - an image without alt text, a link that goes nowhere, or two parts of a page with the same id
 - an idea diagram without the label "Illustration of the idea, not results."
 
