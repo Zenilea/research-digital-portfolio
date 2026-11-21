@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "title": "About",
+    "description": "About Adhitya Harisudhakar, a junior at Innovation Academy studying epoxy-sealed 3D-printed PLA for AP Research."
+  },
+  "kicker": "About",
+  "nameLines": ["Adhitya", "Harisudhakar"],
+  "portraitAlt": "Black and white portrait of Adhitya Harisudhakar standing outdoors, with a lake and hills in the background.",
+  "bioLabel": "In my words",
+  "bio": [
+    "My name is Adhitya Harisudhakar. I am a junior at Innovation Academy, and I am deeply passionate about medicine, technology, and engineering.",
+    "Combining my passions, I have dedicated my junior year's research project to analyzing how 3D printing has the potential to be used as an alternative to stainless steel in medical facilities located in low-income areas.",
+    "Specifically, I want to evaluate how well 3D-printed parts hold up against stress and liquids, and how those factors are affected by surface coatings."
+  ],
+  "factsLabel": "The basics",
+  "facts": [
+    { "label": "School", "value": "Innovation Academy" },
+    { "label": "Grade", "value": "Junior" },
+    { "label": "Course", "value": "AP Research" },
+    { "label": "Project", "value": "Epoxy sealing and repeated alcohol disinfection of 3D-printed PLA" },
+    { "label": "Research teacher", "value": "Mr. Robinson" }
+  ],
+  "next": [
+    { "kicker": "Start here", "label": "The project", "path": "/" },
+    { "kicker": "Also", "label": "Process", "path": "/process/" }
+  ]
+}

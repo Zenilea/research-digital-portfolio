@@ -1,0 +1,182 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import NextCards from '../components/NextCards.astro';
+import about from '../data/about.json';
+import portrait from '../assets/portrait.jpg';
+---
+
+<Base path="/about/" title={about.meta.title} description={about.meta.description} theme="cream">
+  <header class="who wrap">
+    <p class="label" data-rise style="--i:0">{about.kicker}</p>
+    <h1 class="who__name">
+      {about.nameLines.map((line, i) => <span data-rise style={`--i:${i + 1}`}>{line} </span>)}
+    </h1>
+  </header>
+
+  <section class="me wrap" aria-label="About me">
+    <figure class="me__photo">
+      <Picture
+        src={portrait}
+        formats={['avif', 'webp']}
+        widths={[400, 640, 880, 1120]}
+        sizes="(min-width: 60em) 38vw, (min-width: 40em) 60vw, 100vw"
+        alt={about.portraitAlt}
+        loading="eager"
+        fetchpriority="high"
+        quality={55}
+      />
+    </figure>
+
+    <div class="me__text">
+      <div class="me__bio">
+        <p class="label">{about.bioLabel}</p>
+        {about.bio.map((line, i) => <p class:list={[i === 0 ? 'me__first' : 'body']}>{line}</p>)}
+      </div>
+
+      <div class="me__facts">
+        <p class="label" id="facts-title">{about.factsLabel}</p>
+        <dl class="facts" aria-labelledby="facts-title">
+          {
+            about.facts.map((fact) => (
+              <div class="facts__row">
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <NextCards cards={about.next} />
+</Base>
+
+<style>
+  .who {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    padding-top: clamp(3.5rem, 9vw, 7rem);
+    padding-bottom: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  /* Sized so the longer line always fits the page width. */
+  .who__name {
+    font-size: clamp(2.9rem, 14.2vw, 14rem);
+    line-height: 0.86;
+    letter-spacing: -0.065em;
+  }
+
+  .who__name span {
+    display: block;
+  }
+
+  .who__name span:last-child {
+    color: var(--ink-dim);
+  }
+
+  .me {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-bottom: var(--section);
+  }
+
+  .me__photo {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--bg-sunk);
+    aspect-ratio: 4 / 5;
+  }
+
+  .me__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+
+  .me__text {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-content: start;
+  }
+
+  .me__bio {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .me__first {
+    font-size: clamp(1.5rem, 3vw, 2.6rem);
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+    text-wrap: pretty;
+  }
+
+  .me__bio .body {
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    line-height: 1.5;
+    max-width: 54ch;
+  }
+
+  .me__bio .body + .body {
+    margin-top: 0;
+  }
+
+  .me__facts {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .facts {
+    border-top: 1px solid var(--line-2);
+  }
+
+  .facts__row {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 2fr) minmax(0, 5fr);
+    gap: 1rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .facts dt {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    padding-top: 0.12rem;
+  }
+
+  .facts dd {
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 40em) and (max-width: 59.99em) {
+    .me__photo {
+      max-width: 30rem;
+    }
+  }
+
+  @media (min-width: 60em) {
+    .me {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: start;
+    }
+
+    .me__photo {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+    }
+  }
+
+  :global(html.motion) [data-rise] {
+    animation: who-rise 0.9s var(--ease) calc(var(--i) * 90ms) both;
+  }
+
+  @keyframes who-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+</style>
