@@ -9,10 +9,12 @@
     "build": "astro build",
     "preview": "astro preview",
     "sources": "node scripts/build-sources.mjs",
+    "images": "node scripts/make-images.mjs",
     "check": "node scripts/check-dist.mjs",
-    "test": "node --test tests/sources.test.mjs",
-    "verify": "npm run build && npm run check && npm run test && npm run test:e2e",
-    "test:e2e": "node --test tests/e2e.test.mjs"
+    "test": "node --test tests/sources.test.mjs tests/check.test.mjs",
+    "test:e2e": "node --test tests/e2e.test.mjs",
+    "build:ci": "astro build && node scripts/check-dist.mjs && npm test",
+    "verify": "npm run build:ci && npm run test:e2e"
   },
   "engines": {
     "node": ">=22"
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "exceljs": "^4.4.0",
+    "parse5": "^8.1.1",
     "sharp": "^0.35.5"
   }
 }

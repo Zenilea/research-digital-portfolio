@@ -1,0 +1,44 @@
+# Builds the site and publishes it to GitHub Pages every time `main` changes.
+# One-time setup on GitHub: Settings > Pages > Source: "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you run it by hand from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If two pushes land close together, finish the first deploy before starting the next.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v7
+      - name: Install, build, check and upload the site
+        uses: withastro/action@v6
+        with:
+          node-version: 22
+          # Builds the site, then runs the rule check and the data tests.
+          # If either fails, nothing is published.
+          build-cmd: npm run build:ci
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
