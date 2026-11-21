@@ -93,3 +93,27 @@ test('a share image that was never made is caught', () => {
   const problems = run(page('<p>Hi</p>'), { exists: (urlPath) => !urlPath.endsWith('/og.png') });
   assert.ok(has(problems, 'og:image'));
 });
+
+test('every spelling of the banned word family is caught, but "sterility" is not', () => {
+  for (const word of ['sterilant', 'unsterile', 'non-sterile', 'sterilzation', 'Sterilising', 'sterilizer']) {
+    assert.ok(has(run(page(`<p>The bars were ${word}.</p>`)), 'banned word'), `expected "${word}" to be caught`);
+  }
+  assert.deepEqual(run(page('<p>It cannot prove patient safety, sterility, or biocompatibility.</p>')), []);
+});
+
+test('a mail or phone link is caught even when the address is not in the text', () => {
+  assert.ok(has(run(page('<a href="mailto:someone@example.com">Write to me</a>')), 'email'));
+  assert.ok(has(run(page('<a href="tel:+15551234567">Call me</a>')), 'phone'));
+});
+
+test('ordinary words and table cells are not mistaken for placeholders or phone numbers', () => {
+  assert.deepEqual(run(page('<p>Nan, L., and Todo, M. (2021) tested printed bars.</p>')), []);
+  assert.deepEqual(run(page('<table><tr><td>120</td><td>135</td><td>1500</td></tr></table>')), []);
+  assert.ok(has(run(page('<p>Call 555 123 4567</p>')), 'phone'));
+  assert.ok(has(run(page('<p>Mean: NaN</p>')), 'placeholder'));
+});
+
+test('two elements with the same id are caught', () => {
+  const problems = run(page('<h2 id="measure-title">Measure</h2><h2 id="measure-title">What gets measured</h2>'));
+  assert.ok(has(problems, 'duplicate id "measure-title"'));
+});

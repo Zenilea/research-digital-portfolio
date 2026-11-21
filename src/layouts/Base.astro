@@ -7,6 +7,8 @@ import { url, absoluteUrl } from '../lib/url';
 
 import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 import geistLatinExt from '@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2?url';
+import geistItalic from '@fontsource-variable/geist/files/geist-latin-wght-italic.woff2?url';
+import geistItalicExt from '@fontsource-variable/geist/files/geist-latin-ext-wght-italic.woff2?url';
 import serifLatin from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
 
 interface Props {
@@ -33,9 +35,13 @@ const themeColor = theme === 'cream' ? '#f3f2ec' : '#0b0a09';
 // file (for names like Vaňková) loads only on pages that need it.
 // The two "Fallback" faces resize Arial and Times New Roman to the measured
 // width and height of the real fonts, so text does not jump when they load.
+// The italic files are for titles in the reference list. A browser only
+// downloads them on a page that has italic text.
 const fontCss = `
 @font-face{font-family:'Geist Variable';font-style:normal;font-display:swap;font-weight:100 900;src:url(${geistLatinExt}) format('woff2-variations');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:'Geist Variable';font-style:normal;font-display:swap;font-weight:100 900;src:url(${geistLatin}) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Geist Variable';font-style:italic;font-display:swap;font-weight:100 900;src:url(${geistItalicExt}) format('woff2-variations');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Geist Variable';font-style:italic;font-display:swap;font-weight:100 900;src:url(${geistItalic}) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'Geist Fallback';src:local('Arial'),local('Liberation Sans');size-adjust:105.85%;ascent-override:94.95%;descent-override:27.87%;line-gap-override:0%}
 ${
   serif
@@ -86,6 +92,11 @@ ${
         try {
           if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('motion');
         } catch (e) {}
+        // If the site's script file never arrives (a blocked or dropped request),
+        // go back to the plain page, so the menu and every section still work.
+        window.addEventListener('load', function () {
+          if (!window.__siteReady) d.classList.remove('js', 'motion', 'reveal-on');
+        });
       })(document.documentElement);
     </script>
   </head>

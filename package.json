@@ -11,13 +11,13 @@
     "sources": "node scripts/build-sources.mjs",
     "images": "node scripts/make-images.mjs",
     "check": "node scripts/check-dist.mjs",
-    "test": "node --test tests/sources.test.mjs tests/check.test.mjs",
+    "test": "node --test tests/sources.test.mjs tests/check.test.mjs tests/content.test.mjs",
     "test:e2e": "node --test tests/e2e.test.mjs",
     "build:ci": "astro build && node scripts/check-dist.mjs && npm test",
     "verify": "npm run build:ci && npm run test:e2e"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.23.4"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

@@ -3,13 +3,15 @@
 //   npm run build && npm run check
 //
 // It fails the build if a page breaks one of the site's rules:
-//   - the word "sterilization" (or "sterile") used anywhere outside other
-//     people's wording (source titles, the literature review, the reference list)
+//   - the word "sterilization" (or "sterile", "sterilant", any word built on
+//     "steril" except "sterility") used anywhere outside other people's wording
+//     (source titles, the literature review, the reference list)
 //   - the phrase "no research exists"
-//   - an email address or phone number on a page
+//   - an email address or phone number on a page, or a mailto: or tel: link
 //   - an image without alt text
 //   - a link that skips the base path or points at a page or section that is not there
 //   - a new-tab link without rel="noopener"
+//   - two elements with the same id
 //   - a page without a title, description, canonical link or share image
 //   - an idea diagram without the "not results" label
 import { readFile, readdir } from 'node:fs/promises';
@@ -18,15 +20,20 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'parse5';
 
-export const SITE = 'https://zenilea.github.io';
-export const BASE = '/research-digital-portfolio';
+import { SITE, BASE } from '../site.config.mjs';
 
-const BANNED = /steriliz|sterilis|\bsterile\b/i;
+export { SITE, BASE };
+
+// Any word built on "steril" (sterilize, sterilise, sterile, sterilant, unsterile,
+// misspellings too). "Sterility" is allowed: the site says the study is not about it.
+const BANNED = /steril(?!ity\b)/i;
 const NO_RESEARCH = /no research exists/i;
 const EMAIL = /[\w.+-]+@[\w-]+\.[a-z]{2,}/i;
 const PHONE = /(?<![\d./-])\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}(?![\d./-])/;
 // Signs that a value failed to render. The plain word "undefined" in a sentence is fine.
-const PLACEHOLDER = /: undefined\b|\bundefined (of|undefined)\b|\bNaN\b|\[object Object\]|lorem ipsum|\bTODO\b/i;
+const PLACEHOLDER = /: undefined\b|\bundefined (of|undefined)\b|\[object Object\]|lorem ipsum/i;
+// Exact capitals only, so the surnames Nan and Todo in a reference are left alone.
+const PLACEHOLDER_EXACT = /\bNaN\b|\bTODO\b/;
 const EMPTY_VALUE = /^(undefined|null|NaN)$/;
 const IDEA_LABEL = /Illustration of the idea, not results\./;
 
@@ -82,12 +89,18 @@ export function checkHtml(html, { file, exists = () => true, hasId = () => true 
       text.push(value);
       if (!quoted && BANNED.test(value)) fail(`banned word in text: "${value.trim().slice(0, 80)}"`);
       if (EMPTY_VALUE.test(value.trim())) fail(`placeholder text on the page: "${value.trim()}"`);
+      // One piece of text at a time, so three numbers in a table row are not read as a phone number.
+      const phone = value.match(PHONE);
+      if (phone) fail(`phone number on the page: ${phone[0]}`);
       continue;
     }
     if (!node.attrs) continue;
 
     const id = attr(node, 'id');
-    if (id) ids.add(id);
+    if (id) {
+      if (ids.has(id)) fail(`duplicate id "${id}"`);
+      ids.add(id);
+    }
     if (node.nodeName === 'html') lang = attr(node, 'lang');
     if (node.nodeName === 'meta') {
       const key = attr(node, 'name') ?? attr(node, 'property');
@@ -107,6 +120,10 @@ export function checkHtml(html, { file, exists = () => true, hasId = () => true 
     if (node.nodeName === 'a' && attr(node, 'target') === '_blank') {
       if (!/\bnoopener\b/.test(attr(node, 'rel') ?? '')) fail(`new-tab link needs rel="noopener": ${attr(node, 'href')}`);
     }
+
+    const href = attr(node, 'href') ?? '';
+    if (/^mailto:/i.test(href)) fail(`email address in a link: ${href}`);
+    if (/^(tel|sms):/i.test(href)) fail(`phone number in a link: ${href}`);
 
     for (const name of ['href', 'src']) {
       const value = attr(node, name);
@@ -144,9 +161,7 @@ export function checkHtml(html, { file, exists = () => true, hasId = () => true 
   if (NO_RESEARCH.test(words)) fail('the phrase "no research exists" is on the page');
   const email = words.match(EMAIL);
   if (email) fail(`email address on the page: ${email[0]}`);
-  const phone = words.match(PHONE);
-  if (phone) fail(`phone number on the page: ${phone[0]}`);
-  const placeholder = words.match(PLACEHOLDER);
+  const placeholder = words.match(PLACEHOLDER) ?? words.match(PLACEHOLDER_EXACT);
   if (placeholder) fail(`placeholder text on the page: "${placeholder[0]}"`);
   if (hasIdeaDiagram && !IDEA_LABEL.test(words)) {
     fail('an idea diagram is on the page without the label "Illustration of the idea, not results."');

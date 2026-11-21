@@ -12,7 +12,8 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const BASE = '/research-digital-portfolio';
+import { BASE } from '../site.config.mjs';
+
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const dist = path.join(root, 'dist');
 const sources = JSON.parse(await readFile(path.join(root, 'src/data/sources.json'), 'utf8'));
@@ -253,5 +254,123 @@ test('Keyboard: the first Tab lands on a visible "Skip to content" link', { skip
 test('A wrong address shows the 404 page', { skip }, async () => {
   const { page, close } = await open('/nope/');
   assert.ok(await page.getByText("This page isn't here.").isVisible());
+  await close();
+});
+
+// ---- Found by the whole-site review ----------------------------------------
+
+const SHORT_SCREENS = [
+  [320, 568],
+  [375, 548],
+  [1366, 600],
+  [1920, 600],
+];
+
+for (const [width, height] of SHORT_SCREENS) {
+  test(`Home at ${width}x${height}: the "not results" label is never cut off`, { skip }, async () => {
+    const { page, close } = await open('/', { width, height });
+    const story = page.locator('[data-story]');
+    const top = await story.evaluate((el) => el.getBoundingClientRect().top + window.scrollY);
+    const length = await story.evaluate((el) => el.offsetHeight);
+    for (const part of [0.05, 0.3, 0.55, 0.8]) {
+      await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), top + length * part);
+      await page.waitForTimeout(700);
+      const seen = await page.evaluate(() => {
+        const story = document.querySelector('[data-story]');
+        if (!story.classList.contains('is-live')) return { pinned: false };
+        const pin = story.querySelector('.story__pin').getBoundingClientRect();
+        const inside = (el) => {
+          const box = el.getBoundingClientRect();
+          return box.height > 0 && box.top >= pin.top - 1 && box.bottom <= Math.min(pin.bottom, window.innerHeight) + 1;
+        };
+        const active = story.querySelector('[data-story-step].is-active');
+        return {
+          pinned: true,
+          label: inside(story.querySelector('.not-results')),
+          text: inside(active.querySelector('.story__text')),
+          drawing: active.querySelector('svg').getBoundingClientRect().height,
+        };
+      });
+      if (!seen.pinned) continue; // a plain list: the label sits in the page like any other line
+      assert.ok(seen.label, `label is cut off at ${Math.round(part * 100)}% of the story`);
+      assert.ok(seen.text, `step text is cut off at ${Math.round(part * 100)}% of the story`);
+      assert.ok(seen.drawing >= 100, `the drawing is only ${Math.round(seen.drawing)}px tall`);
+    }
+    await close();
+  });
+}
+
+test('Home: turning a phone sideways never leaves the story pinned and cut off', { skip }, async () => {
+  const { page, close } = await open('/', { width: 390, height: 844 });
+  const story = page.locator('[data-story]');
+  assert.ok(await story.evaluate((el) => el.classList.contains('is-live')), 'pinned on a tall phone');
+  await page.evaluate(() => {
+    const el = document.querySelector('[data-story]');
+    window.scrollTo({ top: el.offsetTop + el.offsetHeight * 0.4, behavior: 'instant' });
+  });
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.waitForTimeout(600);
+  const ok = await page.evaluate(() => {
+    const el = document.querySelector('[data-story]');
+    if (!el.classList.contains('is-live')) return true;
+    const pin = el.querySelector('.story__pin');
+    return pin.scrollHeight <= pin.clientHeight + 1;
+  });
+  assert.ok(ok, 'after rotating, the story is either a plain list or fits its pinned frame');
+  await close();
+});
+
+test('Research: titles in the reference list are set in a real italic', { skip }, async () => {
+  const { page, close } = await open('/research/');
+  await page.locator('#references').scrollIntoViewIfNeeded();
+  await page.evaluate(() => document.fonts.ready);
+  const result = await page.evaluate(async () => {
+    const em = document.querySelector('#references em');
+    await document.fonts.load(`italic 16px ${getComputedStyle(em).fontFamily}`);
+    return {
+      style: getComputedStyle(em).fontStyle,
+      italicFaceLoaded: [...document.fonts].some((face) => face.style === 'italic' && face.status === 'loaded'),
+    };
+  });
+  assert.equal(result.style, 'italic');
+  assert.ok(result.italicFaceLoaded, 'an italic font file is loaded for the titles');
+  await close();
+});
+
+test('Research: a link to a source works even when a filter is hiding it', { skip }, async () => {
+  const { page, close } = await open('/research/');
+  const target = published.find((source) => source.category !== 'ethics');
+  await page.locator('[data-filter="ethics"]').click();
+  await page.evaluate((id) => {
+    window.location.hash = `#src-${id}`;
+  }, target.id);
+  const row = page.locator(`#src-${target.id}`);
+  await page.waitForFunction((id) => document.getElementById(`src-${id}`).open, target.id);
+  assert.ok(await row.isVisible(), 'the row is shown');
+  assert.equal(await page.locator('[data-filter="all"]').getAttribute('aria-pressed'), 'true');
+  assert.match(await page.locator('[data-filter-status]').innerText(), new RegExp(`Showing ${published.length} of`));
+  await close();
+});
+
+test('If the script file fails to load, the phone menu and the pages still work', { skip }, async () => {
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 800 } });
+  const page = await ctx.newPage();
+  await page.route('**/_astro/*.js', (route) => route.abort());
+  await page.goto(`${origin}${BASE}/research/`, { waitUntil: 'load' });
+  await page.waitForTimeout(300);
+  assert.ok(await page.locator('.nav__links a').first().isVisible(), 'nav links are shown without the script');
+  assert.ok(!(await page.locator('[data-nav-toggle]').isVisible()), 'the dead Menu button is hidden');
+  assert.ok(!(await page.locator('[data-filter]').first().isVisible()), 'filter chips that cannot work are hidden');
+  assert.equal(await hiddenReveals(page), 0);
+  await ctx.close();
+});
+
+test('How it works: the two "measure" headings have their own ids', { skip }, async () => {
+  const { page, close } = await open('/how-it-works/');
+  const repeated = await page.evaluate(() => {
+    const seen = new Set();
+    return [...document.querySelectorAll('[id]')].map((el) => el.id).filter((id) => seen.size === seen.add(id).size);
+  });
+  assert.deepEqual(repeated, []);
   await close();
 });

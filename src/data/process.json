@@ -213,7 +213,7 @@
         ["Spare bars", "", "", "5", "Replacing failed prints"],
         ["Tweezers", "4", "1", "4", "Measured and photographed only"]
       ],
-      "total": ["In the data set", "", "", "49", ""],
+      "total": ["Main experiment total", "", "", "49", ""],
       "extra": ["Pilot bars", "", "", "8", "Phase 1 only. Not in the data set."]
     },
     "analysis": {
@@ -260,7 +260,7 @@
       { "state": "done", "when": "Oct 4, 2026", "text": "Risk assessment form written" },
       { "state": "done", "when": "Oct 11, 2026", "text": "Literature review, draft 4" },
       { "state": "done", "when": "Oct 2026", "text": "Research plan form revised and materials in hand" },
-      { "state": "done", "when": "Nov 2026", "text": "Bend-test rig built" },
+      { "state": "done", "when": "", "text": "Bend-test rig built" },
       { "state": "next", "when": "", "text": "Pilot: print 8 bars and break 6" },
       { "state": "upcoming", "when": "", "text": "Print all 49 parts" },
       { "state": "upcoming", "when": "", "text": "First measurements and random assignment to groups" },

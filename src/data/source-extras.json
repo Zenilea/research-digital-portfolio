@@ -233,7 +233,7 @@
         "Tested whether repeated chemical cleaning weakens 3D-printed PLA, aimed at hospitals in low- and middle-income countries.",
         "Printed pulling-test samples at 6 different printer settings, then soaked them in Cidex OPA or a chlorine solution.",
         "Used 2 exposure patterns: 7 days straight, or 25 short cycles.",
-        "Weighed every sample before and after, then pulled them apart. A third of the treatments gained weight, up to 8.3%, but the samples with the smoothest surfaces did not change.",
+        "Weighed every sample before and after, then pulled them apart. A third of the treatments raised the median weight, by up to 8.3%, but the samples with the smoothest surfaces did not change.",
         "Strength moved in both directions: a median increase of 12.5%, and a largest decrease of 8.8%.",
         "Warns that surface pores must be kept small so soaked-in disinfectant does not transfer to people."
       ],

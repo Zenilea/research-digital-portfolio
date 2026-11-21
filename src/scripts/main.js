@@ -1,6 +1,10 @@
 // All the scroll effects on the site live here.
 // Every page is complete without this file: it only adds motion on top.
 
+// Tells the page that this file arrived. If it never does, a small check in the
+// page head puts the plain version back (see layouts/Base.astro).
+window.__siteReady = true;
+
 const root = document.documentElement;
 const motion = root.classList.contains('motion');
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
@@ -85,18 +89,52 @@ if (nav && navToggle) {
    Without this script the five steps are a plain stacked list.
 ------------------------------------------------------------------- */
 const story = document.querySelector('[data-story]');
-const roomToPin = window.matchMedia('(min-height: 30em)').matches;
-if (story && motion && roomToPin) {
+if (story && motion) {
+  const pin = story.querySelector('.story__pin');
   const steps = $$('[data-story-step]', story);
   const ticks = $$('[data-story-tick]', story);
   const fill = story.querySelector('[data-story-fill]');
   const counter = story.querySelector('[data-story-count]');
+  let live = false;
   let current = 0;
 
   story.style.setProperty('--steps', String(steps.length));
-  story.classList.add('is-live');
+
+  // Pin the story only when a whole step fits in the pinned frame: the drawing,
+  // its text and the "not results" label. On a screen too short for that
+  // (a phone held sideways, a very small window) it stays a plain list.
+  const fitStory = () => {
+    const y = window.scrollY;
+    story.classList.add('is-live', 'is-measuring');
+    const fits =
+      pin.scrollHeight <= pin.clientHeight + 1 && steps.every((step) => step.scrollHeight <= step.clientHeight + 1);
+    story.classList.remove('is-measuring');
+    if (!fits) {
+      story.classList.remove('is-live');
+      story.removeAttribute('data-step');
+      current = 0;
+    }
+    live = fits;
+    if (window.scrollY !== y) window.scrollTo({ top: y, behavior: 'instant' });
+  };
+  fitStory();
+
+  let seenWidth = window.innerWidth;
+  let seenHeight = root.clientHeight;
+  window.addEventListener(
+    'resize',
+    () => {
+      // A phone's address bar sliding away is not a new screen size.
+      if (window.innerWidth === seenWidth && root.clientHeight === seenHeight) return;
+      seenWidth = window.innerWidth;
+      seenHeight = root.clientHeight;
+      fitStory();
+    },
+    { passive: true },
+  );
 
   scrollTasks.push(() => {
+    if (!live) return;
     const rect = story.getBoundingClientRect();
     const travel = rect.height - window.innerHeight;
     const p = travel > 0 ? clamp01(-rect.top / travel) : 0;
@@ -212,6 +250,7 @@ for (const spy of $$('[data-spy]')) {
 /* ------------------------------------------------------------------
    Research: filter chips for the source library.
 ------------------------------------------------------------------- */
+const showAllSources = [];
 for (const group of $$('[data-filter-group]')) {
   const chips = $$('[data-filter]', group);
   const items = $$('[data-cat]', group);
@@ -233,6 +272,7 @@ for (const group of $$('[data-filter-group]')) {
   for (const chip of chips) {
     chip.addEventListener('click', () => apply(chip.dataset.filter));
   }
+  showAllSources.push(() => apply('all'));
 }
 
 /* ------------------------------------------------------------------
@@ -241,7 +281,12 @@ for (const group of $$('[data-filter-group]')) {
 function openLinkedRow() {
   if (window.location.hash.length < 2) return;
   const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
-  if (target && target.tagName === 'DETAILS') target.open = true;
+  if (!target || target.tagName !== 'DETAILS') return;
+  // A filter may be hiding the row. Show every source again, then go to it.
+  const filteredOut = Boolean(target.closest('[hidden]'));
+  if (filteredOut) for (const showAll of showAllSources) showAll();
+  target.open = true;
+  if (filteredOut) target.scrollIntoView({ block: 'start' });
 }
 window.addEventListener('hashchange', openLinkedRow);
 openLinkedRow();

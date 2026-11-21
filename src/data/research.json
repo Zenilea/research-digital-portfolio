@@ -5,12 +5,12 @@
   },
   "kicker": "What is already known",
   "title": "Research",
-  "lead": "What other studies found, where they stop, and every source behind this project.",
+  "lead": "What other studies found, where they stop, and the sources behind this project.",
 
   "library": {
     "label": "Source library",
-    "heading": "Every source, in one place.",
-    "intro": "Pick a row to see my notes and a link to the source. All of them were checked against the original pages in November 2026.",
+    "heading": "The sources, in one place.",
+    "intro": "Pick a row to see my notes and a link to the source. The reference details and links were checked in November 2026.",
     "filterLabel": "Show",
     "all": "All",
     "read": "Read the source",
