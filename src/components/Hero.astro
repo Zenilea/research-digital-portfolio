@@ -1,0 +1,116 @@
+---
+import site from '../data/site.json';
+import home from '../data/home.json';
+import { url } from '../lib/url';
+import Arrow from './Arrow.astro';
+import LayerField from './LayerField.astro';
+
+const { hero } = home;
+const serif = site.heroTitleFont === 'serif';
+---
+
+<section class="hero">
+  <div class="wrap hero__inner">
+    <p class="label hero__kicker" data-rise style="--i:0">{hero.kicker}</p>
+    <h1 class:list={['display hero__title', { serif }]}>
+      {hero.titleLines.map((line, i) => <span class="hero__line" data-rise style={`--i:${i + 1}`}>{line} </span>)}
+    </h1>
+    <p class="lead hero__sub" data-rise style="--i:3">{site.description}</p>
+    <div class="hero__actions" data-rise style="--i:4">
+      <a class="btn" href={url(hero.primary.path)}>{hero.primary.label} <Arrow /></a>
+      <a class="btn btn--ghost" href={url(hero.secondary.path)}>{hero.secondary.label}</a>
+    </div>
+  </div>
+
+  <LayerField />
+
+  <div class="wrap hero__corner">
+    <p>{site.name} · {site.course}</p>
+    <a href="#story">Scroll <Arrow dir="down" /></a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--nav-h));
+    min-height: calc(100svh - var(--nav-h));
+    padding-top: clamp(3rem, 9vh, 7rem);
+    overflow: hidden;
+  }
+
+  .hero__inner {
+    display: grid;
+    justify-items: start;
+    gap: clamp(1.25rem, 2.6vh, 2rem);
+  }
+
+  .hero__title {
+    max-width: 14ch;
+  }
+
+  .hero__title.serif {
+    font-size: clamp(3.4rem, 9.6vw, 9.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  .hero__sub {
+    max-width: 34ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero__corner {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(1rem, 2.5vh, 1.75rem);
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+
+  .hero__corner a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    min-height: 2.75rem;
+    text-decoration: none;
+  }
+
+  .hero__corner a:hover :global(.arrow) {
+    transform: translateY(0.2em);
+  }
+
+  /* Lines of the hero rise in one after another. */
+  :global(html.motion) [data-rise] {
+    animation: rise 0.9s var(--ease) calc(var(--i) * 90ms) both;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+
+  @media (min-width: 48em) {
+    .hero__title {
+      max-width: none;
+    }
+  }
+</style>

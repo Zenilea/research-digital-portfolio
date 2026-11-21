@@ -1,0 +1,222 @@
+---
+// The five-step idea on Home.
+// As plain HTML it is a list of five drawings with captions.
+// With JavaScript and motion allowed, main.js pins it and plays one step at a time.
+import home from '../data/home.json';
+import Arrow from './Arrow.astro';
+import CrossSection from './CrossSection.astro';
+
+const { story } = home;
+const total = String(story.steps.length).padStart(2, '0');
+---
+
+<section class="story" id="story" data-story aria-labelledby="story-title">
+  <div class="story__pin">
+    <div class="wrap story__inner">
+      <header class="story__head">
+        <h2 class="label" id="story-title">{story.label}</h2>
+        <a class="story__skip" href="#question">{story.skip} <Arrow dir="down" /></a>
+      </header>
+
+      <ol class="story__steps">
+        {
+          story.steps.map((step, i) => (
+            <li class:list={['story__step', { 'is-active': i === 0 }]} data-story-step>
+              <figure class="story__fig">
+                <CrossSection step={(i + 1) as 1 | 2 | 3 | 4 | 5} label={step.alt} />
+              </figure>
+              <div class="story__text">
+                <span class="story__n num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <p class="story__caption">{step.text}</p>
+                {step.cite && <p class="story__cite">{step.cite}</p>}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <footer class="story__foot">
+        <p class="not-results">{story.disclaimer}</p>
+        <p class="story__meter" aria-hidden="true">
+          <span class="num" data-story-count>01</span><span> / {total}</span>
+          <span class="story__bar"><span data-story-fill></span></span>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    border-top: 1px solid var(--line);
+    background: var(--bg-sunk);
+  }
+
+  .story__inner {
+    display: grid;
+    gap: clamp(1.5rem, 3.5vh, 2.75rem);
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  .story__head,
+  .story__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .story__skip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    min-height: 2.75rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+
+  .story__skip:hover :global(.arrow) {
+    transform: translateY(0.2em);
+  }
+
+  .story__steps {
+    display: grid;
+    gap: clamp(3rem, 8vw, 6rem);
+  }
+
+  .story__step {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .story__fig {
+    max-width: 56rem;
+  }
+
+  .story__text {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+
+  .story__n {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+
+  .story__caption {
+    font-size: clamp(1.5rem, 2.9vw, 2.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  .story__cite {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-3);
+    max-width: 38ch;
+  }
+
+  .story__meter {
+    display: none;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .story__bar {
+    width: clamp(4rem, 12vw, 9rem);
+    height: 2px;
+    margin-left: 0.75rem;
+    background: var(--line-2);
+  }
+
+  .story__bar span {
+    display: block;
+    height: 100%;
+    background: var(--accent-hi);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  @media (min-width: 60em) {
+    .story__step {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 5fr);
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+  }
+
+  /* ----------------------------------------------------------------
+     Pinned version. main.js adds .is-live when it is safe to.
+  ----------------------------------------------------------------- */
+  .story.is-live {
+    height: calc(var(--steps, 5) * 80vh + 100vh);
+  }
+
+  .story.is-live .story__pin {
+    position: sticky;
+    top: var(--nav-h);
+    display: grid;
+    align-items: center;
+    height: calc(100vh - var(--nav-h));
+    height: calc(100svh - var(--nav-h));
+    overflow: hidden;
+  }
+
+  .story.is-live .story__inner {
+    padding-block: clamp(1rem, 3vh, 2rem);
+  }
+
+  .story.is-live .story__step {
+    grid-area: 1 / 1;
+    pointer-events: none;
+  }
+
+  .story.is-live .story__fig {
+    opacity: 0;
+  }
+
+  .story.is-live .story__text {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 0.35s var(--ease), transform 0.5s var(--ease);
+  }
+
+  .story.is-live .story__step.is-active {
+    pointer-events: auto;
+  }
+
+  .story.is-live .is-active .story__fig {
+    opacity: 1;
+  }
+
+  .story.is-live .is-active .story__text {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.12s;
+  }
+
+  .story.is-live .story__meter {
+    display: inline-flex;
+  }
+
+  @media (max-width: 59.99em) {
+    .story.is-live .story__fig {
+      max-height: 42vh;
+    }
+
+    .story.is-live .story__fig :global(svg) {
+      max-height: 42vh;
+    }
+
+    .story.is-live .story__text {
+      min-height: 11.5rem;
+    }
+  }
+</style>

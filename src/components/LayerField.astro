@@ -1,0 +1,118 @@
+---
+// Hero artwork: a close-up of printed layers with one green line on top,
+// the seal, and a few droplets resting on it. Pure CSS, no images.
+// It is decoration, so screen readers skip it.
+---
+
+<div class="layers" aria-hidden="true">
+  <div class="layers__drops">
+    <span style="--x:14%;--s:1;--d:0s"></span>
+    <span style="--x:47%;--s:0.7;--d:0.5s"></span>
+    <span style="--x:71%;--s:1.25;--d:0.25s"></span>
+    <span style="--x:88%;--s:0.55;--d:0.8s"></span>
+  </div>
+  <div class="layers__seal"></div>
+  <div class="layers__wall">
+    <div class="layers__sheen"></div>
+  </div>
+</div>
+
+<style>
+  .layers {
+    --lh: clamp(15px, 2.1vw, 30px);
+    position: relative;
+    flex: 1 1 auto;
+    min-height: clamp(8rem, 24vh, 15rem);
+    margin-top: clamp(2.5rem, 6vh, 5rem);
+  }
+
+  /* The seal: one green line across the top of the print. */
+  .layers__seal {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--accent-hi);
+    box-shadow: 0 0 2.5rem 0 rgba(141, 184, 111, 0.35);
+    transform-origin: left;
+  }
+
+  /* The printed layers under it, fading out toward the bottom. */
+  .layers__wall {
+    position: absolute;
+    inset: 3px 0 0 0;
+    overflow: hidden;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(243, 242, 236, 0.36) 0,
+      #36332d 1.5px,
+      #211f1c calc(var(--lh) * 0.42),
+      #121110 calc(var(--lh) - 2.5px),
+      #000 var(--lh)
+    );
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, 0.6) 40%, transparent 94%);
+    mask-image: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, 0.6) 40%, transparent 94%);
+  }
+
+  /* Light catching the ridges. */
+  .layers__sheen {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 55%;
+    background: linear-gradient(100deg, transparent 20%, rgba(243, 242, 236, 0.09) 50%, transparent 80%);
+    transform: translateX(-110%);
+  }
+
+  /* Droplets beaded on the seal. */
+  .layers__drops span {
+    position: absolute;
+    left: var(--x);
+    bottom: 100%;
+    width: calc(clamp(1.9rem, 4.2vw, 3.6rem) * var(--s));
+    height: calc(clamp(0.7rem, 1.55vw, 1.3rem) * var(--s));
+    margin-bottom: -1px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: radial-gradient(120% 140% at 30% 0%, #e4f0f5 0, var(--liquid) 38%, #6f93a6 100%);
+    transform-origin: 50% 100%;
+  }
+
+  .layers__drops {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 0;
+  }
+
+  :global(html.motion) .layers__seal {
+    animation: seal-draw 1.6s var(--ease) 0.2s both;
+  }
+
+  :global(html.motion) .layers__drops span {
+    animation: drop-land 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) calc(1.3s + var(--d)) both;
+  }
+
+  :global(html.motion) .layers__sheen {
+    animation: sheen 11s ease-in-out 1.5s infinite;
+  }
+
+  @keyframes seal-draw {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes drop-land {
+    from {
+      transform: translateY(-3rem) scale(0.6, 1.3);
+      opacity: 0;
+    }
+  }
+
+  @keyframes sheen {
+    0% {
+      transform: translateX(-110%);
+    }
+    55%,
+    100% {
+      transform: translateX(290%);
+    }
+  }
+</style>

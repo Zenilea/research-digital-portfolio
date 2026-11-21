@@ -1,9 +1,70 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Story from '../components/Story.astro';
+import Question from '../components/Question.astro';
+import Stats from '../components/Stats.astro';
+import Grid2x2 from '../components/Grid2x2.astro';
+import NextCards from '../components/NextCards.astro';
+import site from '../data/site.json';
+import home from '../data/home.json';
+import { url } from '../lib/url';
+
+const { glance } = home;
 ---
 
-<Base path="/" serif>
-  <section class="wrap section">
-    <h1 class="display">Does the seal survive the cleaning?</h1>
+<Base path="/" serif={site.heroTitleFont === 'serif'}>
+  <Hero />
+  <Story />
+  <Question />
+  <Stats />
+
+  <section class="glance section" aria-labelledby="glance-title">
+    <div class="wrap split">
+      <div class="glance__head">
+        <p class="label"><b>03</b>{glance.label}</p>
+        <h2 class="h2" id="glance-title">{glance.heading}</h2>
+        <p class="lead">{glance.intro}</p>
+        <p class="body">{glance.caption}</p>
+        <p class="glance__status">
+          {glance.status}
+          <a href={`${url('/process/')}#timeline`}>See where things stand</a>
+        </p>
+      </div>
+      <div data-reveal>
+        <Grid2x2 />
+      </div>
+    </div>
   </section>
+
+  <NextCards cards={home.next} />
 </Base>
+
+<style>
+  .glance {
+    border-top: 1px solid var(--line);
+  }
+
+  .glance__head {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  .glance__status {
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent-hi);
+    border-radius: 0.5rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 34rem;
+  }
+
+  .glance__status a {
+    display: inline-block;
+    margin-left: 0.25em;
+    color: var(--ink);
+  }
+</style>

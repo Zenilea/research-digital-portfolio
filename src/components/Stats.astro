@@ -1,0 +1,88 @@
+---
+import home from '../data/home.json';
+import { url } from '../lib/url';
+import { getSource } from '../lib/sources';
+
+const { why } = home;
+const fmt = (value: number, decimals: number) => value.toFixed(decimals);
+---
+
+<section class="why section" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="label"><b>02</b>{why.label}</p>
+      <h2 class="h2" id="why-title">{why.heading}</h2>
+    </div>
+
+    <ul class="stats">
+      {
+        why.stats.map((stat, i) => {
+          const source = getSource(stat.source);
+          const text = `${stat.prefix}${fmt(stat.value, stat.decimals)}${stat.suffix}`;
+          return (
+            <li class="stat" data-reveal style={`--i:${i}`}>
+              <p class="label">{stat.kicker}</p>
+              <p class="stat__value">
+                <span aria-hidden="true">
+                  {stat.prefix}
+                  <span data-count={stat.value} data-decimals={stat.decimals}>
+                    {fmt(stat.value, stat.decimals)}
+                  </span>
+                  {stat.suffix}
+                </span>
+                <span class="visually-hidden">{text}</span>
+              </p>
+              <p class="stat__text">{stat.text}</p>
+              <p class="stat__cite">
+                Source: <a href={`${url('/research/')}#src-${source.id}`}>{stat.cite}</a>
+              </p>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .why {
+    border-top: 1px solid var(--line);
+  }
+
+  .stats {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .stat {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .stat__value {
+    font-size: clamp(3.75rem, 8.6vw, 7.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .stat__text {
+    color: var(--ink-2);
+    max-width: 30ch;
+  }
+
+  .stat__cite {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  @media (min-width: 52em) {
+    .stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

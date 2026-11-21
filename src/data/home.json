@@ -1,0 +1,112 @@
+{
+  "hero": {
+    "kicker": "AP Research project",
+    "titleLines": ["Does the seal", "survive the cleaning?"],
+    "primary": { "label": "See how it works", "path": "/how-it-works/" },
+    "secondary": { "label": "Read the research", "path": "/research/" }
+  },
+
+  "story": {
+    "label": "The idea in five steps",
+    "skip": "Skip intro",
+    "disclaimer": "Illustration of the idea, not results.",
+    "steps": [
+      {
+        "text": "A printed part isn't solid. The printer builds it from lines of melted plastic, and small gaps are left between the lines.",
+        "alt": "Drawing of a slice through a 3D-printed part. Rows of plastic lines sit on top of each other with small gaps between them, and the middle of the part is mostly hollow."
+      },
+      {
+        "text": "The gaps can let liquid in. Disinfectant can soak into the part and stay there.",
+        "cite": "In one study, a third of the chemical treatments made printed PLA samples heavier, by up to 8.3% (Fleischer et al., 2020).",
+        "alt": "The same slice with droplets on the surface. Liquid runs down through the gaps between the plastic lines and collects inside the part."
+      },
+      {
+        "text": "The idea: brush a thin coat of epoxy over the surface to close the gaps.",
+        "alt": "The same slice with a green layer of epoxy covering the top surface and filling the dips between the plastic lines."
+      },
+      {
+        "text": "If the seal works, the liquid stays on the outside.",
+        "alt": "The sealed slice with droplets sitting on top of the green epoxy layer. No liquid is inside the part."
+      },
+      {
+        "text": "But does the seal last after 20 rounds of disinfection?",
+        "cite": "That is what this project tests.",
+        "alt": "The sealed slice with droplets on top, a times-20 mark, a row of 20 small bars, and a question mark."
+      }
+    ]
+  },
+
+  "question": {
+    "label": "The question",
+    "text": "What are the individual and combined effects of epoxy sealing and 20 cycles of 70% isopropyl alcohol disinfection on the liquid absorption, flexural strength, percent mass change, and dimensional stability of 3D-printed PLA?",
+    "plainLabel": "In plain terms",
+    "plain": [
+      "Does a thin coat of epoxy keep liquid out of a 3D-printed plastic part?",
+      "Does the part stay as strong, and keep its weight and size?",
+      "And is that still true after 20 rounds of cleaning with 70% isopropyl alcohol?"
+    ]
+  },
+
+  "why": {
+    "label": "Why it matters",
+    "heading": "Printing a tool is cheap. Cleaning it is the hard part.",
+    "stats": [
+      {
+        "kicker": "Cheap to print",
+        "prefix": "$",
+        "value": 0.46,
+        "decimals": 2,
+        "suffix": "",
+        "text": "of PLA plastic was enough to print one surgical retractor.",
+        "source": "rankin-2014",
+        "cite": "Rankin et al., 2014"
+      },
+      {
+        "kicker": "Heat ruins it",
+        "prefix": "",
+        "value": 15.7,
+        "decimals": 1,
+        "suffix": " N",
+        "text": "is the load that broke PLA retractors after steam autoclaving at 134 °C. Untreated ones held 95 N.",
+        "source": "chen-2020",
+        "cite": "Chen et al., 2020"
+      },
+      {
+        "kicker": "Liquid gets in",
+        "prefix": "",
+        "value": 8.3,
+        "decimals": 1,
+        "suffix": "%",
+        "text": "is the most weight printed PLA samples gained after chemical disinfection. A third of the treatments added weight.",
+        "source": "fleischer-2020",
+        "cite": "Fleischer et al., 2020"
+      }
+    ]
+  },
+
+  "glance": {
+    "label": "The experiment at a glance",
+    "heading": "Two choices, four groups.",
+    "intro": "Every printed part is either sealed or not, and either goes through 20 disinfection cycles or none.",
+    "cols": ["0 cycles", "20 cycles of 70% isopropyl alcohol"],
+    "rows": ["Unsealed", "Sealed with epoxy"],
+    "cells": [
+      [
+        { "code": "U0", "name": "Control", "note": "Plain printed PLA. Nothing done to it." },
+        { "code": "U20", "name": "Alcohol only", "note": "Shows what the alcohol does on its own." }
+      ],
+      [
+        { "code": "S0", "name": "Seal only", "note": "Shows what the epoxy does on its own." },
+        { "code": "S20", "name": "Seal and alcohol", "note": "Shows whether the seal survives." }
+      ]
+    ],
+    "each": "5 bend bars · 5 porosity bars · 1 tweezer",
+    "caption": "Four groups let me test sealing, alcohol, and how the two work together.",
+    "status": "Status: the experiment has not started yet, so there are no results on this site."
+  },
+
+  "next": [
+    { "kicker": "Next", "label": "How it works", "path": "/how-it-works/" },
+    { "kicker": "Also", "label": "About me", "path": "/about/" }
+  ]
+}

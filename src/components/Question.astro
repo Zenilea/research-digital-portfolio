@@ -1,0 +1,72 @@
+---
+import home from '../data/home.json';
+const { question } = home;
+const words = question.text.split(' ');
+---
+
+<section class="question section" id="question" aria-labelledby="question-label">
+  <div class="wrap">
+    <p class="label" id="question-label"><b>01</b>{question.label}</p>
+    <div class="question__grid">
+      <h2 class="question__text" data-question>
+        {words.map((word) => <span data-w>{word + ' '}</span>)}
+      </h2>
+      <aside class="question__plain" data-reveal>
+        <h3 class="label">{question.plainLabel}</h3>
+        {question.plain.map((line) => <p>{line}</p>)}
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .question__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .question__text {
+    font-size: clamp(1.75rem, 4vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    text-wrap: pretty;
+  }
+
+  .question__text span {
+    transition: color 0.35s linear;
+  }
+
+  /* Words wait in a dimmer tone until the page scrolls to them. */
+  .question__text:global(.is-live) span:not(:global(.is-lit)) {
+    color: var(--ink-dim);
+  }
+
+  .question__plain {
+    display: grid;
+    gap: 0.85rem;
+    align-content: start;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--accent-hi);
+    max-width: 28rem;
+  }
+
+  .question__plain p {
+    font-size: 1.1rem;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+
+  @media (min-width: 60em) {
+    .question__grid {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+      align-items: start;
+    }
+
+    .question__plain {
+      position: sticky;
+      top: calc(var(--nav-h) + 2rem);
+      margin-top: 0.6rem;
+    }
+  }
+</style>

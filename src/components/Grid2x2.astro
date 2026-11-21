@@ -1,0 +1,126 @@
+---
+// The four groups of the experiment as a 2 by 2 table.
+import home from '../data/home.json';
+
+interface Props {
+  /** Show the short note inside each cell. */
+  notes?: boolean;
+}
+const { notes = true } = Astro.props;
+const { glance } = home;
+---
+
+<div class="g22-scroll">
+  <table class="g22">
+    <caption class="visually-hidden">The four groups: sealed or unsealed, and 0 or 20 disinfection cycles.</caption>
+    <thead>
+      <tr>
+        <td></td>
+        {glance.cols.map((col) => <th scope="col">{col}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        glance.rows.map((rowLabel, r) => (
+          <tr>
+            <th scope="row"><span>{rowLabel}</span></th>
+            {glance.cells[r].map((cell) => (
+              <td class:list={['g22__cell', { 'g22__cell--sealed': r === 1 }]}>
+                <span class="g22__code">{cell.code}</span>
+                <span class="g22__name">{cell.name}</span>
+                {notes && <span class="g22__note">{cell.note}</span>}
+                <span class="g22__each">{glance.each}</span>
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .g22 {
+    border-collapse: separate;
+    border-spacing: 0.5rem;
+    margin: -0.5rem;
+    width: calc(100% + 1rem);
+    table-layout: fixed;
+  }
+
+  .g22 thead td {
+    width: 2.25rem;
+  }
+
+  .g22 th {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    line-height: 1.3;
+  }
+
+  .g22 thead th {
+    padding: 0 0.25rem 0.35rem;
+    vertical-align: bottom;
+  }
+
+  .g22 tbody th {
+    width: 2.25rem;
+    padding: 0;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .g22 tbody th span {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+  }
+
+  .g22__cell {
+    padding: clamp(1rem, 2.4vw, 2rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-raise);
+    vertical-align: top;
+  }
+
+  .g22__cell--sealed {
+    border-top: 3px solid var(--accent-hi);
+  }
+
+  .g22__cell > span {
+    display: block;
+  }
+
+  .g22__code {
+    font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .g22__name {
+    margin-top: 0.75rem;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    letter-spacing: -0.02em;
+  }
+
+  .g22__note {
+    margin-top: 0.35rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+
+  .g22__each {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--ink-3);
+  }
+</style>

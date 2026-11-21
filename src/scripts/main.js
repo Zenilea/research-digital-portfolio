@@ -85,7 +85,8 @@ if (nav && navToggle) {
    Without this script the five steps are a plain stacked list.
 ------------------------------------------------------------------- */
 const story = document.querySelector('[data-story]');
-if (story && motion) {
+const roomToPin = window.matchMedia('(min-height: 30em)').matches;
+if (story && motion && roomToPin) {
   const steps = $$('[data-story-step]', story);
   const ticks = $$('[data-story-tick]', story);
   const fill = story.querySelector('[data-story-fill]');
@@ -233,6 +234,17 @@ for (const group of $$('[data-filter-group]')) {
     chip.addEventListener('click', () => apply(chip.dataset.filter));
   }
 }
+
+/* ------------------------------------------------------------------
+   A link to one source (…/research/#src-rankin-2014) opens that row.
+------------------------------------------------------------------- */
+function openLinkedRow() {
+  if (window.location.hash.length < 2) return;
+  const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+  if (target && target.tagName === 'DETAILS') target.open = true;
+}
+window.addEventListener('hashchange', openLinkedRow);
+openLinkedRow();
 
 /* ------------------------------------------------------------------
    Go.
