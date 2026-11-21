@@ -1,0 +1,257 @@
+---
+// Line drawings for the four steps on "How it works".
+// They show the procedure, not my actual equipment, and say so in the caption.
+interface Props {
+  kind: 'print' | 'seal' | 'disinfect' | 'measure';
+  label: string;
+}
+const { kind, label } = Astro.props;
+const layers = [304, 278, 252, 226];
+// Each drawing is cropped close so it stays readable on a phone.
+const boxes = {
+  print: '46 24 548 380',
+  seal: '80 -8 480 348',
+  disinfect: '62 70 548 334',
+  measure: '86 60 468 324',
+};
+---
+
+<svg class={`sd sd--${kind}`} viewBox={boxes[kind]} role="img" aria-label={label}>
+  {
+    kind === 'print' && (
+      <g>
+        <line class="sd__line" x1="60" y1="331" x2="580" y2="331" />
+        {layers.map((y) => <rect class="sd__solid" x="110" y={y} width="420" height="24" rx="12" />)}
+        <rect class="sd__solid sd__grow" x="110" y="200" width="250" height="24" rx="12" />
+        <g class="sd__nozzle">
+          <line class="sd__line" x1="360" y1="36" x2="360" y2="96" />
+          <rect class="sd__solid" x="330" y="96" width="60" height="58" rx="8" />
+          <path class="sd__solid" d="M340 154h40l-13 42h-14z" />
+        </g>
+        <path class="sd__dim" d="M110 352v16M530 352v16M110 360h420" />
+        <text class="sd__text" x="320" y="392" text-anchor="middle">about 80 mm</text>
+      </g>
+    )
+  }
+
+  {
+    kind === 'seal' && (
+      <g>
+        <rect class="sd__solid" x="110" y="170" width="420" height="78" rx="14" />
+        <path class="sd__faint" d="M124 196h392M124 222h392" />
+        <rect class="sd__coat" x="101" y="161" width="438" height="96" rx="22" pathLength="1" />
+        <g class="sd__brush" transform="translate(452 158) rotate(32)">
+          <rect class="sd__solid" x="-9" y="-176" width="18" height="104" rx="9" />
+          <rect class="sd__solid" x="-14" y="-74" width="28" height="26" rx="3" />
+          <path class="sd__bristles" d="M-14 -48h28l-4 40q-10 8 -20 0z" />
+        </g>
+        <text class="sd__text" x="320" y="318" text-anchor="middle">2 thin coats, then 24 h to cure</text>
+      </g>
+    )
+  }
+
+  {
+    kind === 'disinfect' && (
+      <g>
+        <rect class="sd__liquid" x="95" y="176" width="190" height="160" rx="14" />
+        <rect class="sd__outline" x="90" y="120" width="200" height="220" rx="18" />
+        <rect class="sd__solid" x="82" y="96" width="216" height="28" rx="9" />
+        <rect class="sd__solid sd__dip" x="126" y="232" width="128" height="26" rx="13" transform="rotate(-18 190 245)" />
+        <path class="sd__line" d="M430 268h166M446 268v58M580 268v58" />
+        <rect class="sd__solid" x="450" y="240" width="126" height="26" rx="13" />
+        <path class="sd__arrow" d="M312 146C366 92 452 92 506 204" />
+        <path class="sd__arrowhead" d="M494 194l14 20 8 -23z" />
+        <path class="sd__arrow" d="M500 344C440 388 370 386 310 346" />
+        <path class="sd__arrowhead" d="M324 346l-20 -8 4 22z" />
+        <text class="sd__big" x="366" y="262" text-anchor="middle">×20</text>
+        <text class="sd__text" x="190" y="386" text-anchor="middle">60 s</text>
+        <text class="sd__text" x="513" y="386" text-anchor="middle">20 min</text>
+      </g>
+    )
+  }
+
+  {
+    kind === 'measure' && (
+      <g>
+        <path class="sd__solid" d="M170 252l-24 52h48zM470 252l-24 52h48z" />
+        <path class="sd__bar-edge" d="M112 236Q320 262 528 236" />
+        <path class="sd__bar" d="M112 236Q320 262 528 236" />
+        <g class="sd__push">
+          <path class="sd__force" d="M320 84v124" />
+          <path class="sd__forcehead" d="M306 200l14 26 14 -26z" />
+          <text class="sd__big sd__big--accent" x="346" y="150">F</text>
+        </g>
+        <path class="sd__dim" d="M170 322v16M470 322v16M170 330h300" />
+        <text class="sd__text" x="320" y="366" text-anchor="middle">64 mm</text>
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .sd {
+    width: 100%;
+    height: auto;
+  }
+
+  .sd__solid {
+    fill: #1d1b18;
+    stroke: rgba(243, 242, 236, 0.45);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+
+  .sd__outline,
+  .sd__line,
+  .sd__dim,
+  .sd__faint,
+  .sd__arrow {
+    fill: none;
+    stroke: rgba(243, 242, 236, 0.45);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  .sd__faint {
+    stroke: rgba(243, 242, 236, 0.18);
+  }
+
+  .sd__dim {
+    stroke: var(--ink-3);
+  }
+
+  .sd__arrow {
+    stroke: var(--ink-2);
+    stroke-width: 2;
+    stroke-dasharray: 3 7;
+  }
+
+  .sd__arrowhead {
+    fill: var(--ink-2);
+  }
+
+  .sd__liquid {
+    fill: var(--liquid);
+    opacity: 0.3;
+  }
+
+  .sd__coat {
+    fill: none;
+    stroke: var(--accent-hi);
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+  }
+
+  .sd__bristles {
+    fill: var(--accent-hi);
+  }
+
+  .sd__bar-edge,
+  .sd__bar {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .sd__bar-edge {
+    stroke: rgba(243, 242, 236, 0.45);
+    stroke-width: 29;
+  }
+
+  .sd__bar {
+    stroke: #1d1b18;
+    stroke-width: 26;
+  }
+
+  .sd__force {
+    fill: none;
+    stroke: var(--accent-hi);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .sd__forcehead {
+    fill: var(--accent-hi);
+  }
+
+  .sd__text,
+  .sd__big {
+    font-family: var(--font-sans);
+    fill: var(--ink-2);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  .sd__big {
+    font-size: 54px;
+    letter-spacing: -0.05em;
+    fill: var(--ink);
+  }
+
+  .sd__big--accent {
+    fill: var(--accent-hi);
+  }
+
+  .sd__grow {
+    transform-box: fill-box;
+    transform-origin: left center;
+  }
+
+  /* Motion: plays for the step being read. Still and complete otherwise. */
+  :global(html.motion .is-active) .sd__grow {
+    animation: sd-grow 2.6s linear infinite alternate;
+  }
+
+  :global(html.motion .is-active) .sd__nozzle {
+    animation: sd-travel 2.6s linear infinite alternate;
+  }
+
+  :global(html.motion .is-active) .sd__coat {
+    animation: sd-draw 2.2s var(--ease) 0.2s both;
+  }
+
+  :global(html.motion .is-active) .sd__dip {
+    animation: sd-dip 3.2s ease-in-out infinite;
+  }
+
+  :global(html.motion .is-active) .sd__push {
+    animation: sd-push 1.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes sd-grow {
+    from {
+      transform: scaleX(0.12);
+    }
+  }
+
+  @keyframes sd-travel {
+    from {
+      transform: translateX(-220px);
+    }
+  }
+
+  @keyframes sd-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes sd-dip {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 34px;
+    }
+  }
+
+  @keyframes sd-push {
+    from {
+      transform: translateY(-14px);
+    }
+  }
+</style>

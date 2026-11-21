@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "title": "How it works",
+    "description": "The plan in four steps: print PLA parts, seal half with epoxy, run 20 cycles of 70% isopropyl alcohol disinfection, and measure what changed."
+  },
+  "kicker": "How it works",
+  "titleLines": ["Print. Seal.", "Disinfect. Measure."],
+  "lead": "This is the plan, in the order it will happen. Nothing has been measured yet.",
+
+  "figureNote": "Illustration, not a photo of my setup.",
+
+  "steps": [
+    {
+      "id": "print",
+      "name": "Print",
+      "kicker": "49 parts, one spool, one printer",
+      "text": [
+        "Every part is printed in PLA from one spool, on one printer, with the same settings.",
+        "The test bars are about 80 × 10 × 4 mm. After printing, each part is weighed and randomly put into one of four groups."
+      ],
+      "facts": [
+        { "value": "20", "label": "bend bars" },
+        { "value": "20", "label": "porosity bars" },
+        { "value": "5", "label": "spare bars" },
+        { "value": "4", "label": "tweezers" }
+      ],
+      "note": "8 extra pilot bars are printed first for practice. They are not part of the data.",
+      "alt": "Drawing of a printer nozzle laying down a line of plastic on top of four finished layers of a test bar about 80 mm long."
+    },
+    {
+      "id": "seal",
+      "name": "Seal",
+      "kicker": "Smooth-On XTC-3D, two coats",
+      "text": [
+        "Half of the parts get two thin brushed coats of Smooth-On XTC-3D, an epoxy made for coating 3D prints.",
+        "The second coat goes on once the first is no longer tacky. Then the parts cure for 24 hours before any alcohol touches them.",
+        "The other half stays unsealed."
+      ],
+      "facts": [
+        { "value": "2", "label": "thin brushed coats" },
+        { "value": "24 h", "label": "cure" }
+      ],
+      "alt": "Drawing of a brush putting a green coat of epoxy around a printed test bar."
+    },
+    {
+      "id": "disinfect",
+      "name": "Disinfect",
+      "kicker": "20 cycles of 70% isopropyl alcohol, or 0",
+      "text": [
+        "Half of the sealed parts and half of the unsealed parts go through 20 disinfection cycles.",
+        "One cycle is 60 seconds fully under 70% isopropyl alcohol in a closed jar, then 20 minutes on a drying rack.",
+        "The other parts get 0 cycles, but they are handled and stored the same way."
+      ],
+      "facts": [
+        { "value": "60 s", "label": "under alcohol" },
+        { "value": "20 min", "label": "on the rack" },
+        { "value": "×20", "label": "cycles" }
+      ],
+      "note": "At 3 cycles a day, that is about 7 lab days.",
+      "alt": "Drawing of a test bar inside a closed jar of liquid for 60 seconds, then on a drying rack for 20 minutes, with arrows showing the loop repeats 20 times."
+    },
+    {
+      "id": "measure",
+      "name": "Measure",
+      "kicker": "Four measurements, done the same way every time",
+      "text": [
+        "Every part is weighed three times: as printed, after the epoxy cures, and after the cycles. Each bend bar is also measured at the same three marked points each time.",
+        "Then 20 bars are bent until they break, and 20 bars are soaked in dyed water to see how much liquid gets in."
+      ],
+      "facts": [
+        { "value": "%", "label": "liquid absorption" },
+        { "value": "MPa", "label": "bending strength" },
+        { "value": "%", "label": "mass change" },
+        { "value": "mm", "label": "size change" }
+      ],
+      "alt": "Drawing of a three-point bend test: a test bar resting on two supports 64 mm apart, with a force pushing down on the middle."
+    }
+  ],
+
+  "gaps": {
+    "label": "The idea being tested",
+    "heading": "Same part, with and without a seal.",
+    "caption": "A printed part isn't solid. The gaps between layers can let liquid in.",
+    "disclaimer": "Illustration of the idea, not results.",
+    "unsealed": {
+      "title": "Unsealed",
+      "text": "Liquid can get into the gaps between the printed lines and stay inside the part.",
+      "alt": "Drawing of a slice through an unsealed printed part. Liquid runs down through the gaps between the plastic lines and collects inside."
+    },
+    "sealed": {
+      "title": "Sealed",
+      "text": "The idea is that a coat of epoxy closes the gaps, so liquid stays on the outside. Whether that holds up is what the experiment tests.",
+      "alt": "Drawing of a slice through a sealed printed part. A green epoxy layer covers the surface and droplets sit on top of it."
+    }
+  },
+
+  "measure": {
+    "label": "What gets measured",
+    "heading": "Four numbers and one set of photos.",
+    "whyLabel": "Why it matters",
+    "items": [
+      {
+        "icon": "drop",
+        "name": "Liquid absorption",
+        "unit": "%",
+        "how": "A dried bar is weighed, soaked in dyed water for 24 hours, blotted the same way every time, and weighed again. The extra weight is the liquid it took in.",
+        "why": "It shows whether the surface is closed."
+      },
+      {
+        "icon": "bend",
+        "name": "Bending strength",
+        "unit": "MPa",
+        "how": "A bar rests on two supports 64 mm apart. A force pushes down on the middle until the bar breaks.",
+        "why": "It shows whether the part stays strong."
+      },
+      {
+        "icon": "mass",
+        "name": "Mass change",
+        "unit": "%",
+        "how": "Each part is weighed after the epoxy cures and again after the cycles, on a balance that reads to 0.001 g.",
+        "why": "It shows whether material or coating was lost."
+      },
+      {
+        "icon": "size",
+        "name": "Size change",
+        "unit": "mm",
+        "how": "Thickness is measured at three marked points on each bend bar, before and after the cycles.",
+        "why": "It shows warping or swelling."
+      },
+      {
+        "icon": "photo",
+        "name": "Dye photos",
+        "unit": "photos",
+        "how": "At least one soaked bar from each group is snapped open and photographed, to show how far the dyed water got inside.",
+        "why": "It makes the path of the liquid visible. It is a picture, not a number."
+      }
+    ],
+    "note": "Soaking up a test liquid stands in for holding on to disinfectant. It is not a direct measurement of it."
+  },
+
+  "next": [
+    { "kicker": "Next", "label": "Research", "path": "/research/" },
+    { "kicker": "Also", "label": "Process", "path": "/process/" }
+  ]
+}

@@ -1,0 +1,46 @@
+---
+// The big title block at the top of every inner page.
+interface Props {
+  kicker: string;
+  lines: string[];
+  lead?: string;
+  giant?: boolean;
+}
+const { kicker, lines, lead, giant = false } = Astro.props;
+---
+
+<header class="page-head wrap">
+  <p class="label page-head__kicker" data-rise style="--i:0">{kicker}</p>
+  <h1 class:list={[giant ? 'giant' : 'display', 'page-head__title']}>
+    {lines.map((line, i) => <span data-rise style={`--i:${i + 1}`}>{line} </span>)}
+  </h1>
+  {lead && <p class="lead page-head__lead" data-rise style={`--i:${lines.length + 1}`}>{lead}</p>}
+</header>
+
+<style>
+  .page-head {
+    display: grid;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding-top: clamp(3.5rem, 10vw, 8rem);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+  }
+
+  .page-head__title span {
+    display: block;
+  }
+
+  .page-head__lead {
+    max-width: 36ch;
+  }
+
+  :global(html.motion) [data-rise] {
+    animation: head-rise 0.9s var(--ease) calc(var(--i) * 90ms) both;
+  }
+
+  @keyframes head-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+interface Props {
+  icon: 'drop' | 'bend' | 'mass' | 'size' | 'photo';
+}
+const { icon } = Astro.props;
+const paths = {
+  drop: 'M20 5c7 9.500 10.500 14.500 10.500 20a10.500 10.500 0 0 1 -21 0c0 -5.500 3.500 -10.500 10.500 -20z',
+  bend: 'M4 16q16 7 32 0M20 4v9M16.500 10l3.500 4 3.500 -4M9 22l-4 9h8zM31 22l-4 9h8z',
+  mass: 'M7 33h26M10 33l2.500 -19h15l2.500 19M14 14a6 6 0 0 1 12 0M20 19v6',
+  size: 'M5 9v22M35 9v22M5 20h30M10 15l-5 5 5 5M30 15l5 5 -5 5',
+  photo: 'M5 12h7l2.500 -4h11l2.500 4h7v20h-30zM20 16a6 6 0 1 0 0.010 0z',
+};
+---
+
+<svg class="micon" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+  <path d={paths[icon]}></path>
+</svg>
+
+<style>
+  .micon {
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: none;
+    stroke: var(--accent-hi);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>

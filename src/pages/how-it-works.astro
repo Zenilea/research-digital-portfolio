@@ -1,0 +1,402 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import StepDiagram from '../components/StepDiagram.astro';
+import CrossSection from '../components/CrossSection.astro';
+import MeasureIcon from '../components/MeasureIcon.astro';
+import NextCards from '../components/NextCards.astro';
+import how from '../data/how.json';
+
+type Kind = 'print' | 'seal' | 'disinfect' | 'measure';
+type Icon = 'drop' | 'bend' | 'mass' | 'size' | 'photo';
+const num = (i: number) => String(i + 1).padStart(2, '0');
+---
+
+<Base path="/how-it-works/" title={how.meta.title} description={how.meta.description}>
+  <PageHead kicker={how.kicker} lines={how.titleLines} lead={how.lead} />
+
+  <section class="steps" aria-label="The four steps">
+    <div class="wrap steps__grid">
+      <nav class="steps__nav" aria-label="Steps on this page">
+        <ol class="steps__list" data-spy>
+          {
+            how.steps.map((step, i) => (
+              <li>
+                <a href={`#${step.id}`}>
+                  <span class="num">{num(i)}</span>
+                  {step.name}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div class="steps__panels">
+        {
+          how.steps.map((step, i) => (
+            <article class="step" id={step.id} aria-labelledby={`${step.id}-title`}>
+              <figure class="step__fig">
+                <StepDiagram kind={step.id as Kind} label={step.alt} />
+                <figcaption class="not-results">{how.figureNote}</figcaption>
+              </figure>
+              <div class="step__body">
+                <p class="label"><b>{num(i)}</b>{step.kicker}</p>
+                <h2 class="h2" id={`${step.id}-title`}>{step.name}</h2>
+                {step.text.map((line) => <p class="body">{line}</p>)}
+                <dl class="step__facts">
+                  {step.facts.map((fact) => (
+                    <div>
+                      <dt>{fact.label}</dt>
+                      <dd>{fact.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {step.note && <p class="step__note">{step.note}</p>}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="gaps section" aria-labelledby="gaps-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">{how.gaps.label}</p>
+        <h2 class="h2" id="gaps-title">{how.gaps.heading}</h2>
+        <p class="lead">{how.gaps.caption}</p>
+      </div>
+      <div class="gaps__pair">
+        <figure class="gaps__fig" data-reveal>
+          <CrossSection step={2} label={how.gaps.unsealed.alt} />
+          <figcaption>
+            <strong>{how.gaps.unsealed.title}</strong>
+            {how.gaps.unsealed.text}
+          </figcaption>
+        </figure>
+        <figure class="gaps__fig gaps__fig--sealed" data-reveal style="--i:1">
+          <CrossSection step={4} label={how.gaps.sealed.alt} />
+          <figcaption>
+            <strong>{how.gaps.sealed.title}</strong>
+            {how.gaps.sealed.text}
+          </figcaption>
+        </figure>
+      </div>
+      <p class="not-results gaps__note">{how.gaps.disclaimer}</p>
+    </div>
+  </section>
+
+  <section class="measure section" aria-labelledby="measure-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">{how.measure.label}</p>
+        <h2 class="h2" id="measure-title">{how.measure.heading}</h2>
+      </div>
+      <ul class="measure__list">
+        {
+          how.measure.items.map((item, i) => (
+            <li class="measure__item" data-reveal style={`--i:${i % 3}`}>
+              <MeasureIcon icon={item.icon as Icon} />
+              <h3 class="h3">
+                {item.name}
+                <span class="tag">{item.unit}</span>
+              </h3>
+              <p class="measure__how">{item.how}</p>
+              <p class="measure__why">
+                <span class="label">{how.measure.whyLabel}</span>
+                {item.why}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="small measure__note">{how.measure.note}</p>
+    </div>
+  </section>
+
+  <NextCards cards={how.next} />
+</Base>
+
+<style>
+  /* ---------------- steps ---------------- */
+  .steps {
+    border-top: 1px solid var(--line);
+  }
+
+  .steps__nav {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 20;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .steps__list {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .steps__list a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    min-height: 3rem;
+    padding-block: 0.8rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+
+  .steps__list .num {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: inherit;
+  }
+
+  .steps__list a:hover,
+  .steps__list a[aria-current] {
+    color: var(--ink);
+  }
+
+  .steps__list a[aria-current] .num {
+    color: var(--accent-hi);
+  }
+
+  .step {
+    display: grid;
+    gap: 2rem;
+    padding-block: clamp(3rem, 8vw, 6rem);
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: calc(var(--nav-h) + 3.5rem);
+  }
+
+  .step:last-child {
+    border-bottom: 0;
+  }
+
+  .step__fig {
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-sunk);
+  }
+
+  .step__fig figcaption {
+    margin-top: 0.5rem;
+  }
+
+  .step__body {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .step__body .body + .body {
+    margin-top: 0;
+  }
+
+  .step__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .step__facts div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    background: var(--bg);
+  }
+
+  .step__facts div:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  .step__facts dd {
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step__facts dt {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+  }
+
+  .step__note {
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--accent-hi);
+  }
+
+  @media (min-width: 60em) {
+    .steps__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+
+    .steps__nav {
+      top: calc(var(--nav-h) + 2.5rem);
+      margin: 0;
+      padding: clamp(3rem, 8vw, 6rem) 0 0;
+      background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: 0;
+    }
+
+    .steps__list {
+      flex-direction: column;
+      gap: 0.25rem;
+      overflow: visible;
+    }
+
+    .steps__list a {
+      min-height: 0;
+      padding-block: 0.2rem;
+      font-size: clamp(2rem, 3.6vw, 3.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.045em;
+      color: var(--ink-dim);
+    }
+
+    .steps__list .num {
+      width: 2.2em;
+      letter-spacing: 0.08em;
+    }
+
+    .step {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: center;
+      scroll-margin-top: calc(var(--nav-h) + 1rem);
+    }
+  }
+
+  /* ---------------- sealed vs unsealed ---------------- */
+  .gaps {
+    border-top: 1px solid var(--line);
+    background: var(--bg-sunk);
+  }
+
+  .gaps__pair {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .gaps__fig figcaption {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-2);
+    font-size: 1rem;
+    color: var(--ink-2);
+  }
+
+  .gaps__fig--sealed figcaption {
+    border-top: 2px solid var(--accent-hi);
+  }
+
+  .gaps__fig strong {
+    font-size: 1.35rem;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .gaps__note {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 52em) {
+    .gaps__pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1.5rem, 4vw, 4rem);
+    }
+  }
+
+  /* ---------------- measurements ---------------- */
+  .measure {
+    border-top: 1px solid var(--line);
+  }
+
+  .measure__list {
+    display: grid;
+    gap: 1px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .measure__item {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--bg);
+  }
+
+  .measure__item .h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .measure__how {
+    color: var(--ink-2);
+  }
+
+  .measure__why {
+    display: grid;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .measure__note {
+    margin-top: 1.5rem;
+    max-width: 60ch;
+  }
+
+  @media (min-width: 44em) {
+    .measure__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 72em) {
+    .measure__list {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .measure__item {
+      grid-column: span 2;
+    }
+
+    .measure__item:nth-child(n + 4) {
+      grid-column: span 3;
+    }
+  }
+</style>
